@@ -1,0 +1,13 @@
+# Alternativa si Hostinger no permite que public_html sea un enlace simbólico (sección 06).
+# public_html/ contiene solo este .htaccess y un enlace «current» → /home/uXXXX/rosaacevedo/current.
+# Todo se reescribe a current/public/ y se bloquea el acceso a cualquier otra carpeta.
+Options -Indexes +FollowSymLinks
+RewriteEngine On
+
+# Bloquear todo lo que no esté en current/public.
+RewriteCond %{REQUEST_URI} ^/current/(?!public/) [NC]
+RewriteRule ^ - [F,L]
+RewriteRule ^\.env - [F,L]
+
+RewriteCond %{REQUEST_URI} !^/current/public/
+RewriteRule ^(.*)$ current/public/$1 [L,QSA]

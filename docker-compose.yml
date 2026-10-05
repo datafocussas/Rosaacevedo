@@ -1,0 +1,52 @@
+# Entorno local: PHP 8.3 + MariaDB 10.11 (la misma versión probada del modelo de datos).
+#   cp .env.example .env && docker compose up -d
+#   docker compose exec app composer install && docker compose exec app php artisan key:generate
+#   docker compose exec app php artisan migrate --seed
+#   npm install && npm run dev   (Vite en el equipo anfitrión)
+services:
+  app:
+    build: ./docker/php
+    working_dir: /var/www
+    command: php artisan serve --host=0.0.0.0 --port=8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/var/www
+    environment:
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+
+  programador:
+    # Equivale al cron de Hostinger: schedule:run cada minuto.
+    build: ./docker/php
+    working_dir: /var/www
+    command: php artisan schedule:work
+    volumes:
+      - ./:/var/www
+    environment:
+      DB_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_DATABASE: rosa
+      MARIADB_USER: rosa
+      MARIADB_PASSWORD: rosa
+      MARIADB_ROOT_PASSWORD: raiz
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - datos:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      retries: 20
+
+volumes:
+  datos:

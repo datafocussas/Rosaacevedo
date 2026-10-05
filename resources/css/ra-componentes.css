@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Permanent+Marker&display=swap');
+/* Montserrat y Permanent Marker se autoalojan en WOFF2 (resources/css/fuentes.css): sin llamada a Google en producción. */
 
 /* Rosa Alcaldesa 2027 · kit de componentes (prefijo ra-)
    Depende de tokens.css (variables --azul-itagui, --space-4, --radius-md, --sombra-1, --font-sans…). */

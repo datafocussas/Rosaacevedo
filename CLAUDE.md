@@ -74,3 +74,7 @@ El CRM de la campaña vive en `https://aplicativo.rosaacevedo.co` (Laravel; docu
 - Catálogo corregido de 84 barrios + 6 sectores + 8 veredas con su correspondencia 2007.
 - Especificación de la API del CRM.
 - Datos del plan de Hostinger, acceso SSH y acceso al DNS de rosaacevedo.com.
+
+## Estado del código y comandos
+
+El esqueleto del Sprint 0 y la captación del Sprint 1 están en el repositorio (ver `README.md`). Antes de entregar cambios: `vendor/bin/pint`, `php artisan test` y `npm run build`. Decisiones abiertas y desviaciones de la especificación: sección «Decisiones y desviaciones para revisar» del `README.md`.

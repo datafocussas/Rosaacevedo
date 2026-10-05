@@ -1,0 +1,72 @@
+name: Despliegue a Hostinger
+
+# Pruebas → composer --no-dev y npm run build en el runner → rsync por SSH a releases/ →
+# migraciones y cachés → cambio del enlace current (sección 06).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      entorno:
+        description: 'Entorno'
+        type: choice
+        options: [produccion, pruebas]
+        default: produccion
+
+concurrency:
+  group: despliegue-${{ github.event.inputs.entorno || 'produccion' }}
+  cancel-in-progress: false
+
+jobs:
+  pruebas:
+    uses: ./.github/workflows/ci.yml
+
+  desplegar:
+    needs: pruebas
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.entorno || 'produccion' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, intl, zip, exif, bcmath
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Construir
+        run: |
+          composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-progress
+          npm ci && npm run build
+          php artisan filament:assets
+      - name: Llave SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.HOSTINGER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${{ secrets.HOSTINGER_SSH_PORT }}" "${{ secrets.HOSTINGER_SSH_HOST }}" >> ~/.ssh/known_hosts
+      - name: Subir versión
+        env:
+          DESTINO: ${{ secrets.HOSTINGER_SSH_USER }}@${{ secrets.HOSTINGER_SSH_HOST }}
+          PUERTO: ${{ secrets.HOSTINGER_SSH_PORT }}
+          RUTA: ${{ secrets.HOSTINGER_RUTA }}
+        run: |
+          VERSION=$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          # --link-dest reutiliza los archivos sin cambios de la versión activa (vendor/ no se sube completo cada vez).
+          rsync -az --delete -e "ssh -p $PUERTO" --link-dest="$RUTA/current/" \
+            --exclude='/.git' --exclude='/.github' --exclude='/node_modules' --exclude='/tests' --exclude='/docs' \
+            --exclude='/.env' --exclude='/storage' --exclude='/public/storage' --exclude='/public/hot' --exclude='/docker' \
+            ./ "$DESTINO:$RUTA/releases/$VERSION/"
+      - name: Activar versión
+        env:
+          DESTINO: ${{ secrets.HOSTINGER_SSH_USER }}@${{ secrets.HOSTINGER_SSH_HOST }}
+          PUERTO: ${{ secrets.HOSTINGER_SSH_PORT }}
+          RUTA: ${{ secrets.HOSTINGER_RUTA }}
+          PHP_BIN: ${{ secrets.HOSTINGER_PHP_BIN }}
+        run: |
+          ssh -p "$PUERTO" "$DESTINO" "PHP_BIN='${PHP_BIN:-php}' bash $RUTA/releases/$VERSION/deploy/activar.sh '$RUTA' '$VERSION'"
+      - name: Verificar
+        run: curl -fsS --retry 3 "${{ vars.URL_SITIO || 'https://rosaacevedo.com' }}/up"
