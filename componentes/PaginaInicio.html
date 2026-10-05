@@ -1,0 +1,274 @@
+<!-- @dsCard group="Plantillas" height=3300 width=1200 subtitle="Composición de la página de inicio" -->
+<!doctype html>
+<html lang="es" data-theme="claro"><head><style>:root{--azul-itagui:#003c57;--azul-profundo:#002536;--azul-medio:#0e5674;--azul-claro:#c9d6dd;--azul-tenue:#e3edf2;--coral:#f45a43;--coral-texto:#c23a24;--coral-oscuro:#a32e1b;--coral-claro:#ff8a75;--coral-tenue:#fde6e1;--crema:#f8f3ef;--blanco:#ffffff;--tinta:#13222b;--tinta-suave:#4a5a64;--borde-control:#8a8178;--borde-suave:#ddd5cc;--verde-raiz:#2f7d5b;--verde-profundo:#1f5a40;--verde-tenue:#e2f0e8;--alerta:#9a5b00;--alerta-tenue:#fbf0dc;--error:#a4231b;--foco:var(--azul-itagui);--foco-inverso:var(--coral-claro);--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:64px;--space-9:96px;--radius-sm:4px;--radius-md:8px;--radius-lg:16px;--radius-pill:999px;--sombra-1:0 1px 2px rgba(0,37,54,0.08), 0 2px 8px rgba(0,37,54,0.06);--sombra-2:0 8px 24px rgba(0,37,54,0.14);--ancho-contenido:1200px;--ancho-lectura:720px;--alto-encabezado:72px;--toque-minimo:48px;--font-sans:Montserrat, "Helvetica Neue", Arial, sans-serif;--font-lema:"Permanent Marker", "Montserrat", cursive;}@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Permanent+Marker&display=swap');
+
+/* Rosa Alcaldesa 2027 · kit de componentes (prefijo ra-)
+   Depende de tokens.css (variables --azul-itagui, --space-4, --radius-md, --sombra-1, --font-sans…). */
+
+.ra, .ra * { box-sizing: border-box; }
+.ra { font-family: var(--font-sans); color: var(--tinta); background: var(--crema); font-size: 16px; line-height: 26px; -webkit-font-smoothing: antialiased; }
+.ra a { color: var(--coral-texto); text-underline-offset: 3px; }
+.ra a:hover { color: var(--coral-oscuro); }
+.ra :focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+.ra .ra-inverso :focus-visible, .ra-inverso :focus-visible { outline-color: var(--foco-inverso); }
+.ra-contenedor { max-width: var(--ancho-contenido); margin: 0 auto; padding: 0 var(--space-4); }
+@media (min-width: 768px) { .ra-contenedor { padding: 0 var(--space-5); } }
+.ra-seccion { padding-top: var(--space-7); padding-bottom: var(--space-7); }
+@media (min-width: 768px) { .ra-seccion { padding-top: var(--space-8); padding-bottom: var(--space-8); } }
+.ra-inverso { background: var(--azul-itagui); color: var(--crema); }
+.ra-inverso.ra-profundo { background: var(--azul-profundo); }
+.ra-inverso a { color: var(--coral-claro); }
+
+/* Tipografía */
+.ra-display-xl, .ra-display, .ra-h2, .ra-h3 { font-family: var(--font-sans); color: var(--azul-itagui); margin: 0; }
+.ra-display-xl { font-size: 40px; line-height: 44px; font-weight: 800; letter-spacing: -0.01em; }
+@media (min-width: 768px) { .ra-display-xl { font-size: 56px; line-height: 60px; } }
+.ra-display { font-size: 40px; line-height: 44px; font-weight: 800; }
+.ra-h2 { font-size: 30px; line-height: 36px; font-weight: 700; }
+.ra-h3 { font-size: 22px; line-height: 28px; font-weight: 700; }
+.ra-inverso .ra-display-xl, .ra-inverso .ra-display, .ra-inverso .ra-h2, .ra-inverso .ra-h3 { color: var(--crema); }
+.ra-cuerpo-lg { font-size: 18px; line-height: 28px; }
+.ra-pequeno { font-size: 14px; line-height: 20px; font-weight: 500; color: var(--tinta-suave); }
+.ra-inverso .ra-pequeno { color: var(--azul-claro); }
+.ra-etiqueta { font-size: 13px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--azul-itagui); }
+.ra-inverso .ra-etiqueta { color: var(--coral-claro); }
+.ra-lema { font-family: var(--font-lema); font-size: 34px; line-height: 38px; font-weight: 400; color: var(--azul-itagui); margin: 0; transform: rotate(-3deg); transform-origin: left bottom; display: inline-block; }
+@media (min-width: 768px) { .ra-lema { font-size: 48px; line-height: 52px; } }
+.ra-lema .ra-lema-acento { color: var(--coral); display: block; }
+.ra-inverso .ra-lema { color: var(--crema); }
+.ra-subrayado { display: block; height: 6px; width: 100%; max-width: 420px; background: var(--azul-itagui); border-radius: var(--radius-pill); transform: rotate(-2deg); margin-top: var(--space-2); }
+
+/* Botones */
+.ra-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--toque-minimo); padding: var(--space-3) var(--space-5); border-radius: var(--radius-md); border: 2px solid transparent; font-family: var(--font-sans); font-size: 16px; line-height: 20px; font-weight: 700; letter-spacing: 0.02em; text-decoration: none; cursor: pointer; transition: background-color .15s, color .15s, border-color .15s; }
+.ra .ra-btn { text-decoration: none; }
+.ra-btn svg { width: 20px; height: 20px; flex: none; }
+.ra-btn-principal, .ra .ra-btn-principal { background: var(--coral-texto); color: var(--blanco); }
+.ra-btn-principal:hover, .ra .ra-btn-principal:hover { background: var(--coral-oscuro); color: var(--blanco); }
+.ra-btn-secundario, .ra .ra-btn-secundario { background: var(--azul-itagui); color: var(--crema); }
+.ra-btn-secundario:hover, .ra .ra-btn-secundario:hover { background: var(--azul-medio); color: var(--crema); }
+.ra-btn-fantasma, .ra .ra-btn-fantasma { background: transparent; color: var(--azul-itagui); border-color: var(--azul-itagui); }
+.ra-btn-fantasma:hover, .ra .ra-btn-fantasma:hover { background: var(--azul-tenue); color: var(--azul-itagui); }
+.ra-inverso .ra-btn-fantasma { color: var(--crema); border-color: var(--crema); }
+.ra-inverso .ra-btn-fantasma:hover { background: var(--azul-medio); color: var(--crema); }
+.ra-btn-whatsapp, .ra .ra-btn-whatsapp { background: var(--blanco); color: var(--azul-itagui); border-color: var(--borde-control); }
+.ra-btn-whatsapp svg { color: var(--verde-raiz); }
+.ra-btn-bloque { width: 100%; }
+.ra-btn[disabled], .ra-btn[aria-disabled="true"] { background: var(--borde-suave); color: var(--tinta-suave); border-color: transparent; cursor: not-allowed; }
+
+/* Encabezado */
+.ra-encabezado { position: sticky; top: 0; z-index: 20; background: var(--crema); border-bottom: 1px solid var(--borde-suave); }
+.ra-encabezado-fila { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: var(--space-5); }
+@media (min-width: 1024px) { .ra-encabezado-fila { height: var(--alto-encabezado); } }
+.ra-marca { display: flex; flex-direction: column; text-decoration: none; line-height: 1; }
+.ra .ra-marca { text-decoration: none; }
+.ra-marca-rosa { font-weight: 800; font-size: 22px; color: var(--coral-texto); letter-spacing: 0.01em; }
+.ra-marca-apellido { font-weight: 800; font-size: 18px; color: var(--azul-itagui); }
+.ra-marca-cargo { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; color: var(--tinta-suave); margin-top: 3px; text-transform: uppercase; }
+.ra-menu { display: none; gap: var(--space-5); list-style: none; margin: 0; padding: 0; }
+@media (min-width: 1024px) { .ra-menu { display: flex; } }
+.ra-menu a { color: var(--azul-itagui); font-weight: 700; font-size: 15px; text-decoration: none; padding: var(--space-2) 0; border-bottom: 3px solid transparent; }
+.ra-menu a:hover, .ra-menu a[aria-current="page"] { color: var(--azul-itagui); border-bottom-color: var(--coral); }
+.ra-hamburguesa { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border: 0; background: transparent; color: var(--azul-itagui); border-radius: var(--radius-md); }
+@media (min-width: 1024px) { .ra-hamburguesa { display: none; } }
+.ra-aviso-modo { background: var(--coral-tenue); color: var(--tinta); font-size: 14px; line-height: 20px; padding: var(--space-2) 0; text-align: center; }
+
+/* Banner principal */
+.ra-banner { position: relative; overflow: hidden; background: var(--crema); }
+.ra-banner-grid { display: grid; gap: var(--space-5); align-items: center; }
+@media (min-width: 900px) { .ra-banner-grid { grid-template-columns: 1fr 1fr; min-height: 520px; } }
+.ra-banner-foto { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: center top; border-radius: var(--radius-lg); display: block; }
+@media (min-width: 900px) { .ra-banner-foto { aspect-ratio: auto; height: 520px; } }
+.ra-banner-texto { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-5) 0; }
+.ra-banner-acciones { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.ra-puntos { display: flex; gap: var(--space-2); }
+.ra-punto { width: 12px; height: 12px; border-radius: var(--radius-pill); border: 2px solid var(--azul-itagui); background: transparent; padding: 0; }
+.ra-punto[aria-current="true"] { background: var(--azul-itagui); }
+
+/* Tarjetas */
+.ra-tarjeta { background: var(--blanco); border-radius: var(--radius-md); box-shadow: var(--sombra-1); overflow: hidden; display: flex; flex-direction: column; }
+.ra-tarjeta-cuerpo { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); flex: 1; }
+.ra-tarjeta img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+.ra-grilla { display: grid; gap: var(--space-5); grid-template-columns: 1fr; }
+@media (min-width: 640px) { .ra-grilla-2 { grid-template-columns: repeat(2, 1fr); } .ra-grilla-3 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .ra-grilla-3 { grid-template-columns: repeat(3, 1fr); } .ra-grilla-4 { grid-template-columns: repeat(4, 1fr); } }
+.ra-chip { display: inline-flex; align-items: center; gap: var(--space-1); padding: 2px var(--space-3); border-radius: var(--radius-pill); background: var(--azul-tenue); color: var(--azul-itagui); font-size: 13px; line-height: 20px; font-weight: 700; }
+.ra-chip-raiz { background: var(--verde-tenue); color: var(--verde-raiz); }
+.ra-chip-coral { background: var(--coral-tenue); color: var(--coral-oscuro); }
+
+/* Ejes de propuesta */
+.ra-eje { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-3) 0; border-bottom: 1px solid var(--borde-suave); text-decoration: none; color: var(--tinta); }
+.ra .ra-eje { text-decoration: none; color: var(--tinta); }
+.ra-eje-icono { width: 48px; height: 48px; flex: none; border-radius: var(--radius-pill); background: var(--coral); color: var(--blanco); display: inline-flex; align-items: center; justify-content: center; }
+.ra-eje-icono svg { width: 24px; height: 24px; }
+.ra-eje-texto { font-size: 16px; line-height: 20px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; color: var(--azul-itagui); }
+.ra-eje-texto strong { font-weight: 800; }
+.ra-eje:hover .ra-eje-texto { color: var(--coral-texto); }
+
+/* Formularios */
+.ra-form { background: var(--blanco); border-radius: var(--radius-lg); box-shadow: var(--sombra-2); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
+@media (min-width: 768px) { .ra-form { padding: var(--space-6); } }
+.ra-campo { display: flex; flex-direction: column; gap: var(--space-2); }
+.ra-campo label, .ra-leyenda { font-size: 15px; line-height: 20px; font-weight: 700; color: var(--azul-itagui); }
+.ra-campo .ra-ayuda { font-size: 14px; line-height: 20px; color: var(--tinta-suave); }
+.ra-input, .ra-select, .ra-textarea { width: 100%; min-height: var(--toque-minimo); padding: var(--space-3) var(--space-4); border: 1.5px solid var(--borde-control); border-radius: var(--radius-sm); background: var(--blanco); color: var(--tinta); font-family: var(--font-sans); font-size: 16px; line-height: 22px; }
+.ra-textarea { min-height: 128px; resize: vertical; }
+.ra-input:focus, .ra-select:focus, .ra-textarea:focus { outline: 3px solid var(--foco); outline-offset: 2px; border-color: var(--azul-itagui); }
+.ra-campo-error .ra-input, .ra-campo-error .ra-select, .ra-campo-error .ra-textarea { border-color: var(--error); border-width: 2px; }
+.ra-mensaje-error { display: flex; gap: var(--space-1); align-items: flex-start; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--error); }
+.ra-pasos { display: flex; gap: var(--space-2); align-items: center; }
+.ra-paso { flex: 1; height: 6px; border-radius: var(--radius-pill); background: var(--borde-suave); }
+.ra-paso-activo { background: var(--coral-texto); }
+.ra-paso-hecho { background: var(--azul-itagui); }
+.ra-check { display: flex; gap: var(--space-3); align-items: flex-start; font-size: 14px; line-height: 20px; color: var(--tinta); }
+.ra-check input { width: 22px; height: 22px; margin: 0; flex: none; accent-color: var(--azul-itagui); border: 1.5px solid var(--borde-control); }
+.ra-check-opcional { background: var(--azul-tenue); padding: var(--space-3); border-radius: var(--radius-sm); }
+.ra-aviso { display: flex; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); font-size: 15px; line-height: 22px; }
+.ra-aviso svg { width: 22px; height: 22px; flex: none; }
+.ra-aviso-exito { background: var(--verde-tenue); color: var(--tinta); }
+.ra-aviso-exito svg { color: var(--verde-raiz); }
+.ra-aviso-alerta { background: var(--alerta-tenue); color: var(--tinta); }
+.ra-aviso-alerta svg { color: var(--alerta); }
+.ra-aviso-error { background: var(--coral-tenue); color: var(--tinta); }
+.ra-aviso-error svg { color: var(--error); }
+
+/* Comunas */
+.ra-comunas { display: grid; gap: var(--space-3); grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 768px) { .ra-comunas { grid-template-columns: repeat(4, 1fr); } }
+.ra-comuna { display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-4); background: var(--blanco); border: 1.5px solid var(--borde-suave); border-radius: var(--radius-md); text-decoration: none; min-height: 104px; }
+.ra .ra-comuna { text-decoration: none; }
+.ra-comuna-num { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral-texto); }
+.ra-comuna-nombre { font-size: 17px; line-height: 22px; font-weight: 700; color: var(--azul-itagui); }
+.ra-comuna-barrios { font-size: 13px; line-height: 18px; color: var(--tinta-suave); }
+.ra-comuna:hover, .ra-comuna[aria-current="true"] { border-color: var(--azul-itagui); background: var(--azul-tenue); }
+
+/* Agenda */
+.ra-evento { display: flex; gap: var(--space-4); padding: var(--space-4); background: var(--blanco); border-radius: var(--radius-md); box-shadow: var(--sombra-1); align-items: flex-start; }
+.ra-fecha { flex: none; width: 64px; text-align: center; background: var(--azul-itagui); color: var(--crema); border-radius: var(--radius-md); padding: var(--space-2) 0; }
+.ra-fecha-dia { display: block; font-size: 26px; line-height: 28px; font-weight: 800; }
+.ra-fecha-mes { display: block; font-size: 12px; line-height: 16px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral-claro); }
+
+/* Redes */
+.ra-redes { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.ra-red { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: var(--radius-pill); border: 1.5px solid currentColor; color: var(--azul-itagui); }
+.ra-inverso .ra-red { color: var(--crema); }
+.ra-red svg { width: 22px; height: 22px; }
+
+/* Pie */
+.ra-pie { background: var(--azul-profundo); color: var(--azul-claro); font-size: 14px; line-height: 22px; }
+.ra-pie a { color: var(--crema); }
+.ra-pie-grid { display: grid; gap: var(--space-6); grid-template-columns: 1fr; padding: var(--space-7) 0 var(--space-6); }
+@media (min-width: 768px) { .ra-pie-grid { grid-template-columns: 2fr 1fr 1fr; } }
+.ra-pie-legal { border-top: 1px solid var(--azul-medio); padding: var(--space-4) 0 var(--space-5); font-size: 13px; line-height: 20px; }
+.ra-pie .ra-marca-apellido, .ra-pie .ra-marca-cargo { color: var(--crema); }
+.ra-pie .ra-marca-rosa { color: var(--coral-claro); }
+.ra-lista-simple { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+
+/* Cifras */
+.ra-cifra { display: flex; flex-direction: column; gap: var(--space-1); }
+.ra-cifra-valor { font-size: 44px; line-height: 48px; font-weight: 800; color: var(--coral-claro); }
+.ra-cifra-texto { font-size: 15px; line-height: 22px; color: var(--crema); }
+
+/* Panel administrable */
+.ra-admin { font-family: var(--font-sans); background: #f4f6f7; color: var(--tinta); display: grid; grid-template-columns: 220px 1fr; min-height: 100%; font-size: 14px; line-height: 20px; }
+.ra-admin-lateral { background: var(--azul-profundo); color: var(--azul-claro); padding: var(--space-4) var(--space-3); display: flex; flex-direction: column; gap: 2px; }
+.ra-admin-lateral a { color: var(--azul-claro); text-decoration: none; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); font-weight: 500; }
+.ra-admin-lateral a[aria-current="page"] { background: var(--azul-itagui); color: var(--crema); font-weight: 700; }
+.ra-admin-grupo { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral-claro); padding: var(--space-3) var(--space-3) var(--space-1); }
+.ra-admin-main { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-4); }
+.ra-admin-barra { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
+.ra-tabla { width: 100%; border-collapse: collapse; background: var(--blanco); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--sombra-1); }
+.ra-tabla th { text-align: left; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tinta-suave); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--borde-suave); }
+.ra-tabla td { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--borde-suave); vertical-align: middle; }
+.ra-miniatura { width: 96px; height: 54px; object-fit: cover; border-radius: var(--radius-sm); display: block; }
+.ra-estado { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 13px; }
+.ra-estado::before { content: ""; width: 8px; height: 8px; border-radius: var(--radius-pill); background: currentColor; }
+.ra-estado-activo { color: var(--verde-raiz); }
+.ra-estado-programado { color: var(--alerta); }
+.ra-estado-borrador { color: var(--tinta-suave); }
+
+/* Rosa con raíces (ilustración de marca) */
+.ra-rosa { display: block; width: 100%; height: auto; }
+.ra-r-petalo { fill: var(--coral); }
+.ra-r-petalo-int { fill: var(--coral-texto); }
+.ra-r-espiral { stroke: var(--coral-oscuro); }
+.ra-r-tallo { stroke: var(--verde-raiz); }
+.ra-r-hoja { fill: var(--verde-raiz); }
+.ra-r-vena { stroke: var(--verde-tenue); }
+.ra-r-espina { fill: var(--verde-raiz); }
+.ra-r-raiz { stroke: var(--verde-profundo); }
+.ra-r-tierra { fill: var(--azul-itagui); }
+.ra-r-texto { fill: var(--crema); font-family: var(--font-sans); font-size: 13px; font-weight: 800; letter-spacing: 0.18em; }
+.ra-lema-fila { display: flex; align-items: flex-end; gap: var(--space-4); }
+.ra-lema-fila .ra-lema-bloque { flex: 1; min-width: 0; }
+.ra-lema-fila .ra-rosa { width: 104px; flex: none; }
+@media (min-width: 768px) { .ra-lema-fila .ra-rosa { width: 140px; } }
+.ra-franja-raiz { background: var(--verde-tenue); }
+.ra-franja-raiz .ra-etiqueta { color: var(--verde-profundo); }
+
+.ra-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+</style><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body style="margin:0;background:var(--crema)">
+<div class="ra">
+ <div class="ra-aviso-modo">Escucha ciudadana abierta: deja tu propuesta para tu barrio</div>
+ <header class="ra-encabezado"><div class="ra-contenedor ra-encabezado-fila"><a class="ra-marca" href="#" aria-label="Rosa Acevedo, inicio"><span class="ra-marca-rosa">ROSA</span><span class="ra-marca-apellido">ACEVEDO</span><span class="ra-marca-cargo">Alcaldesa de Itagüí</span></a><nav aria-label="Principal"><ul class="ra-menu"><li><a href="#" aria-current="page">Inicio</a></li><li><a href="#">Conoce a Rosa</a></li><li><a href="#">Propuestas</a></li><li><a href="#">Tu comuna</a></li><li><a href="#">Noticias</a></li><li><a href="#">Agenda</a></li></ul></nav><div style="display:flex;gap:8px"><a class="ra-btn ra-btn-principal" href="#">Súmate</a><button class="ra-hamburguesa" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button></div></div></header>
+ <section class="ra-banner"><div class="ra-contenedor ra-seccion"><div class="ra-banner-grid">
+  <div class="ra-banner-texto"><span class="ra-etiqueta">Por el futuro de Itagüí</span><div class="ra-lema-fila"><div class="ra-lema-bloque"><p class="ra-lema">Aquí <span class="ra-lema-acento">me planto.</span></p><span class="ra-subrayado" aria-hidden="true"></span></div><svg class="ra-rosa" viewBox="0 0 220 340" role="img" aria-label="Rosa con sus raíces afincadas en la tierra de Itagüí">
+ <!-- raíces -->
+ <g class="ra-r-raiz" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M110 238 C110 262 108 280 104 300 C101 314 96 324 88 334" stroke-width="5"/>
+  <path d="M110 244 C96 256 78 262 58 276 C46 284 36 296 28 312" stroke-width="4"/>
+  <path d="M110 244 C126 256 146 262 164 278 C176 288 186 300 194 316" stroke-width="4"/>
+  <path d="M108 262 C90 276 82 292 70 306 C62 314 54 320 46 330" stroke-width="3"/>
+  <path d="M112 262 C128 278 136 292 146 308 C152 318 160 326 170 332" stroke-width="3"/>
+  <path d="M58 276 C50 274 40 276 30 282" stroke-width="2.5"/>
+  <path d="M164 278 C174 274 186 276 198 284" stroke-width="2.5"/>
+  <path d="M104 300 C112 308 120 312 128 322" stroke-width="2.5"/>
+  <path d="M82 290 C72 294 64 300 58 306" stroke-width="2"/>
+  <path d="M140 292 C150 296 156 302 160 308" stroke-width="2"/>
+ </g>
+ <!-- tierra de Itagüí -->
+ <rect class="ra-r-tierra" x="8" y="226" width="204" height="26" rx="13"/>
+ <text class="ra-r-texto" x="110" y="244" text-anchor="middle">ITAGÜÍ</text>
+ <!-- tallo -->
+ <path class="ra-r-tallo" d="M110 228 C110 196 104 170 108 140 C110 124 112 112 112 104" fill="none" stroke-width="6" stroke-linecap="round"/>
+ <path class="ra-r-espina" d="M107 196 l-8 -3 l7 -5 z"/>
+ <path class="ra-r-espina" d="M110 162 l8 -4 l-6 -5 z"/>
+ <!-- hojas -->
+ <path class="ra-r-hoja" d="M108 184 C88 168 62 168 46 178 C62 194 90 198 108 184 z"/>
+ <path class="ra-r-vena" d="M106 184 C88 180 70 178 52 178" fill="none" stroke-width="2" stroke-linecap="round"/>
+ <path class="ra-r-hoja" d="M110 150 C128 132 154 130 170 138 C156 156 128 162 110 150 z"/>
+ <path class="ra-r-vena" d="M112 150 C130 144 148 140 164 139" fill="none" stroke-width="2" stroke-linecap="round"/>
+ <!-- flor -->
+ <path class="ra-r-petalo" d="M70 64 C64 38 86 18 112 18 C138 18 160 38 154 64 C150 90 134 106 112 106 C90 106 74 90 70 64 z"/>
+ <path class="ra-r-petalo-int" d="M88 46 C94 30 130 28 138 48 C130 40 98 38 88 46 z"/>
+ <path class="ra-r-espiral" d="M112 38 C98 38 92 50 97 59 C102 68 118 68 122 57 C126 47 116 40 107 46 C101 50 103 58 110 58" fill="none" stroke-width="3.5" stroke-linecap="round"/>
+ <path class="ra-r-espiral" d="M84 56 C86 74 98 84 112 84 C126 84 138 74 140 56" fill="none" stroke-width="3" stroke-linecap="round"/>
+ <path class="ra-r-petalo-int" d="M70 62 C76 88 94 104 112 106 C96 96 86 80 86 62 C80 58 74 58 70 62 z"/>
+ <path class="ra-r-petalo-int" d="M154 62 C148 88 130 104 112 106 C128 96 138 80 138 62 C144 58 150 58 154 62 z"/>
+ <!-- cáliz -->
+ <path class="ra-r-hoja" d="M112 102 C102 112 90 116 78 114 C90 106 100 102 112 98 C124 102 134 106 146 114 C134 116 122 112 112 102 z"/>
+</svg></div><h1 class="ra-display-xl" style="margin-top:8px">Raíces que permanecen. Compromisos que cumplimos.</h1><p class="ra-cuerpo-lg" style="margin:0">Más de 25 años sirviendo a Itagüí desde el Concejo y la Gobernación. Ahora queremos construir contigo el programa de gobierno.</p></div>
+  <form class="ra-form" novalidate><span class="ra-etiqueta">Súmate a la siembra</span><h2 class="ra-h3">Recibe las propuestas para tu barrio</h2><div class="ra-campo"><label for="h-n">Nombre</label><input class="ra-input" id="h-n"></div><div class="ra-campo"><label for="h-c">Celular</label><input class="ra-input" id="h-c" inputmode="tel"></div><label class="ra-check"><input type="checkbox"> <span>Autorizo el tratamiento de mis datos según la <a href="#">política de datos</a>.</span></label><label class="ra-check ra-check-opcional"><input type="checkbox"> <span>Quiero recibir mensajes por WhatsApp. <span class="ra-pequeno">Opcional.</span></span></label><button type="button" class="ra-btn ra-btn-principal ra-btn-bloque">Súmate</button></form>
+ </div></div></section>
+ <section class="ra-seccion" style="background:var(--blanco)"><div class="ra-contenedor" style="display:grid;gap:40px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));align-items:start">
+  <div style="display:flex;flex-direction:column;gap:16px"><span class="ra-etiqueta">Propuestas</span><h2 class="ra-h2">Aquí me planto por…</h2><p class="ra-cuerpo-lg" style="margin:0">No prometemos veinte obras. Nos comprometemos con un propósito: que ningún joven tenga que irse de Itagüí para cumplir sus sueños.</p><a class="ra-btn ra-btn-secundario" href="#" style="align-self:flex-start">Conoce las propuestas <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a></div>
+  <nav aria-label="Ejes"><a class="ra-eje" href="#"><span class="ra-eje-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg></span><span class="ra-eje-texto">Por la <strong>salud</strong></span></a><a class="ra-eje" href="#"><span class="ra-eje-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="ra-eje-texto">Por las <strong>familias</strong></span></a><a class="ra-eje" href="#"><span class="ra-eje-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6"/><path d="M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span><span class="ra-eje-texto">Por los <strong>jóvenes</strong></span></a><a class="ra-eje" href="#"><span class="ra-eje-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M3 9h18v1.5a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v8h14v-8"/><path d="M10 21v-5h4v5"/></svg></span><span class="ra-eje-texto">Por los <strong>comerciantes</strong></span></a><a class="ra-eje" href="#"><span class="ra-eje-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span><span class="ra-eje-texto">Por la <strong>seguridad</strong></span></a><a class="ra-eje" href="#"><span class="ra-eje-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span><span class="ra-eje-texto">Por las <strong>oportunidades</strong></span></a><a class="ra-eje" href="#"><span class="ra-eje-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span><span class="ra-eje-texto">Por una ciudad que <strong>avanza</strong></span></a></nav>
+ </div></section>
+ <section class="ra-seccion ra-franja-raiz"><div class="ra-contenedor" style="display:grid;gap:40px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));align-items:center">
+  <img src="rosa-retrato-ciudad.jpg" alt="Rosa Acevedo" style="width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center 15%;border-radius:16px">
+  <div style="display:flex;flex-direction:column;gap:16px"><span class="ra-etiqueta">Raíces</span><h2 class="ra-h2">Rosa no se trasplanta</h2><p class="ra-cuerpo-lg" style="margin:0">Rosa ha trabajado por Itagüí durante más de 25 años, desde el Concejo y la Gobernación. Mientras otros gobernaron cuatro años, ella ha dedicado décadas al servicio de la ciudad.</p><a href="#" style="font-weight:700">Lee el manifiesto</a></div>
+ </div></section>
+ <section class="ra-inverso ra-seccion"><div class="ra-contenedor ra-grilla ra-grilla-3">
+  <div class="ra-cifra"><span class="ra-cifra-valor">25+</span><span class="ra-cifra-texto">años de servicio público</span></div>
+  <div class="ra-cifra"><span class="ra-cifra-valor">32.030</span><span class="ra-cifra-texto">votos en 2023, con crecimiento sostenido</span></div>
+  <div class="ra-cifra"><span class="ra-cifra-valor">84</span><span class="ra-cifra-texto">barrios y 8 veredas que recorremos</span></div>
+ </div></section>
+ <section class="ra-seccion"><div class="ra-contenedor"><span class="ra-etiqueta">Tu comuna</span><h2 class="ra-h2" style="margin:8px 0 20px">Aquí me planto en cada barrio</h2><div class="ra-comunas"><a class="ra-comuna" href="#"><span class="ra-comuna-num">Comuna 1</span><span class="ra-comuna-nombre">Centro</span><span class="ra-comuna-barrios">17 barrios</span></a><a class="ra-comuna" href="#"><span class="ra-comuna-num">Comuna 2</span><span class="ra-comuna-nombre">Yarumito · Santa Ana</span><span class="ra-comuna-barrios">15 barrios</span></a><a class="ra-comuna" href="#"><span class="ra-comuna-num">Comuna 3</span><span class="ra-comuna-nombre">Ditaires · San Francisco</span><span class="ra-comuna-barrios">15 barrios</span></a><a class="ra-comuna" href="#" aria-current="true"><span class="ra-comuna-num">Comuna 4</span><span class="ra-comuna-nombre">Santa María</span><span class="ra-comuna-barrios">13 barrios</span></a><a class="ra-comuna" href="#"><span class="ra-comuna-num">Comuna 5</span><span class="ra-comuna-nombre">Calatrava · El Tablazo</span><span class="ra-comuna-barrios">9 barrios</span></a><a class="ra-comuna" href="#"><span class="ra-comuna-num">Comuna 6</span><span class="ra-comuna-nombre">Fátima · La Unión</span><span class="ra-comuna-barrios">7 barrios</span></a><a class="ra-comuna" href="#"><span class="ra-comuna-num">Comuna 7</span><span class="ra-comuna-nombre">Del Valle · El Porvenir</span><span class="ra-comuna-barrios">8 barrios</span></a><a class="ra-comuna" href="#"><span class="ra-comuna-num">Corregimiento</span><span class="ra-comuna-nombre">El Manzanillo</span><span class="ra-comuna-barrios">6 sectores · 8 veredas</span></a></div></div></section>
+ <section class="ra-seccion" style="background:var(--coral-tenue)"><div class="ra-contenedor" style="display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center"><div style="max-width:640px"><span class="ra-etiqueta">Buzón ciudadano</span><h2 class="ra-h2" style="margin-top:8px">¿Qué necesita tu barrio?</h2><p style="margin:8px 0 0">Tu propuesta entra al programa de gobierno. Te contamos qué pasó con ella.</p></div><a class="ra-btn ra-btn-principal" href="#">Deja tu propuesta <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></a></div></section>
+ <section class="ra-seccion"><div class="ra-contenedor"><div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:20px"><h2 class="ra-h2">Noticias</h2><a href="#" style="font-weight:700">Ver todas</a></div><div class="ra-grilla ra-grilla-3"><article class="ra-tarjeta"><img src="rosa-retrato-ciudad.jpg" alt="" style="object-position:center 20%"><div class="ra-tarjeta-cuerpo"><span class="ra-chip">Seguridad</span><h3 class="ra-h3" style="font-size:19px;line-height:25px"><a href="#" style="color:var(--azul-itagui);text-decoration:none">Recorrido nocturno por Santa María con los comerciantes</a></h3><time class="ra-pequeno">4 de octubre de 2026</time></div></article><article class="ra-tarjeta"><img src="rosa-retrato-ciudad.jpg" alt="" style="object-position:center 20%"><div class="ra-tarjeta-cuerpo"><span class="ra-chip">Salud</span><h3 class="ra-h3" style="font-size:19px;line-height:25px"><a href="#" style="color:var(--azul-itagui);text-decoration:none">Lo que nos dijeron 300 vecinos sobre los puestos de salud</a></h3><time class="ra-pequeno">29 de septiembre de 2026</time></div></article><article class="ra-tarjeta"><img src="rosa-retrato-ciudad.jpg" alt="" style="object-position:center 20%"><div class="ra-tarjeta-cuerpo"><span class="ra-chip">Jóvenes</span><h3 class="ra-h3" style="font-size:19px;line-height:25px"><a href="#" style="color:var(--azul-itagui);text-decoration:none">Encuentro con estudiantes del ITM sede Itagüí</a></h3><time class="ra-pequeno">22 de septiembre de 2026</time></div></article></div></div></section>
+ <section class="ra-seccion" style="background:var(--blanco)"><div class="ra-contenedor" style="display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))"><div><span class="ra-etiqueta">Agenda</span><h2 class="ra-h2" style="margin:8px 0 0">Nos vemos en el barrio</h2></div><div style="display:flex;flex-direction:column;gap:16px"><article class="ra-evento"><div class="ra-fecha"><span class="ra-fecha-dia">12</span><span class="ra-fecha-mes">oct</span></div><div style="display:flex;flex-direction:column;gap:6px;flex:1"><h3 class="ra-h3" style="font-size:18px;line-height:24px">Encuentro con comerciantes de La Mayorista</h3><span class="ra-pequeno" style="display:flex;gap:6px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Comuna 4 · 6:30 p. m.</span><a class="ra-btn ra-btn-fantasma" href="#" style="align-self:flex-start;min-height:40px;padding:8px 16px">Asistiré</a></div></article><article class="ra-evento"><div class="ra-fecha"><span class="ra-fecha-dia">18</span><span class="ra-fecha-mes">oct</span></div><div style="display:flex;flex-direction:column;gap:6px;flex:1"><h3 class="ra-h3" style="font-size:18px;line-height:24px">Caminata por El Manzanillo</h3><span class="ra-pequeno" style="display:flex;gap:6px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Corregimiento · 8:00 a. m.</span><a class="ra-btn ra-btn-fantasma" href="#" style="align-self:flex-start;min-height:40px;padding:8px 16px">Asistiré</a></div></article><article class="ra-evento"><div class="ra-fecha"><span class="ra-fecha-dia">25</span><span class="ra-fecha-mes">oct</span></div><div style="display:flex;flex-direction:column;gap:6px;flex:1"><h3 class="ra-h3" style="font-size:18px;line-height:24px">Conversatorio de salud con líderes de la Comuna 3</h3><span class="ra-pequeno" style="display:flex;gap:6px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Comuna 3 · 5:00 p. m.</span><a class="ra-btn ra-btn-fantasma" href="#" style="align-self:flex-start;min-height:40px;padding:8px 16px">Asistiré</a></div></article></div></div></section>
+ <section class="ra-inverso ra-seccion"><div class="ra-contenedor" style="display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:center"><div style="display:flex;flex-direction:column;gap:12px"><span class="ra-etiqueta">#AquíMePlantoPorItagüí</span><h2 class="ra-h2">Conversemos donde tú estás</h2><div class="ra-redes"><a class="ra-red" href="https://www.facebook.com/share/19mmqrNJD9/" target="_blank" rel="noopener" aria-label="Rosa Acevedo en Facebook (se abre en una pestaña nueva)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a><a class="ra-red" href="https://www.instagram.com/rosaacevedoj/" target="_blank" rel="noopener" aria-label="Rosa Acevedo en Instagram (se abre en una pestaña nueva)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a><a class="ra-red" href="https://www.tiktok.com/@rosaacevedoj" target="_blank" rel="noopener" aria-label="Rosa Acevedo en TikTok (se abre en una pestaña nueva)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48z"/></svg></a><a class="ra-red" href="https://x.com/rosaacevedoj" target="_blank" rel="noopener" aria-label="Rosa Acevedo en X (se abre en una pestaña nueva)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l16 16M20 4 4 20"/></svg></a></div></div><div style="display:flex;flex-direction:column;gap:12px"><a class="ra-btn ra-btn-whatsapp" href="#" style="justify-content:flex-start"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Escríbenos por WhatsApp</a><a class="ra-btn ra-btn-fantasma" href="https://whatsapp.com/channel/0029Vb6auV20QeanaeczZw2g" target="_blank" rel="noopener" style="justify-content:flex-start">Sigue el canal de Rosa en WhatsApp</a></div></div></section>
+ <footer class="ra-pie"><div class="ra-contenedor"><div class="ra-pie-grid"><div style="display:flex;flex-direction:column;gap:12px"><a class="ra-marca" href="#" aria-label="Rosa Acevedo, inicio"><span class="ra-marca-rosa">ROSA</span><span class="ra-marca-apellido">ACEVEDO</span><span class="ra-marca-cargo">Alcaldesa de Itagüí</span></a><p style="margin:0">Mis raíces están aquí. Y las raíces no se trasplantan.</p></div><div><p class="ra-etiqueta" style="color:var(--coral-claro);margin:0 0 12px">El sitio</p><ul class="ra-lista-simple"><li><a href="#">Conoce a Rosa</a></li><li><a href="#">Propuestas</a></li><li><a href="#">Prensa</a></li></ul></div><div><p class="ra-etiqueta" style="color:var(--coral-claro);margin:0 0 12px">Transparencia</p><ul class="ra-lista-simple"><li><a href="#">Política de datos</a></li><li><a href="#">Consulta o retira tus datos</a></li><li><a href="#">Uso de inteligencia artificial</a></li></ul></div></div><div class="ra-pie-legal">Sitio oficial de Rosa María Acevedo Jaramillo · Itagüí, Antioquia</div></div></footer>
+</div>
+<script></script>
+</body></html>

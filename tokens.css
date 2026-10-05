@@ -1,0 +1,48 @@
+/* Rosa Alcaldesa 2027 · tokens (generado de tokens.json) */
+:root {
+  --azul-itagui: #003c57;
+  --azul-profundo: #002536;
+  --azul-medio: #0e5674;
+  --azul-claro: #c9d6dd;
+  --azul-tenue: #e3edf2;
+  --coral: #f45a43;
+  --coral-texto: #c23a24;
+  --coral-oscuro: #a32e1b;
+  --coral-claro: #ff8a75;
+  --coral-tenue: #fde6e1;
+  --crema: #f8f3ef;
+  --blanco: #ffffff;
+  --tinta: #13222b;
+  --tinta-suave: #4a5a64;
+  --borde-control: #8a8178;
+  --borde-suave: #ddd5cc;
+  --verde-raiz: #2f7d5b;
+  --verde-profundo: #1f5a40;
+  --verde-tenue: #e2f0e8;
+  --alerta: #9a5b00;
+  --alerta-tenue: #fbf0dc;
+  --error: #a4231b;
+  --foco: var(--azul-itagui);
+  --foco-inverso: var(--coral-claro);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --sombra-1: 0 1px 2px rgba(0,37,54,0.08), 0 2px 8px rgba(0,37,54,0.06);
+  --sombra-2: 0 8px 24px rgba(0,37,54,0.14);
+  --ancho-contenido: 1200px;
+  --ancho-lectura: 720px;
+  --alto-encabezado: 72px;
+  --toque-minimo: 48px;
+  --font-sans: Montserrat, "Helvetica Neue", Arial, sans-serif;
+  --font-lema: "Permanent Marker", "Montserrat", cursive;
+}
