@@ -5,5 +5,8 @@
     @endphp
     @foreach ($secciones as $bloque)
         @include('partials.bloque', ['bloque' => $bloque, 'esInicio' => true])
+        @if (($bloque['type'] ?? null) === 'registro')
+            <x-ra.aviso-escucha />
+        @endif
     @endforeach
 </x-layouts.sitio>

@@ -1,18 +1,9 @@
-@props(['menu' => collect(), 'redes' => collect(), 'aviso' => null])
+@props(['menu' => collect(), 'redes' => collect()])
 @php
     $actual = '/'.ltrim(request()->path(), '/');
     $esActual = fn ($url) => $url === '/' ? $actual === '/' : str_starts_with($actual, rtrim(parse_url($url, PHP_URL_PATH) ?? '', '/'));
 @endphp
 <a class="ra-saltar" href="#contenido">Saltar al contenido</a>
-@if ($aviso && ($aviso['activo'] ?? false) && filled($aviso['texto'] ?? null))
-    <div class="ra-aviso-modo">
-        @if (filled($aviso['url'] ?? null))
-            <a href="{{ $aviso['url'] }}" class="ra-aviso-enlace">{{ $aviso['texto'] }}</a>
-        @else
-            {{ $aviso['texto'] }}
-        @endif
-    </div>
-@endif
 <header class="ra-encabezado" x-data="{ abierto: false }" @keydown.escape.window="abierto = false">
     <div class="ra-contenedor ra-encabezado-fila">
         <x-ra.marca />

@@ -20,6 +20,8 @@
         </div>
     </section>
 
+    <x-ra.aviso-escucha />
+
     @foreach ($pagina?->bloques ?? [] as $bloque)
         @include('partials.bloque', ['bloque' => $bloque])
     @endforeach

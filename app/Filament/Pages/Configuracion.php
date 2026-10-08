@@ -58,10 +58,11 @@ class Configuracion extends Page implements HasForms
                     ->disabled(fn () => ! auth()->user()->can('sitio.modo'))
                     ->helperText(fn () => auth()->user()->can('sitio.modo') ? null : 'Solo el Administrador cambia el modo.'),
             ]),
-            Forms\Components\Section::make('Aviso superior')->columns(3)->schema([
+            Forms\Components\Section::make('Aviso de escucha ciudadana')->description('Franja verde bajo la entrada de inicio y de las páginas de comuna.')->columns(3)->schema([
                 Forms\Components\Toggle::make('aviso_global.activo')->label('Visible'),
                 Forms\Components\TextInput::make('aviso_global.texto')->label('Texto')->maxLength(120),
-                Forms\Components\TextInput::make('aviso_global.url')->label('Enlace')->maxLength(255),
+                Forms\Components\TextInput::make('aviso_global.url')->label('Enlace del botón')->maxLength(255),
+                Forms\Components\TextInput::make('aviso_global.boton')->label('Texto del botón')->maxLength(30)->placeholder('Deja tu propuesta'),
             ]),
             Forms\Components\Section::make('WhatsApp y redes')->columns(2)->schema([
                 Forms\Components\TextInput::make('whatsapp_numero')->label('Número de WhatsApp Business')->placeholder('573001234567')

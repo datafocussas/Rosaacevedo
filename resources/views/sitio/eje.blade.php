@@ -61,7 +61,7 @@
         </section>
     @endif
 
-    <section class="ra-seccion ra-fondo-coral" aria-labelledby="buzon-eje">
+    <section class="ra-seccion ra-franja-raiz" aria-labelledby="buzon-eje">
         <div class="ra-contenedor ra-fila-llamado">
             <div class="ra-lectura">
                 <span class="ra-etiqueta">Buzón ciudadano</span>

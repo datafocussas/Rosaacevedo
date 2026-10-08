@@ -156,3 +156,28 @@ img { max-width: 100%; height: auto; }
 .ra-codigo { font-size: 12px; word-break: break-all; }
 .ra-lista-barrios { color: var(--tinta-suave); margin: 0; }
 .ra-qr svg { width: 220px; height: 220px; display: block; margin: 0 auto; }
+
+/* Verde: escucha y comunidad. Es el color que la ciudadanía asocia con el bienestar; el coral se
+   queda en los botones principales y en los íconos de los ejes, y el azul en titulares y franjas institucionales. */
+.ra-escucha { background: var(--verde-profundo); color: var(--crema); padding: var(--space-5) 0; }
+.ra-escucha-fila { display: flex; flex-wrap: wrap; gap: var(--space-4); justify-content: space-between; align-items: center; }
+.ra-escucha-texto { display: flex; gap: var(--space-4); align-items: center; }
+.ra-escucha-icono { width: 48px; height: 48px; flex: none; border-radius: var(--radius-pill); background: var(--verde-raiz); color: var(--crema); display: inline-flex; align-items: center; justify-content: center; }
+.ra-escucha-icono svg { width: 24px; height: 24px; }
+.ra-escucha .ra-etiqueta { color: var(--verde-tenue); }
+.ra-escucha-frase { margin: var(--space-1) 0 0; font-size: 20px; line-height: 26px; font-weight: 700; }
+.ra-escucha :focus-visible { outline-color: var(--foco-inverso); }
+.ra-btn-claro, .ra .ra-btn-claro { background: var(--crema); color: var(--verde-profundo); }
+.ra-btn-claro:hover, .ra .ra-btn-claro:hover { background: var(--verde-tenue); color: var(--verde-profundo); }
+
+/* Comunas con acento verde */
+.ra-comuna-num { color: var(--verde-profundo); }
+.ra-comuna:hover, .ra-comuna[aria-current="true"] { border-color: var(--verde-raiz); background: var(--verde-tenue); }
+
+/* Agenda con fechas verdes */
+.ra-fecha { background: var(--verde-profundo); }
+.ra-fecha-mes { color: var(--verde-tenue); }
+.ra-evento-lugar svg { color: var(--verde-raiz); }
+
+/* Franja «Raíces» y buzón: rótulos en verde profundo (contraste AA sobre verde tenue) */
+.ra-franja-raiz .ra-h2 { color: var(--verde-profundo); }

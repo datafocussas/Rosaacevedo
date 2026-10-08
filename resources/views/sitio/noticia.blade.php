@@ -6,7 +6,7 @@
         <header class="ra-seccion ra-cabecera-pagina">
             <div class="ra-contenedor ra-lectura ra-pila-4">
                 <a class="ra-enlace-fuerte" href="{{ route('noticias') }}">Noticias</a>
-                @if ($noticia->eje)<a class="ra-chip ra-alinear-inicio" href="{{ route('propuestas.eje', $noticia->eje) }}">{{ $noticia->eje->nombreCorto() }}</a>@endif
+                @if ($noticia->eje)<a class="ra-chip ra-chip-raiz ra-alinear-inicio" href="{{ route('propuestas.eje', $noticia->eje) }}">{{ $noticia->eje->nombreCorto() }}</a>@endif
                 <h1 class="ra-display">{{ $noticia->titulo }}</h1>
                 @if ($noticia->resumen)<p class="ra-cuerpo-lg ra-sin-margen">{{ $noticia->resumen }}</p>@endif
                 <p class="ra-pequeno ra-sin-margen">

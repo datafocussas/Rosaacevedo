@@ -42,7 +42,7 @@
     @endif
 </head>
 <body class="ra" data-variante="{{ request()->attributes->get('variante') }}" data-api="{{ url('/api/v1') }}">
-    <x-ra.encabezado :menu="$menuPrincipal" :redes="$redes" :aviso="$ajustes->get('aviso_global')" />
+    <x-ra.encabezado :menu="$menuPrincipal" :redes="$redes" />
     <main id="contenido" tabindex="-1">
         {{ $slot }}
     </main>

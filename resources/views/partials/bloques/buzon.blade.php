@@ -1,4 +1,4 @@
-<section class="ra-seccion ra-fondo-coral" aria-labelledby="buzon-llamado">
+<section class="ra-seccion ra-franja-raiz" aria-labelledby="buzon-llamado">
     <div class="ra-contenedor ra-fila-llamado">
         <div class="ra-lectura">
             <span class="ra-etiqueta">{{ $d['etiqueta'] ?? 'Buzón ciudadano' }}</span>
