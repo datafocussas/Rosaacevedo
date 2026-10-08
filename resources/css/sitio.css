@@ -181,3 +181,12 @@ img { max-width: 100%; height: auto; }
 
 /* Franja «Raíces» y buzón: rótulos en verde profundo (contraste AA sobre verde tenue) */
 .ra-franja-raiz .ra-h2 { color: var(--verde-profundo); }
+
+/* Rosa «Aquí me planto»: capas que no están en el kit */
+.ra-r-petalo-sombra { fill: var(--coral-oscuro); }
+.ra-r-brillo { stroke: var(--coral-claro); stroke-linecap: round; }
+.ra-r-hoja-oscura { fill: var(--verde-profundo); }
+.ra-r-montana { fill: var(--azul-claro); opacity: .55; }
+.ra-rosa .ra-r-texto { font-size: 15px; letter-spacing: 0.2em; }
+.ra-lema-fila .ra-rosa { width: 120px; }
+@media (min-width: 768px) { .ra-lema-fila .ra-rosa { width: 176px; } }

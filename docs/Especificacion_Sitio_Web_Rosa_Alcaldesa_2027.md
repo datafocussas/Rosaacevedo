@@ -90,7 +90,7 @@ La emoción objetivo es la **tranquilidad** (31,4 % la quiere sentir). El tono v
 
 ### La rosa con raíces
 
-Junto al lema «Aquí me planto.» va siempre la ilustración **RosaRaices**: una rosa coral con tallo y hojas verdes, cuyas raíces atraviesan una franja azul que dice ITAGÜÍ. Es la metáfora del manifiesto hecha imagen: la rosa tiene raíces, tiene espinas para defender y florece. Dentro del sitio se usa como SVG en línea (componente RosaRaices); fuera del sitio, `Marca/rosa-raices.svg`. Es una propuesta de Tecnología hasta que Comunicaciones entregue la pieza definitiva.
+Junto al lema «Aquí me planto.» va siempre la ilustración **RosaRaices**: una rosa coral abierta, con pétalos por capas, tallo recto con espinas y hojas verdes que suben, plantada en una franja azul que dice ITAGÜÍ, con las montañas del valle detrás y raíces anchas y profundas que se aferran a la tierra (versión 2, 8 oct 2026). Es la metáfora del manifiesto hecha imagen: la rosa tiene raíces, tiene espinas para defender y florece. Dentro del sitio se usa como SVG en línea (componente RosaRaices); fuera del sitio, `Marca/rosa-raices.svg`. Es una propuesta de Tecnología hasta que Comunicaciones entregue la pieza definitiva.
 
 ### Iconografía
 
