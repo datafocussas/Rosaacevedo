@@ -7,7 +7,9 @@ services:
   app:
     build: ./docker/php
     working_dir: /var/www
-    command: php artisan serve --host=0.0.0.0 --port=8000
+    # Servidor integrado de PHP con el enrutador de Laravel. No se usa «artisan serve» porque
+    # descarta las variables del contenedor (DB_HOST=db) y la app intentaría conectarse a 127.0.0.1.
+    command: php -S 0.0.0.0:8000 -t public vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php
     ports:
       - "8000:8000"
     volumes:
