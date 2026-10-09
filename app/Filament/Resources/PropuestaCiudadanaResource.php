@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\HtmlString;
 
 /**
  * Bandeja de propuestas (RF-21): estados, asignación, nota interna, respuesta, incorporar, publicar anónima.
@@ -71,6 +72,12 @@ class PropuestaCiudadanaResource extends Resource
                 Forms\Components\Placeholder::make('tema')->label('Tema elegido')->content(fn (PropuestaCiudadana $r) => $r->tema?->nombre),
                 Forms\Components\Placeholder::make('territorio')->label('Barrio · comuna')->content(fn (PropuestaCiudadana $r) => $r->barrio ? $r->barrio->nombre.' · '.$r->barrio->comuna?->nombre : 'Sin barrio'),
                 Forms\Components\Placeholder::make('texto')->label('Texto')->content(fn (PropuestaCiudadana $r) => $r->texto)->columnSpanFull(),
+                Forms\Components\Placeholder::make('foto')->label('Foto adjunta')->columnSpanFull()
+                    ->visible(fn (PropuestaCiudadana $r) => $r->hasMedia('foto'))
+                    ->content(fn (PropuestaCiudadana $r) => new HtmlString(sprintf(
+                        '<a href="%1$s" target="_blank" rel="noopener"><img src="%1$s" alt="Foto adjunta a la propuesta %2$s" style="max-width:100%%;max-height:480px;border-radius:12px"></a><br><a href="%1$s" target="_blank" rel="noopener" style="text-decoration:underline">Abrir en tamaño completo</a>',
+                        e(route('propuesta.foto', $r)), e($r->codigo)
+                    ))),
                 Forms\Components\Placeholder::make('autor')->label('Autor')->visible(fn () => auth()->user()->can('registros.ver'))
                     ->content(fn (PropuestaCiudadana $r) => $r->ciudadano->nombre.' · '.$r->ciudadano->celularEnmascarado()),
                 Forms\Components\Placeholder::make('publicable')->label('¿Autorizó publicarla sin su nombre?')->content(fn (PropuestaCiudadana $r) => $r->publicar_anonima ? 'Sí' : 'No'),

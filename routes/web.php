@@ -5,11 +5,13 @@ use App\Http\Controllers\BuzonController;
 use App\Http\Controllers\ComunasController;
 use App\Http\Controllers\DosFactoresController;
 use App\Http\Controllers\EnlaceCortoController;
+use App\Http\Controllers\FotoPropuestaController;
 use App\Http\Controllers\NoticiasController;
 use App\Http\Controllers\PropuestasController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\SitioController;
 use App\Http\Controllers\TitularController;
+use App\Http\Middleware\ExigirDosFactores;
 use App\Models\Pagina;
 use Illuminate\Support\Facades\Route;
 
@@ -67,6 +69,10 @@ Route::middleware(['variante', 'origen', 'csp'])->group(function () {
 // Vista previa con enlace temporal firmado (flujo editorial).
 Route::get('/vista-previa/noticias/{noticia:id}', [NoticiasController::class, 'vistaPrevia'])->name('vista-previa.noticia')->middleware('signed');
 Route::get('/vista-previa/paginas/{pagina:id}', [SitioController::class, 'vistaPrevia'])->name('vista-previa.pagina')->middleware('signed');
+
+// Foto de una propuesta del buzón (disco privado), solo desde el panel.
+Route::get('/admin/propuestas/{propuesta:id}/foto', FotoPropuestaController::class)->name('propuesta.foto')
+    ->middleware(['web', 'auth', ExigirDosFactores::class]);
 
 // Doble factor del panel.
 Route::middleware(['web', 'auth'])->prefix('admin/seguridad')->name('dos-factores.')->group(function () {
