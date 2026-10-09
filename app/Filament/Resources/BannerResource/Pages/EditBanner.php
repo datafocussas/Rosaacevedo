@@ -16,4 +16,9 @@ class EditBanner extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function afterSave(): void
+    {
+        BannerResource::guardarFoco($this->record, $this->data);
+    }
 }

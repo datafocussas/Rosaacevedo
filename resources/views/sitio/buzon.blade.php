@@ -1,12 +1,9 @@
 <x-layouts.sitio titulo="Buzón ciudadano" descripcion="Cuéntanos qué necesita tu barrio. Tu propuesta entra al programa de gobierno de Rosa Acevedo.">
-    <section class="ra-seccion">
-        <div class="ra-contenedor ra-dos-columnas">
-            <div class="ra-pila-4">
-                <span class="ra-etiqueta">Buzón ciudadano</span>
-                <h1 class="ra-display">Tu propuesta entra al programa de gobierno</h1>
-                <p class="ra-cuerpo-lg ra-sin-margen">Cuéntanos qué necesita tu barrio. Leemos cada propuesta, la clasificamos por tema y comuna, y te contamos qué pasó con ella.</p>
-            </div>
+    <x-ra.cabecera etiqueta="Buzón ciudadano" titulo="Tu propuesta entra al programa de gobierno"
+        entradilla="Cuéntanos qué necesita tu barrio. Leemos cada propuesta, la clasificamos por tema y comuna, y te contamos qué pasó con ella." />
+    <section class="ra-seccion ra-fondo-marfil">
+        <div class="ra-contenedor"><div class="ra-angosto ra-centrar">
             <x-ra.buzon :temas="$temas" :barrios="$barrios" :tema-id="$temaId" />
-        </div>
+        </div></div>
     </section>
 </x-layouts.sitio>

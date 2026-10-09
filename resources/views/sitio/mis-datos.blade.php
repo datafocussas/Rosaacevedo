@@ -1,14 +1,13 @@
 <x-layouts.sitio titulo="Mis datos" descripcion="Consulta, actualiza o retira la autorización de tus datos personales.">
-    <section class="ra-seccion">
+    <x-ra.cabecera etiqueta="Derechos del titular" titulo="Tus datos son tuyos"
+        entradilla="Puedes consultar qué datos tenemos, corregirlos, pedir que los borremos o retirar tu autorización." />
+    <section class="ra-seccion ra-fondo-marfil">
         <div class="ra-contenedor ra-dos-columnas">
             <div class="ra-pila-4">
-                <span class="ra-etiqueta">Derechos del titular</span>
-                <h1 class="ra-display">Tus datos son tuyos</h1>
-                <p class="ra-cuerpo-lg ra-sin-margen">Puedes consultar qué datos tenemos, corregirlos, pedir que los borremos o retirar tu autorización.</p>
                 <p class="ra-sin-margen">Respondemos las consultas en máximo 10 días hábiles y los reclamos en máximo 15 días hábiles (Ley 1581 de 2012). Antes de aplicar una supresión o un retiro verificamos que seas tú.</p>
                 <p class="ra-pequeno ra-sin-margen">Lee la <a href="{{ route('politica-de-datos') }}">política de tratamiento de datos</a>.</p>
             </div>
-            <form class="ra-form" method="POST" action="{{ route('mis-datos.store') }}" novalidate aria-labelledby="titular-titulo">
+            <form class="ra-form ra-form-tarjeta" method="POST" action="{{ route('mis-datos.store') }}" novalidate aria-labelledby="titular-titulo">
                 @csrf
                 <h2 class="ra-h3" id="titular-titulo">Envía tu solicitud</h2>
                 @if (session('estado'))

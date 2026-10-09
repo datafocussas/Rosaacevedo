@@ -13,6 +13,7 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -33,10 +34,12 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Rosa Acevedo · Panel')
             ->defaultAvatarProvider(AvatarIniciales::class)
             ->favicon(asset('favicon.svg'))
+            ->renderHook(PanelsRenderHook::HEAD_END, fn () => '<style>.fi-simple-layout{background:radial-gradient(ellipse at 70% 0%,#0b2a3a 0%,#04151f 60%)}.fi-simple-main{border-top:4px solid #f45a43}</style>')
             ->colors([
-                'primary' => Color::hex('#003c57'),
-                'danger' => Color::hex('#c23a24'),
+                'primary' => Color::hex('#0f5c45'),
+                'danger' => Color::hex('#b8321f'),
                 'success' => Color::hex('#2f7d5b'),
+                'info' => Color::hex('#04151f'),
                 'warning' => Color::hex('#9a5b00'),
                 'gray' => Color::Slate,
             ])

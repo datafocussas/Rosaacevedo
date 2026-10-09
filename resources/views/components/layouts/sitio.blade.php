@@ -28,8 +28,11 @@
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@rosaacevedoj">
-    <meta name="theme-color" content="#003c57">
+    <meta name="theme-color" content="#04151f">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="48x48">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     @vite(['resources/css/sitio.css', 'resources/js/sitio.js'])
     @if (filled(config('rosa.umami.url')) && filled(config('rosa.umami.website_id')))
         <script defer src="{{ rtrim(config('rosa.umami.url'), '/') }}/script.js" data-website-id="{{ config('rosa.umami.website_id') }}" data-domains="{{ config('rosa.umami.dominios') }}"></script>

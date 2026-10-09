@@ -8,9 +8,10 @@ Sitio web oficial de la precandidatura de Rosa María Acevedo Jaramillo a la Alc
 |---|---|
 | `docs/Especificacion_Sitio_Web_Rosa_Alcaldesa_2027.md` | Manual de marca + secciones 01–08: mapa del sitio, requerimientos (RF-xx, RNF-xx), panel, modelo de datos, API, despliegue, cumplimiento legal, plan y criterios de aceptación. **Es el documento rector.** |
 | `docs/schema-mysql.sql` | Modelo de datos de referencia (25 tablas, MySQL 8 / MariaDB 10.6+, probado en MariaDB 10.11) con datos semilla. Las migraciones de Laravel se escriben a partir de él. |
-| `docs/tokens.json` / `resources/css/tokens.css` | Tokens de diseño (colores, tipografía, espaciado, radios, sombras). No escribir colores ni medidas a mano: usar `var(--token)`. |
-| `resources/css/ra-componentes.css` | Kit CSS de componentes, clases con prefijo `ra-`. Es la base de estilos del sitio público. |
-| `docs/componentes/*.html` | Vista de referencia de cada componente y de la página de inicio completa (`PaginaInicio.html`). Recrearlos fielmente como componentes Blade. |
+| `docs/diseno-v2/Diseno_Visual_v2_Noche_de_Raices.md` | Lenguaje visual vigente (v2 «Noche de raíces»): superficies, tipografía, componentes, rosa v3 y reglas para contenido del panel. Sus maquetas traen cifras sin confirmar: no copiarlas. |
+| `docs/tokens.json` / `resources/css/tokens.css` | Tokens de diseño v2 (copia de `docs/diseno-v2/tokens-v2.css`). No escribir colores ni medidas a mano: usar `var(--token)`. |
+| `resources/css/sitio.css` | Todos los estilos del sitio público (v2), clases con prefijo `ra-`. El kit v1 `ra-componentes.css` queda como histórico y ya no se importa. |
+| `docs/componentes/*.html` | Referencia v1 de los componentes (histórico; para lo visual manda la v2). |
 | `docs/Diseno_Sitio_Web.md` | Diseño **tal como está implementado**: tokens, reglas de color (verde = escucha y comunidad), componentes, entrada de inicio, rosa, bloques, accesibilidad y procedimientos para modificarlo. **Leerlo antes de cualquier cambio visual y actualizarlo en el mismo commit.** |
 | `public/img/rosa-raices.svg` | Ilustración de marca para usos fuera del sitio; dentro del sitio va como SVG en línea (ver `componentes/RosaRaices.html`). |
 
@@ -29,7 +30,7 @@ Si un documento anterior del proyecto (base técnica de agosto, plan de instrume
 ## Convenciones
 
 - Un componente Blade por componente del sistema: `<x-ra.boton>`, `<x-ra.encabezado>`, `<x-ra.banner>`, `<x-ra.formulario-registro>`, `<x-ra.consentimiento>`, `<x-ra.ejes>`, `<x-ra.buzon>`, `<x-ra.selector-comuna>`, `<x-ra.tarjeta-noticia>`, `<x-ra.agenda>`, `<x-ra.franja-redes>`, `<x-ra.pie>`, `<x-ra.rosa-raices>`.
-- Tema de Filament con `azul-itagui` como primario y Montserrat. Montserrat autoalojada en WOFF2 en producción.
+- Tema de Filament con esmeralda (`#0f5c45`) como primario y Montserrat. Montserrat autoalojada en WOFF2 en producción.
 - Nombres de tablas, columnas, modelos y rutas en español, como en `schema-mysql.sql`.
 - Tono del sitio: tuteo («Súmate», «Cuéntanos»). Sin emojis. Sin «¡!» en titulares.
 - Accesibilidad WCAG 2.1 AA: no quitar el anillo de foco, alto mínimo de controles 48 px, etiquetas asociadas, errores escritos (no solo color). El coral `#f45a43` nunca va en texto pequeño: usar `coral-texto`.
@@ -67,7 +68,7 @@ El CRM de la campaña vive en `https://aplicativo.rosaacevedo.co` (Laravel; docu
 ## Pendientes de la campaña (no bloquean el código, sí la salida)
 
 - Hoja de vida oficial de Rosa (formación, cargos, periodos) para «Conoce a Rosa».
-- Logotipo y rotulado «Aquí me planto» en SVG (hoy el lema usa Permanent Marker como sustituto).
+- Logotipo y rotulado «Aquí me planto» en SVG (hoy el lema va en Montserrat 800 como sustituto).
 - Fotografías definitivas en alta (la foto actual es un recorte de una pieza, solo para maquetas).
 - Textos de los 7 ejes y validación del eje de salud con Estrategia.
 - Número de WhatsApp Business de la campaña (distinto del canal).

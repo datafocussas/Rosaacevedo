@@ -1,53 +1,49 @@
+@php $destacada = $noticia->getFirstMedia('destacada'); @endphp
 <x-layouts.sitio :titulo="$noticia->seo_titulo ?: $noticia->titulo" :descripcion="$noticia->seo_descripcion ?: $noticia->resumen" :imagen-redes="$imagenRedes" tipo-og="article" :datos-estructurados="$datosEstructurados" :no-indexar="$vistaPrevia">
-    @if ($vistaPrevia)
-        <div class="ra-contenedor"><div class="ra-aviso ra-aviso-alerta" role="note"><x-ra.icono nombre="alerta" /><span>Vista previa: esta noticia está en estado «{{ $noticia->estado }}».</span></div></div>
-    @endif
     <article>
-        <header class="ra-seccion ra-cabecera-pagina">
-            <div class="ra-contenedor ra-lectura ra-pila-4">
-                <a class="ra-enlace-fuerte" href="{{ route('noticias') }}">Noticias</a>
-                @if ($noticia->eje)<a class="ra-chip ra-chip-raiz ra-alinear-inicio" href="{{ route('propuestas.eje', $noticia->eje) }}">{{ $noticia->eje->nombreCorto() }}</a>@endif
-                <h1 class="ra-display">{{ $noticia->titulo }}</h1>
-                @if ($noticia->resumen)<p class="ra-cuerpo-lg ra-sin-margen">{{ $noticia->resumen }}</p>@endif
-                <p class="ra-pequeno ra-sin-margen">
+        <x-ra.cabecera :titulo="$noticia->titulo" :entradilla="$noticia->resumen"
+            :imagen="\App\Support\Medios::url($destacada, 'w1600')" :alt="$destacada?->getCustomProperty('alt', '') ?? ''" :foco="$destacada ? \App\Support\Medios::foco($destacada, [50, 30]) : null">
+            <x-slot:antes>
+                @if ($vistaPrevia)
+                    <div class="ra-aviso ra-aviso-alerta" role="note"><x-ra.icono nombre="alerta" /><span>Vista previa: esta noticia está en estado «{{ $noticia->estado }}».</span></div>
+                @endif
+                <a class="ra-volver" href="{{ route('noticias') }}">Noticias</a>
+                <p class="ra-noticia-meta ra-sin-margen">
+                    @if ($noticia->eje)<a class="ra-noticia-cat" href="{{ route('propuestas.eje', $noticia->eje) }}">{{ $noticia->eje->nombreCorto() }}</a><span aria-hidden="true">·</span>@endif
                     @if ($noticia->publicada_en)<time datetime="{{ $noticia->publicada_en->toIso8601String() }}">{{ $noticia->publicada_en->translatedFormat('j \d\e F \d\e Y') }}</time>@endif
-                    @if ($noticia->comunas->isNotEmpty()) · {{ $noticia->comunas->map->rotulo()->join(', ') }}@endif
+                    @if ($noticia->comunas->isNotEmpty())<span aria-hidden="true">·</span> {{ $noticia->comunas->map->rotulo()->join(', ') }}@endif
                 </p>
-            </div>
-        </header>
-        @php $destacada = $noticia->getFirstMedia('destacada'); @endphp
-        @if ($destacada)
-            <figure class="ra-contenedor ra-figura">
-                <img src="{{ $destacada->hasGeneratedConversion('w1200') ? $destacada->getUrl('w1200') : $destacada->getUrl() }}" alt="{{ $destacada->getCustomProperty('alt', '') }}" width="1200" height="675" fetchpriority="high">
-            </figure>
-        @endif
-        <div class="ra-contenedor ra-seccion-compacta">
-            <div class="ra-prosa">{{ \App\Support\Texto::enriquecido($noticia->cuerpo) }}</div>
-            @if ($noticia->video_url)
-                @include('partials.bloques.video', ['d' => ['url' => $noticia->video_url]])
-            @endif
-            @php $galeria = $noticia->getMedia('galeria'); @endphp
-            @if ($galeria->isNotEmpty())
-                <div class="ra-grilla ra-grilla-3 ra-galeria">
-                    @foreach ($galeria as $foto)
-                        <img class="ra-galeria-foto" src="{{ $foto->hasGeneratedConversion('w800') ? $foto->getUrl('w800') : $foto->getUrl() }}" alt="{{ $foto->getCustomProperty('alt', '') }}" loading="lazy" decoding="async">
-                    @endforeach
+            </x-slot:antes>
+        </x-ra.cabecera>
+        <div class="ra-seccion ra-fondo-marfil">
+            <div class="ra-contenedor">
+                <div class="ra-lectura-centrada">
+                    <div class="ra-prosa">{{ \App\Support\Texto::enriquecido($noticia->cuerpo) }}</div>
+                    @php $galeria = $noticia->getMedia('galeria'); @endphp
+                    @if ($galeria->isNotEmpty())
+                        <div class="ra-galeria ra-galeria-noticia">
+                            @foreach ($galeria as $foto)
+                                <img src="{{ \App\Support\Medios::url($foto, 'w800') }}" alt="{{ $foto->getCustomProperty('alt', '') }}" loading="lazy" decoding="async">
+                            @endforeach
+                        </div>
+                    @endif
+                    <x-ra.compartir :url="route('noticias.show', $noticia)" :titulo="$noticia->titulo" />
                 </div>
-            @endif
-            <div class="ra-lectura">
-                <x-ra.compartir :url="route('noticias.show', $noticia)" :titulo="$noticia->titulo" />
             </div>
         </div>
+        @if ($noticia->video_url)
+            @include('partials.bloques.video', ['d' => ['url' => $noticia->video_url], 'clasesFondo' => 'ra-fondo-noche ra-oscuro'])
+        @endif
     </article>
     @if ($relacionadas->isNotEmpty())
-        <section class="ra-seccion" aria-labelledby="relacionadas">
-            <div class="ra-contenedor">
-                <h2 class="ra-h2 ra-titulo-seccion" id="relacionadas">También te puede interesar</h2>
-                <div class="ra-grilla ra-grilla-3">
+        <section class="ra-seccion ra-fondo-blanco" aria-labelledby="relacionadas">
+            <div class="ra-contenedor ra-pila-5">
+                <h2 class="ra-h2-medio" id="relacionadas">También te puede interesar</h2>
+                <div class="ra-noticias-rejilla">
                     @foreach ($relacionadas as $otra)<x-ra.tarjeta-noticia :noticia="$otra" />@endforeach
                 </div>
             </div>
         </section>
     @endif
-    @include('partials.bloques.llamado', ['d' => []])
+    @include('partials.bloques.llamado', ['d' => [], 'clasesFondo' => 'ra-fondo-esmeralda ra-oscuro'])
 </x-layouts.sitio>

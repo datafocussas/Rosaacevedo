@@ -1,54 +1,105 @@
-@props(['etiqueta' => 'Rosa plantada con sus raíces en la tierra de Itagüí'])
-{{-- Ilustración de marca «Aquí me planto» en línea (componente RosaRaices): la rosa abierta y firme, con
-     espinas para defender, hojas que suben y raíces que se aferran a la tierra de Itagüí, con las montañas
-     del valle detrás. Propuesta de Tecnología hasta la pieza definitiva de Comunicaciones. --}}
-<svg {{ $attributes->merge(['class' => 'ra-rosa']) }} viewBox="0 0 240 380" role="img" aria-label="{{ $etiqueta }}">
-<!-- montañas del valle -->
-<path class="ra-r-montana" d="M0 252 L38 214 L62 230 L96 196 L130 226 L160 204 L196 232 L222 214 L240 226 L240 252Z"/>
-<!-- raíces: se aferran a la tierra -->
-<g class="ra-r-raiz">
- <path d="M120 270 C121 300 118 330 112 372" stroke-width="9"/>
- <path d="M119 276 C100 290 80 296 58 312 C44 322 34 338 26 360" stroke-width="7"/>
- <path d="M121 276 C140 290 160 296 182 312 C196 322 206 338 214 360" stroke-width="7"/>
- <path d="M118 290 C104 306 92 326 86 352 C84 362 80 370 74 376" stroke-width="5"/>
- <path d="M122 290 C136 306 148 326 154 352 C156 362 160 370 166 376" stroke-width="5"/>
- <path d="M70 302 C56 300 36 304 14 316" stroke-width="4"/>
- <path d="M170 302 C184 300 204 304 226 316" stroke-width="4"/>
- <path d="M58 312 C50 326 48 340 52 356" stroke-width="3"/>
- <path d="M182 312 C190 326 192 340 188 356" stroke-width="3"/>
- <path d="M114 330 C100 340 96 352 98 366" stroke-width="3"/>
- <path d="M115 345 C124 352 130 362 132 374" stroke-width="2.5"/>
- <path d="M36 338 C26 340 16 348 8 358" stroke-width="2.5"/>
- <path d="M204 338 C214 340 224 348 232 358" stroke-width="2.5"/>
+@props(['etiqueta' => 'Rosa coral con raíces profundas que se anclan en la roca de Itagüí', 'halo' => true, 'decorativa' => false])
+{{-- Rosa v3 «Raíz de poder» (diseño v2, §9). Los degradados llevan un prefijo único por instancia porque la
+     rosa puede aparecer dos veces en la misma página. Sin halo sobre fondos claros o fotos. --}}
+@php $uid = 'rosa-'.\Illuminate\Support\Str::lower(\Illuminate\Support\Str::random(6)); @endphp
+<svg {{ $attributes->merge(['class' => 'ra-rosa']) }} viewBox="0 0 400 760" @if ($decorativa) aria-hidden="true" focusable="false" @else role="img" aria-label="{{ $etiqueta }}" @endif>
+@if ($halo)
+<defs>
+<radialGradient id="{{ $uid }}-rr-glow" cx="50%" cy="22%" r="45%"><stop offset="0" stop-color="#ff6b4e" stop-opacity="0.35"></stop><stop offset="1" stop-color="#ff6b4e" stop-opacity="0"></stop></radialGradient>
+<linearGradient id="{{ $uid }}-rr-pet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a7f"></stop><stop offset="0.55" stop-color="#f4583f"></stop><stop offset="1" stop-color="#a82a18"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-pet2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2492f"></stop><stop offset="1" stop-color="#7e1d10"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-tallo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0b4434"></stop><stop offset="0.5" stop-color="#1f8a63"></stop><stop offset="1" stop-color="#0b4434"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-hoja" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2fae7d"></stop><stop offset="1" stop-color="#0b4434"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-raiz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f8a63"></stop><stop offset="0.55" stop-color="#c9a86a"></stop><stop offset="1" stop-color="#e2c58b"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-roca" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14445a"></stop><stop offset="1" stop-color="#082233"></stop></linearGradient>
+</defs>
+<ellipse cx="200" cy="165" rx="185" ry="150" fill="url(#{{ $uid }}-rr-glow)"></ellipse>
+<path d="M60 476 L340 476 L372 540 L28 540 Z" fill="url(#{{ $uid }}-rr-roca)"></path>
+<path d="M28 548 L372 548 L396 640 L4 640 Z" fill="#0b2b3b"></path>
+<path d="M4 648 L396 648 L400 760 L0 760 Z" fill="#072130"></path>
+<path d="M40 470 H360" stroke="#c9a86a" stroke-width="1.5"></path>
+<path d="M28 544 H372 M4 644 H396" stroke="#c9a86a" stroke-opacity="0.35" stroke-width="1"></path>
+<text x="200" y="519" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="19" letter-spacing="10" fill="#e2c58b">ITAGÜÍ</text>
+<g fill="none" stroke="url(#{{ $uid }}-rr-raiz)" stroke-linecap="round">
+<path d="M200 488 C170 500 120 506 76 534 C58 546 44 560 34 580" stroke-width="7"></path>
+<path d="M200 488 C230 500 280 506 324 534 C342 546 356 560 366 580" stroke-width="7"></path>
+<path d="M200 540 C176 556 140 576 112 612 C98 630 90 648 86 672" stroke-width="5"></path>
+<path d="M200 540 C224 556 260 576 288 612 C302 630 310 648 314 672" stroke-width="5"></path>
+<path d="M199 600 C186 622 168 652 160 700" stroke-width="4"></path>
+<path d="M201 600 C214 622 232 652 240 700" stroke-width="4"></path>
+<path d="M120 512 C110 530 106 548 108 566" stroke-width="2.5"></path>
+<path d="M280 512 C290 530 294 548 292 566" stroke-width="2.5"></path>
+<path d="M140 578 C120 584 96 584 72 596" stroke-width="2.5"></path>
+<path d="M260 578 C280 584 304 584 328 596" stroke-width="2.5"></path>
 </g>
-<!-- tierra: Itagüí -->
-<path class="ra-r-tierra" d="M4 254 C40 246 80 250 120 248 C160 246 200 250 236 254 L236 284 C200 288 160 284 120 286 C80 288 40 284 4 288Z"/>
-<text class="ra-r-texto" x="120" y="273" text-anchor="middle">ITAGÜÍ</text>
-<!-- tallo firme -->
-<path class="ra-r-tallo" d="M120 252 C118 220 122 190 119 158 C118 146 120 136 120 128" stroke-width="8"/>
-<path class="ra-r-espina" d="M117 226 l-11 -2 l9 -8z"/><path class="ra-r-espina" d="M122 196 l11 -4 l-8 -8z"/><path class="ra-r-espina" d="M118 166 l-10 -3 l8 -7z"/>
-<!-- hojas que suben -->
-<path class="ra-r-hoja" d="M119 210 C100 186 70 178 44 186 C58 212 92 222 119 210Z"/>
-<path class="ra-r-vena" d="M116 208 C96 200 74 194 52 190" stroke-width="2.5"/>
-<path class="ra-r-hoja-oscura" d="M121 178 C140 152 170 144 198 150 C186 176 152 188 121 178Z"/>
-<path class="ra-r-vena" d="M124 176 C144 168 166 160 190 154" stroke-width="2.5"/>
-<!-- cáliz -->
-<path class="ra-r-hoja" d="M120 132 C106 140 90 142 76 136 C90 130 104 126 120 122 C136 126 150 130 164 136 C150 142 134 140 120 132Z"/>
-<!-- flor: pétalos por capas -->
-<path class="ra-r-petalo-sombra" d="M62 72 C56 36 84 12 120 12 C156 12 184 36 178 72 C174 108 150 132 120 134 C90 132 66 108 62 72Z"/>
-<path class="ra-r-petalo-int" d="M64 74 C52 42 76 16 106 22 C98 40 92 58 94 82Z"/>
-<path class="ra-r-petalo-int" d="M176 74 C188 42 164 16 134 22 C142 40 148 58 146 82Z"/>
-<path class="ra-r-petalo" d="M88 38 C94 10 146 10 152 38 C140 30 100 30 88 38Z"/>
-<path class="ra-r-petalo-sombra" d="M86 58 C86 34 154 34 154 58 C154 80 138 96 120 96 C102 96 86 80 86 58Z"/>
-<path class="ra-r-petalo-int" d="M94 58 C94 36 146 36 146 58 C146 74 134 82 120 82 C106 82 94 74 94 58Z"/>
-<path class="ra-r-petalo" d="M94 56 C96 40 114 32 128 36 C112 42 104 54 105 70 C99 68 94 63 94 56Z"/>
-<path class="ra-r-petalo" d="M146 52 C144 66 132 76 116 75 C128 68 135 58 134 44 C141 44 146 47 146 52Z"/>
-<path class="ra-r-petalo-int" d="M60 68 C54 100 78 124 110 128 C92 114 84 94 88 70 C80 62 66 60 60 68Z"/>
-<path class="ra-r-petalo-int" d="M180 68 C186 100 162 124 130 128 C148 114 156 94 152 70 C160 62 174 60 180 68Z"/>
-<path class="ra-r-petalo" d="M70 74 C70 104 90 124 114 130 C104 116 96 100 96 84 C88 76 78 72 70 74Z"/>
-<path class="ra-r-petalo" d="M170 74 C170 104 150 124 126 130 C136 116 144 100 144 84 C152 76 162 72 170 74Z"/>
-<path class="ra-r-petalo" d="M86 86 C98 100 110 106 120 106 C130 106 142 100 154 86 C152 112 138 130 120 132 C102 130 88 112 86 86Z"/>
-<path class="ra-r-brillo" fill="none" stroke-linecap="round" stroke-width="3" d="M90 90 C100 100 110 104 120 104 C130 104 140 100 150 90"/>
-<path class="ra-r-brillo" fill="none" stroke-linecap="round" stroke-width="2.5" d="M74 80 C74 96 82 110 94 120"/>
-<path class="ra-r-brillo" fill="none" stroke-linecap="round" stroke-width="2.5" d="M166 80 C166 96 158 110 146 120"/>
+<path d="M192 470 C193 560 196 660 200 752 C204 660 207 560 208 470 Z" fill="url(#{{ $uid }}-rr-raiz)"></path>
+<g fill="#e2c58b"><circle cx="34" cy="580" r="4"></circle><circle cx="366" cy="580" r="4"></circle><circle cx="86" cy="672" r="4"></circle><circle cx="314" cy="672" r="4"></circle><circle cx="160" cy="700" r="4"></circle><circle cx="240" cy="700" r="4"></circle><circle cx="108" cy="566" r="3.5"></circle><circle cx="292" cy="566" r="3.5"></circle></g>
+<g fill="none" stroke="#e2c58b" stroke-opacity="0.4"><circle cx="34" cy="580" r="9"></circle><circle cx="366" cy="580" r="9"></circle><circle cx="86" cy="672" r="9"></circle><circle cx="314" cy="672" r="9"></circle><circle cx="160" cy="700" r="9"></circle><circle cx="240" cy="700" r="9"></circle></g>
+<path d="M194 228 L206 228 L207 470 L193 470 Z" fill="url(#{{ $uid }}-rr-tallo)"></path>
+<path d="M194 300 l-10 -6 l10 -2 Z M206 360 l10 -6 l-10 -2 Z M194 425 l-9 -5 l9 -2 Z" fill="#0b4434"></path>
+<path d="M196 392 C160 360 116 356 88 372 C120 402 164 406 196 392 Z" fill="url(#{{ $uid }}-rr-hoja)"></path>
+<path d="M194 391 C160 382 126 375 96 372" fill="none" stroke="#e2c58b" stroke-width="1.2" stroke-opacity="0.85"></path>
+<path d="M204 320 C238 286 284 278 312 290 C286 324 240 336 204 320 Z" fill="url(#{{ $uid }}-rr-hoja)"></path>
+<path d="M206 319 C238 304 272 294 304 291" fill="none" stroke="#e2c58b" stroke-width="1.2" stroke-opacity="0.85"></path>
+<path d="M200 234 C186 240 168 240 152 232 C168 224 186 222 200 220 C214 222 232 224 248 232 C232 240 214 240 200 234 Z" fill="#1f8a63"></path>
+<path d="M200 68 C150 68 102 100 100 150 C102 200 146 238 200 242 C254 238 298 200 300 150 C298 100 250 68 200 68 Z" fill="#9e2615"></path>
+<path d="M200 70 C156 70 126 100 130 140 C146 118 172 110 200 112 C228 110 254 118 270 140 C274 100 244 70 200 70 Z" fill="url(#{{ $uid }}-rr-pet2)"></path>
+<path d="M200 234 C146 232 104 198 100 150 C98 126 108 108 122 98 C120 126 134 164 170 182 C184 190 196 194 200 194 Z" fill="url(#{{ $uid }}-rr-pet)"></path>
+<path d="M200 234 C254 232 296 198 300 150 C302 126 292 108 278 98 C280 126 266 164 230 182 C216 190 204 194 200 194 Z" fill="url(#{{ $uid }}-rr-pet)"></path>
+<path d="M156 140 C156 110 178 94 200 94 C222 94 244 110 244 140 C244 162 224 176 200 176 C176 176 156 162 156 140 Z" fill="url(#{{ $uid }}-rr-pet2)"></path>
+<path d="M200 176 C176 174 158 160 156 138 C168 150 184 156 200 156 Z" fill="#ff8f73" fill-opacity="0.9"></path>
+<path d="M200 176 C224 174 242 160 244 138 C232 150 216 156 200 156 Z" fill="#ff8f73" fill-opacity="0.9"></path>
+<path d="M200 108 C182 108 172 120 176 132 C180 144 202 146 210 136 C218 126 210 116 198 118 C190 120 190 130 198 130" fill="none" stroke="#6e170c" stroke-width="3" stroke-linecap="round"></path>
+<path d="M200 242 C168 240 142 222 136 194 C158 206 180 210 200 210 C220 210 242 206 264 194 C258 222 232 240 200 242 Z" fill="url(#{{ $uid }}-rr-pet)"></path>
+<path d="M122 98 C120 126 134 164 170 182 M278 98 C280 126 266 164 230 182 M136 194 C158 206 180 210 200 210 C220 210 242 206 264 194 M130 140 C146 118 172 110 200 112 C228 110 254 118 270 140" fill="none" stroke="#e2c58b" stroke-width="1.2" stroke-opacity="0.9"></path>
+@else
+<defs>
+<radialGradient id="{{ $uid }}-rr-glow" cx="50%" cy="22%" r="45%"><stop offset="0" stop-color="#ff6b4e" stop-opacity="0.35"></stop><stop offset="1" stop-color="#ff6b4e" stop-opacity="0"></stop></radialGradient>
+<linearGradient id="{{ $uid }}-rr-pet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a7f"></stop><stop offset="0.55" stop-color="#f4583f"></stop><stop offset="1" stop-color="#a82a18"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-pet2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2492f"></stop><stop offset="1" stop-color="#7e1d10"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-tallo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0b4434"></stop><stop offset="0.5" stop-color="#1f8a63"></stop><stop offset="1" stop-color="#0b4434"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-hoja" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2fae7d"></stop><stop offset="1" stop-color="#0b4434"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-raiz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f8a63"></stop><stop offset="0.55" stop-color="#c9a86a"></stop><stop offset="1" stop-color="#e2c58b"></stop></linearGradient>
+<linearGradient id="{{ $uid }}-rr-roca" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14445a"></stop><stop offset="1" stop-color="#082233"></stop></linearGradient>
+</defs>
+
+<path d="M60 476 L340 476 L372 540 L28 540 Z" fill="url(#{{ $uid }}-rr-roca)"></path>
+<path d="M28 548 L372 548 L396 640 L4 640 Z" fill="#0b2b3b"></path>
+<path d="M4 648 L396 648 L400 760 L0 760 Z" fill="#072130"></path>
+<path d="M40 470 H360" stroke="#c9a86a" stroke-width="1.5"></path>
+<path d="M28 544 H372 M4 644 H396" stroke="#c9a86a" stroke-opacity="0.35" stroke-width="1"></path>
+<text x="200" y="519" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="19" letter-spacing="10" fill="#e2c58b">ITAGÜÍ</text>
+<g fill="none" stroke="url(#{{ $uid }}-rr-raiz)" stroke-linecap="round">
+<path d="M200 488 C170 500 120 506 76 534 C58 546 44 560 34 580" stroke-width="7"></path>
+<path d="M200 488 C230 500 280 506 324 534 C342 546 356 560 366 580" stroke-width="7"></path>
+<path d="M200 540 C176 556 140 576 112 612 C98 630 90 648 86 672" stroke-width="5"></path>
+<path d="M200 540 C224 556 260 576 288 612 C302 630 310 648 314 672" stroke-width="5"></path>
+<path d="M199 600 C186 622 168 652 160 700" stroke-width="4"></path>
+<path d="M201 600 C214 622 232 652 240 700" stroke-width="4"></path>
+<path d="M120 512 C110 530 106 548 108 566" stroke-width="2.5"></path>
+<path d="M280 512 C290 530 294 548 292 566" stroke-width="2.5"></path>
+<path d="M140 578 C120 584 96 584 72 596" stroke-width="2.5"></path>
+<path d="M260 578 C280 584 304 584 328 596" stroke-width="2.5"></path>
+</g>
+<path d="M192 470 C193 560 196 660 200 752 C204 660 207 560 208 470 Z" fill="url(#{{ $uid }}-rr-raiz)"></path>
+<g fill="#e2c58b"><circle cx="34" cy="580" r="4"></circle><circle cx="366" cy="580" r="4"></circle><circle cx="86" cy="672" r="4"></circle><circle cx="314" cy="672" r="4"></circle><circle cx="160" cy="700" r="4"></circle><circle cx="240" cy="700" r="4"></circle><circle cx="108" cy="566" r="3.5"></circle><circle cx="292" cy="566" r="3.5"></circle></g>
+<g fill="none" stroke="#e2c58b" stroke-opacity="0.4"><circle cx="34" cy="580" r="9"></circle><circle cx="366" cy="580" r="9"></circle><circle cx="86" cy="672" r="9"></circle><circle cx="314" cy="672" r="9"></circle><circle cx="160" cy="700" r="9"></circle><circle cx="240" cy="700" r="9"></circle></g>
+<path d="M194 228 L206 228 L207 470 L193 470 Z" fill="url(#{{ $uid }}-rr-tallo)"></path>
+<path d="M194 300 l-10 -6 l10 -2 Z M206 360 l10 -6 l-10 -2 Z M194 425 l-9 -5 l9 -2 Z" fill="#0b4434"></path>
+<path d="M196 392 C160 360 116 356 88 372 C120 402 164 406 196 392 Z" fill="url(#{{ $uid }}-rr-hoja)"></path>
+<path d="M194 391 C160 382 126 375 96 372" fill="none" stroke="#e2c58b" stroke-width="1.2" stroke-opacity="0.85"></path>
+<path d="M204 320 C238 286 284 278 312 290 C286 324 240 336 204 320 Z" fill="url(#{{ $uid }}-rr-hoja)"></path>
+<path d="M206 319 C238 304 272 294 304 291" fill="none" stroke="#e2c58b" stroke-width="1.2" stroke-opacity="0.85"></path>
+<path d="M200 234 C186 240 168 240 152 232 C168 224 186 222 200 220 C214 222 232 224 248 232 C232 240 214 240 200 234 Z" fill="#1f8a63"></path>
+<path d="M200 68 C150 68 102 100 100 150 C102 200 146 238 200 242 C254 238 298 200 300 150 C298 100 250 68 200 68 Z" fill="#9e2615"></path>
+<path d="M200 70 C156 70 126 100 130 140 C146 118 172 110 200 112 C228 110 254 118 270 140 C274 100 244 70 200 70 Z" fill="url(#{{ $uid }}-rr-pet2)"></path>
+<path d="M200 234 C146 232 104 198 100 150 C98 126 108 108 122 98 C120 126 134 164 170 182 C184 190 196 194 200 194 Z" fill="url(#{{ $uid }}-rr-pet)"></path>
+<path d="M200 234 C254 232 296 198 300 150 C302 126 292 108 278 98 C280 126 266 164 230 182 C216 190 204 194 200 194 Z" fill="url(#{{ $uid }}-rr-pet)"></path>
+<path d="M156 140 C156 110 178 94 200 94 C222 94 244 110 244 140 C244 162 224 176 200 176 C176 176 156 162 156 140 Z" fill="url(#{{ $uid }}-rr-pet2)"></path>
+<path d="M200 176 C176 174 158 160 156 138 C168 150 184 156 200 156 Z" fill="#ff8f73" fill-opacity="0.9"></path>
+<path d="M200 176 C224 174 242 160 244 138 C232 150 216 156 200 156 Z" fill="#ff8f73" fill-opacity="0.9"></path>
+<path d="M200 108 C182 108 172 120 176 132 C180 144 202 146 210 136 C218 126 210 116 198 118 C190 120 190 130 198 130" fill="none" stroke="#6e170c" stroke-width="3" stroke-linecap="round"></path>
+<path d="M200 242 C168 240 142 222 136 194 C158 206 180 210 200 210 C220 210 242 206 264 194 C258 222 232 240 200 242 Z" fill="url(#{{ $uid }}-rr-pet)"></path>
+<path d="M122 98 C120 126 134 164 170 182 M278 98 C280 126 266 164 230 182 M136 194 C158 206 180 210 200 210 C220 210 242 206 264 194 M130 140 C146 118 172 110 200 112 C228 110 254 118 270 140" fill="none" stroke="#e2c58b" stroke-width="1.2" stroke-opacity="0.9"></path>
+@endif
 </svg>

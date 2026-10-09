@@ -2,6 +2,7 @@
 
 namespace App\Filament;
 
+use App\Support\Fondos;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\FileUpload;
@@ -38,6 +39,21 @@ class Bloques
         return Toggle::make('activo')->label('Visible')->default(true);
     }
 
+    /** Selector de fondo con los permitidos para el tipo de bloque (diseño v2, §7). Vacío si solo hay uno. */
+    private static function fondo(string $tipo): array
+    {
+        $permitidos = Fondos::permitidos($tipo);
+
+        if (count($permitidos) < 2) {
+            return [];
+        }
+
+        return [Select::make('fondo')->label('Fondo')->native(false)->selectablePlaceholder(false)
+            ->options(collect($permitidos)->mapWithKeys(fn ($f) => [$f => Fondos::NOMBRES[$f]])->all())
+            ->default($permitidos[0])
+            ->helperText('Si dos bloques seguidos quedan con el mismo fondo, el sitio alterna el segundo por sí solo.')];
+    }
+
     private static function imagen(string $nombre = 'imagen'): FileUpload
     {
         return FileUpload::make($nombre)->label('Imagen')->image()->disk('public')->directory('paginas')
@@ -54,13 +70,13 @@ class Bloques
     {
         return [
             Block::make('texto')->label('Texto')->icon('heroicon-o-document-text')->schema([
-                self::activo(),
+                self::activo(), ...self::fondo('texto'),
                 TextInput::make('titulo')->label('Título (opcional)')->maxLength(120),
                 RichEditor::make('contenido')->label('Contenido')->required()
                     ->toolbarButtons(['bold', 'italic', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo']),
             ]),
             Block::make('imagen')->label('Imagen')->icon('heroicon-o-photo')->schema([
-                self::activo(), self::imagen()->required(), self::alt(),
+                self::activo(), ...self::fondo('imagen'), self::imagen()->required(), self::alt(),
                 TextInput::make('pie')->label('Pie de foto')->maxLength(200),
             ]),
             Block::make('imagen_texto')->label('Imagen + texto')->icon('heroicon-o-rectangle-group')->schema([
@@ -68,10 +84,10 @@ class Bloques
                 TextInput::make('etiqueta')->maxLength(60), TextInput::make('titulo')->label('Título')->maxLength(120),
                 RichEditor::make('texto')->toolbarButtons(['bold', 'italic', 'link', 'bulletList']),
                 Toggle::make('invertir')->label('Imagen a la derecha'),
-                Select::make('fondo')->options(['' => 'Crema', 'raiz' => 'Verde «Raíces»'])->native(false),
+                ...self::fondo('imagen_texto'),
             ]),
             Block::make('cita')->label('Cita')->icon('heroicon-o-chat-bubble-bottom-center-text')->schema([
-                self::activo(), Textarea::make('texto')->required()->rows(3), TextInput::make('autor')->maxLength(120),
+                self::activo(), ...self::fondo('cita'), Textarea::make('texto')->required()->rows(3), TextInput::make('autor')->maxLength(120),
             ]),
             Block::make('linea_tiempo')->label('Línea de tiempo')->icon('heroicon-o-clock')->schema([
                 self::activo(), TextInput::make('etiqueta')->default('Raíces'), TextInput::make('titulo')->label('Título')->default('Trayectoria'),
@@ -86,7 +102,7 @@ class Bloques
                 self::activo(), TextInput::make('url')->label('Enlace de YouTube o Vimeo')->url()->required(), TextInput::make('titulo')->label('Título')->maxLength(120)->required(),
             ]),
             Block::make('galeria')->label('Galería')->icon('heroicon-o-squares-2x2')->schema([
-                self::activo(), TextInput::make('titulo')->label('Título')->maxLength(120),
+                self::activo(), ...self::fondo('galeria'), TextInput::make('titulo')->label('Título')->maxLength(120),
                 self::imagen('imagenes')->multiple()->reorderable()->required(), self::alt(),
             ]),
             Block::make('cifras')->label('Cifras')->icon('heroicon-o-chart-bar')->schema([
@@ -97,7 +113,7 @@ class Bloques
                     ->helperText('Solo cifras confirmadas con su fuente. Nunca cifras de la Encuesta Itagüí 2026.'),
             ]),
             Block::make('llamado')->label('Llamado a la acción')->icon('heroicon-o-megaphone')->schema([
-                self::activo(), TextInput::make('etiqueta')->maxLength(60), TextInput::make('titulo')->label('Título')->required()->maxLength(120),
+                self::activo(), ...self::fondo('llamado'), TextInput::make('etiqueta')->maxLength(60), TextInput::make('titulo')->label('Título')->required()->maxLength(120),
                 TextInput::make('texto')->maxLength(200), TextInput::make('boton_texto')->label('Texto del botón')->maxLength(30)->default('Súmate'),
                 TextInput::make('boton_url')->label('Enlace del botón')->default('/sumate'),
             ]),
@@ -109,7 +125,8 @@ class Bloques
                 self::activo(), TextInput::make('etiqueta')->default('Propuestas'), TextInput::make('titulo')->label('Título')->default('Aquí me planto por…'), Textarea::make('texto')->rows(2), TextInput::make('boton_texto')->default('Conoce las propuestas'),
             ]),
             Block::make('comunas')->label('Selector de comunas')->icon('heroicon-o-map')->schema([
-                self::activo(), TextInput::make('etiqueta')->default('Tu comuna'), TextInput::make('titulo')->label('Título')->default('Aquí me planto en cada barrio'),
+                self::activo(), ...self::fondo('comunas'), TextInput::make('etiqueta')->default('Tu comuna'), TextInput::make('titulo')->label('Título')->default('Aquí me planto en cada barrio'),
+                Textarea::make('texto')->rows(2)->maxLength(240),
             ]),
         ];
     }
@@ -128,13 +145,17 @@ class Bloques
                 TextInput::make('etiqueta')->default('Raíces'), TextInput::make('titulo')->label('Título')->default('Rosa no se trasplanta'),
                 Textarea::make('texto')->rows(3)->helperText('Solo datos biográficos confirmados. Si falta, escribe [POR CONFIRMAR].'),
                 TextInput::make('enlace_texto')->default('Lee el manifiesto'), TextInput::make('enlace_url')->default('/manifiesto'),
+                Repeater::make('cifras')->label('Cifras (opcional)')->schema([
+                    TextInput::make('valor')->required()->maxLength(20), TextInput::make('texto')->required()->maxLength(80),
+                ])->maxItems(3)->grid(3)->defaultItems(0)
+                    ->helperText('Solo cifras confirmadas por la campaña con su fuente. Nunca cifras de la Encuesta Itagüí 2026.'),
             ]),
             Block::make('buzon')->label('Inicio · Llamado al buzón')->icon('heroicon-o-inbox')->schema([
                 self::activo(), TextInput::make('etiqueta')->default('Buzón ciudadano'), TextInput::make('titulo')->label('Título')->default('¿Qué necesita tu barrio?'),
                 TextInput::make('texto'), TextInput::make('boton_texto')->default('Deja tu propuesta'),
             ]),
-            Block::make('noticias')->label('Inicio · Últimas noticias')->icon('heroicon-o-newspaper')->schema([self::activo(), TextInput::make('titulo')->label('Título')->default('Noticias')]),
-            Block::make('agenda')->label('Inicio · Próximos encuentros')->icon('heroicon-o-calendar')->schema([self::activo(), TextInput::make('etiqueta')->default('Agenda'), TextInput::make('titulo')->label('Título')->default('Nos vemos en el barrio')]),
+            Block::make('noticias')->label('Inicio · Últimas noticias')->icon('heroicon-o-newspaper')->schema([self::activo(), ...self::fondo('noticias'), TextInput::make('titulo')->label('Título')->default('Noticias')]),
+            Block::make('agenda')->label('Inicio · Próximos encuentros')->icon('heroicon-o-calendar')->schema([self::activo(), ...self::fondo('agenda'), TextInput::make('etiqueta')->default('Agenda'), TextInput::make('titulo')->label('Título')->default('Nos vemos en el barrio')]),
             Block::make('redes')->label('Inicio · Franja de redes')->icon('heroicon-o-share')->schema([self::activo()]),
         ];
     }

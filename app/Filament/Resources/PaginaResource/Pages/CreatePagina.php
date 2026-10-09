@@ -12,6 +12,7 @@ class CreatePagina extends CreateRecord
 
     protected function afterCreate(): void
     {
+        PaginaResource::avisarSiMuyOscura((array) ($this->record->bloques ?? []));
         app(MenuPaginas::class)->sincronizar($this->record, (array) ($this->data['menu_ubicaciones'] ?? []), $this->data['menu_texto'] ?? null);
     }
 }

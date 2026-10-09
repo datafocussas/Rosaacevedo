@@ -40,6 +40,7 @@ class EditPagina extends EditRecord
 
     protected function afterSave(): void
     {
+        PaginaResource::avisarSiMuyOscura((array) ($this->record->bloques ?? []));
         app(MenuPaginas::class)->sincronizar($this->record, (array) ($this->data['menu_ubicaciones'] ?? []), $this->data['menu_texto'] ?? null, $this->rutaAnterior);
     }
 }

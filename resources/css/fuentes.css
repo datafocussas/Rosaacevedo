@@ -1,7 +1,6 @@
-/* Montserrat autoalojada en WOFF2, subconjunto latino (cubre á, é, í, ó, ú, ñ, ü). */
+/* Montserrat autoalojada en WOFF2, subconjunto latino (cubre á, é, í, ó, ú, ñ, ü). Una sola familia en v2:
+   Permanent Marker se retiró (el lema va en Montserrat 800). */
 @font-face { font-family: Montserrat; font-style: normal; font-weight: 400; font-display: swap; src: url('@fontsource/montserrat/files/montserrat-latin-400-normal.woff2') format('woff2'); }
-@font-face { font-family: Montserrat; font-style: normal; font-weight: 500; font-display: swap; src: url('@fontsource/montserrat/files/montserrat-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: Montserrat; font-style: normal; font-weight: 600; font-display: swap; src: url('@fontsource/montserrat/files/montserrat-latin-600-normal.woff2') format('woff2'); }
 @font-face { font-family: Montserrat; font-style: normal; font-weight: 700; font-display: swap; src: url('@fontsource/montserrat/files/montserrat-latin-700-normal.woff2') format('woff2'); }
 @font-face { font-family: Montserrat; font-style: normal; font-weight: 800; font-display: swap; src: url('@fontsource/montserrat/files/montserrat-latin-800-normal.woff2') format('woff2'); }
-/* Sustituto provisional del rotulado «Aquí me planto». */
-@font-face { font-family: 'Permanent Marker'; font-style: normal; font-weight: 400; font-display: swap; src: url('@fontsource/permanent-marker/files/permanent-marker-latin-400-normal.woff2') format('woff2'); }

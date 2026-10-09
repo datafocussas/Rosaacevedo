@@ -1,7 +1,7 @@
 {{-- Banner de cookies (sección 07): aceptar, rechazar y configurar al mismo nivel. Por defecto solo
      técnicas; Umami no usa cookies. La elección se guarda 6 meses. Las incrustaciones de redes y
      los píxeles (fase 2) solo se cargan si su categoría está aceptada. --}}
-<div class="ra-cookies" x-data="cookies()" x-show="visible" x-cloak role="region" aria-label="Preferencias de cookies">
+<div class="ra-cookies ra-oscuro" x-data="cookies()" x-show="visible" x-cloak role="region" aria-label="Preferencias de cookies">
     <div class="ra-contenedor ra-cookies-caja">
         <p class="ra-sin-margen">Usamos solo cookies técnicas para que el sitio funcione. Con tu permiso, también las de redes sociales para mostrar publicaciones. <a href="{{ route('politica-de-datos') }}#cookies">Más información</a>.</p>
         <div x-show="configurando" class="ra-pila">

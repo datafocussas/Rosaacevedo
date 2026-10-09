@@ -1,18 +1,19 @@
 @props(['redes' => collect(), 'menuSitio' => collect(), 'menuTransparencia' => collect()])
-{{-- PiePagina: datos legales, financiación (modo campaña) y política de datos. --}}
+{{-- Pie (diseño v2, §6.12): profundo, tres columnas con rótulos oro y enlaces oro claro; «Itagüí» gigante en trazo oro,
+     decorativo; línea legal (responsable del tratamiento y financiación en modo campaña). --}}
 @php
     $ajustes = app(\App\Services\Ajustes::class);
     $responsable = $ajustes->get('responsable_tratamiento', []);
     $contacto = $ajustes->get('contacto_email') ?? ($responsable['email'] ?? null);
     $leyenda = $ajustes->get('pie_leyenda_financiacion');
 @endphp
-<footer class="ra-pie">
+<footer class="ra-pie ra-fondo-profundo ra-oscuro">
     <div class="ra-contenedor">
         <div class="ra-pie-grid">
-            <div class="ra-pila">
+            <div class="ra-pila-4">
                 <x-ra.marca />
-                <p class="ra-sin-margen ra-ancho-corto">{{ $ajustes->get('pie_frase', 'Mis raíces están aquí. Y las raíces no se trasplantan.') }}</p>
-                @if ($redes->isNotEmpty())<x-ra.redes :redes="$redes" class="ra-inverso ra-sin-fondo" />@endif
+                <p class="ra-pie-frase">{{ $ajustes->get('pie_frase', 'Mis raíces están aquí. Y las raíces no se trasplantan.') }}</p>
+                @if ($redes->isNotEmpty())<x-ra.redes :redes="$redes" variante="iconos" />@endif
             </div>
             <nav aria-labelledby="pie-sitio">
                 <p class="ra-etiqueta ra-pie-titulo" id="pie-sitio">El sitio</p>
@@ -35,4 +36,5 @@
             <br><button type="button" class="ra-enlace-boton" data-abrir-cookies>Preferencias de cookies</button>
         </div>
     </div>
+    <span class="ra-pie-itagui" aria-hidden="true">Itagüí</span>
 </footer>

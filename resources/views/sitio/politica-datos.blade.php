@@ -1,15 +1,11 @@
 <x-layouts.sitio titulo="Política de tratamiento de datos" descripcion="Cómo tratamos tus datos personales (Ley 1581 de 2012).">
-    <header class="ra-seccion ra-cabecera-pagina">
-        <div class="ra-contenedor ra-lectura ra-pila-4">
-            <span class="ra-etiqueta">Transparencia</span>
-            <h1 class="ra-display">Política de tratamiento de datos</h1>
-            @if ($politica)
-                <p class="ra-pequeno ra-sin-margen">Versión {{ $politica->version }}, vigente desde el {{ $politica->vigente_desde->translatedFormat('j \d\e F \d\e Y') }}. Huella SHA-256: <code class="ra-codigo">{{ $politica->hash_sha256 }}</code></p>
-            @endif
-        </div>
-    </header>
-    <section class="ra-seccion-compacta">
-        <div class="ra-contenedor">
+    <x-ra.cabecera etiqueta="Transparencia" titulo="Política de tratamiento de datos">
+        @if ($politica)
+            <p class="ra-pequeno ra-sin-margen">Versión {{ $politica->version }}, vigente desde el {{ $politica->vigente_desde->translatedFormat('j \d\e F \d\e Y') }}. Huella SHA-256: <code class="ra-codigo">{{ $politica->hash_sha256 }}</code></p>
+        @endif
+    </x-ra.cabecera>
+    <section class="ra-seccion ra-fondo-marfil">
+        <div class="ra-contenedor ra-lectura-centrada">
             @if ($politica)
                 <div class="ra-prosa">{{ \App\Support\Texto::enriquecido(\Illuminate\Support\Str::markdown($politica->texto)) }}</div>
             @else

@@ -22,7 +22,7 @@ class SitioPublicoTest extends TestCase
 
     public function test_las_siete_comunas_y_el_corregimiento_aparecen_en_inicio(): void
     {
-        $this->get('/')->assertSeeInOrder(['Comuna 1', 'Comuna 7', 'Corregimiento', 'El Manzanillo']);
+        $this->get('/')->assertSeeInOrder(['Comuna 1', 'Comuna 7', 'El Manzanillo'])->assertSee('Corregimiento');
     }
 
     public function test_en_precampana_no_se_pide_el_voto(): void

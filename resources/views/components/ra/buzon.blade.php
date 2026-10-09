@@ -1,17 +1,21 @@
-@props(['temas', 'barrios', 'temaId' => null, 'comunaId' => null])
-{{-- Buzón ciudadano (BuzonCiudadano, RF-20). Funciona sin JavaScript. --}}
-<form class="ra-form" method="POST" action="{{ route('buzon.store') }}" enctype="multipart/form-data" novalidate aria-labelledby="buzon-titulo" x-data="{ enviando: false }" @submit="enviando = true">
+@props(['temas', 'barrios', 'temaId' => null, 'comunaId' => null, 'variante' => 'claro', 'titulo' => 'Cuéntanos tu propuesta'])
+{{-- Buzón ciudadano (BuzonCiudadano, RF-20). Funciona sin JavaScript.
+     Diseño v2 (§6.7): los temas son chips de selección (radios nativos); «oscuro» va en cápsula sobre esmeralda
+     (inicio) y «claro» en tarjeta blanca (/buzon). --}}
+<form class="ra-form {{ $variante === 'oscuro' ? 'ra-capsula-buzon' : 'ra-form-tarjeta' }}" method="POST" action="{{ route('buzon.store') }}" enctype="multipart/form-data" novalidate aria-labelledby="buzon-titulo" x-data="{ enviando: false }" @submit="enviando = true">
     @csrf
-    <h2 class="ra-h3" id="buzon-titulo">Cuéntanos tu propuesta</h2>
+    <h2 class="ra-h3" id="buzon-titulo">{{ $titulo }}</h2>
     @if ($errors->any())
         <div class="ra-aviso ra-aviso-error" role="alert"><x-ra.icono nombre="alerta" /><span>Revisa los campos marcados.</span></div>
     @endif
-    <x-ra.campo nombre="tema_id" etiqueta="Tema" tipo="select" required>
-        <option value="">Elige un tema</option>
+    @php $temaElegido = (string) old('tema_id', $temaId); @endphp
+    <fieldset class="ra-chips {{ $errors->has('tema_id') ? 'ra-campo-error' : '' }}" @error('tema_id') aria-describedby="buzon-tema-err" @enderror>
+        <legend class="ra-leyenda">Tema</legend>
         @foreach ($temas as $tema)
-            <option value="{{ $tema->id }}" @selected((string) old('tema_id', $temaId) === (string) $tema->id)>{{ $tema->nombre }}</option>
+            <label class="ra-chip-opcion"><input type="radio" name="tema_id" value="{{ $tema->id }}" required @checked($temaElegido === (string) $tema->id)><span>{{ $tema->nombre }}</span></label>
         @endforeach
-    </x-ra.campo>
+    </fieldset>
+    @error('tema_id')<span class="ra-mensaje-error" id="buzon-tema-err"><x-ra.icono nombre="alerta-circulo" tam="18" /> {{ $message }}</span>@enderror
     <x-ra.campo nombre="barrio_id" etiqueta="Barrio o vereda" tipo="select" :opcional="true">
         <option value="">Elige tu barrio o vereda</option>
         @foreach ($barrios as $comuna => $lista)

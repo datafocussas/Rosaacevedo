@@ -117,7 +117,7 @@ class SitioController extends Controller
     /** Comunas 2024 con el conteo de barrios, sectores y veredas del catálogo cargado. */
     public static function comunasConConteo()
     {
-        return TerritorioComuna::query()->vigente()->withCount([
+        return TerritorioComuna::query()->vigente()->with('pagina')->withCount([
             'barrios' => fn ($q) => $q->where('activo', true)->where('tipo', 'barrio'),
             'barrios as sectores_count' => fn ($q) => $q->where('activo', true)->where('tipo', 'sector'),
             'barrios as veredas_count' => fn ($q) => $q->where('activo', true)->where('tipo', 'vereda'),

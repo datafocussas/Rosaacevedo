@@ -7,8 +7,10 @@ use App\Filament\Concerns\ConPermiso;
 use App\Filament\Resources\PaginaResource\Pages;
 use App\Models\Pagina;
 use App\Services\MenuPaginas;
+use App\Support\Fondos;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -83,11 +85,24 @@ class PaginaResource extends Resource
                         ->helperText('Corto: dos o tres palabras.'),
                 ]),
             Bloques::builder('bloques', conInicio: true)->columnSpanFull(),
-            Forms\Components\Section::make('SEO y redes')->collapsed()->columns(2)->schema([
+            Forms\Components\Section::make('Cabecera, SEO y redes')->collapsed()->columns(2)->schema([
+                Forms\Components\SpatieMediaLibraryFileUpload::make('og')->collection('og')->label('Imagen de cabecera y para redes')->image()->imageEditor()->maxSize(4096)->columnSpanFull()
+                    ->helperText('Opcional. Se ve a la derecha de la cabecera oscura de la página y al compartirla en redes. Horizontal, idealmente 1200 × 630.'),
                 Forms\Components\TextInput::make('seo_titulo')->label('Título SEO')->maxLength(70),
                 Forms\Components\TextInput::make('seo_descripcion')->label('Descripción SEO')->maxLength(160),
             ]),
         ]);
+    }
+
+    /** Aviso de la regla 70/30 (diseño v2, §2): más del 30 % de bloques oscuros apaga el contraste. */
+    public static function avisarSiMuyOscura(array $bloques): void
+    {
+        if (Fondos::proporcionOscura($bloques) > 0.3) {
+            Notification::make()->warning()->persistent()
+                ->title('La página quedó muy oscura')
+                ->body('Más del 30 % de sus bloques visibles van sobre fondo oscuro. El diseño pide 70 % claro y 30 % oscuro: cambia el fondo de algún bloque a marfil, blanco o arena.')
+                ->send();
+        }
     }
 
     public static function table(Table $table): Table

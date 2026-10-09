@@ -1,48 +1,86 @@
-/* Rosa Alcaldesa 2027 · tokens (generado de tokens.json) */
+/* ==========================================================================
+   Rosa Alcaldesa 2027 · Tokens de diseño v2 «Noche de raíces»
+   Aprobado el 9 de octubre de 2026. Reemplaza resources/css/tokens.css (v1).
+   Regla: ningún color, espacio, radio o sombra se escribe a mano en las vistas.
+   Contrastes WCAG 2.1 verificados (ver docs/diseno-v2/Diseno_Visual_v2_Noche_de_Raices.md, §3).
+   ========================================================================== */
+
 :root {
-  --azul-itagui: #003c57;
-  --azul-profundo: #002536;
-  --azul-medio: #0e5674;
-  --azul-claro: #c9d6dd;
-  --azul-tenue: #e3edf2;
-  --coral: #f45a43;
-  --coral-texto: #c23a24;
-  --coral-oscuro: #a32e1b;
-  --coral-claro: #ff8a75;
-  --coral-tenue: #fde6e1;
-  --crema: #f8f3ef;
-  --blanco: #ffffff;
-  --tinta: #13222b;
-  --tinta-suave: #4a5a64;
-  --borde-control: #8a8178;
-  --borde-suave: #ddd5cc;
-  --verde-raiz: #2f7d5b;
-  --verde-profundo: #1f5a40;
-  --verde-tenue: #e2f0e8;
-  --alerta: #9a5b00;
-  --alerta-tenue: #fbf0dc;
-  --error: #a4231b;
-  --foco: var(--azul-itagui);
-  --foco-inverso: var(--coral-claro);
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
-  --space-8: 64px;
-  --space-9: 96px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-pill: 999px;
-  --sombra-1: 0 1px 2px rgba(0,37,54,0.08), 0 2px 8px rgba(0,37,54,0.06);
-  --sombra-2: 0 8px 24px rgba(0,37,54,0.14);
-  --ancho-contenido: 1200px;
-  --ancho-lectura: 720px;
-  --alto-encabezado: 72px;
-  --toque-minimo: 48px;
+  /* --- Superficies ------------------------------------------------------ */
+  --noche:          #04151f;  /* fondo oscuro principal (encabezado, cita, redes) */
+  --abismo:         #0a2533;  /* oscuro alterno (franja «Raíces») */
+  --profundo:       #020d14;  /* pie de página */
+  --marfil:         #f6f1ea;  /* fondo claro principal: el 70 % del sitio */
+  --arena:          #ece4d8;  /* claro alterno (agenda, tarjeta El Manzanillo) */
+  --blanco:         #ffffff;  /* tarjetas y campos sobre marfil */
+  --esmeralda:      #0f5c45;  /* escucha: buzón; números de comuna; fechas */
+
+  /* --- Texto ------------------------------------------------------------ */
+  --tinta:          #04151f;  /* texto y titulares sobre claro (16,5:1 en marfil) */
+  --tinta-suave:    #4f5f68;  /* texto secundario sobre claro (5,9:1) */
+  --marfil-texto:   #f4eee6;  /* texto sobre oscuro (16,1:1 en noche) */
+  --niebla:         #9fb3bf;  /* texto secundario sobre oscuro (8,5:1) */
+
+  /* --- Acentos ---------------------------------------------------------- */
+  --coral:          #ff6b4e;  /* acción y flor. Botón principal con texto --noche (6,6:1) */
+  --coral-hondo:    #b8321f;  /* coral para texto sobre claro (5,3:1) */
+  --oro:            #c9a86a;  /* filos, rótulos sobre oscuro (8,2:1), líneas */
+  --oro-claro:      #e2c58b;  /* cifras, enlaces y foco sobre oscuro (11,1:1) */
+  --oro-oscuro:     #7d5f27;  /* rótulos sobre claro (5,3:1 en marfil) */
+  --jade:           #3ddc97;  /* verde sobre oscuro (10,5:1): botón canal WhatsApp, rótulo «Raíces» */
+
+  /* --- Bordes ----------------------------------------------------------- */
+  --borde-claro:    #e3d8c8;  /* tarjetas sobre marfil */
+  --borde-verde:    #d3e4da;  /* tarjetas de comuna */
+  --separador:      #d9cdbb;  /* filas de noticias */
+  --filo-oro:       rgba(226, 197, 139, 0.30);  /* tarjetas y cápsulas sobre oscuro */
+  --campo-oscuro:   rgba(244, 238, 230, 0.45);  /* borde de campos sobre noche (4,1:1) */
+  --campo-esmeralda: rgba(244, 238, 230, 0.60); /* borde de campos sobre esmeralda */
+  --borde-control:  #857b70;  /* borde de campos y casillas sobre claro (3,7:1 en marfil) */
+  --vidrio:         rgba(244, 238, 230, 0.05);  /* relleno de cápsulas de vidrio */
+  --vidrio-barra:   rgba(4, 21, 31, 0.72);      /* encabezado fijo */
+
+  /* --- Estados (se conservan de v1) ------------------------------------- */
+  --exito:          #2f7d5b;
+  --alerta:         #9a5b00;
+  --alerta-tenue:   #fbf0dc;
+  --error:          #a4231b;
+  --error-sobre-oscuro: #ff8a75;
+
+  /* --- Foco ------------------------------------------------------------- */
+  --foco-claro:     #04151f;  /* anillo sobre marfil, arena y blanco */
+  --foco-oscuro:    #e2c58b;  /* anillo sobre noche, abismo y esmeralda */
+
+  /* --- Tipografía: una sola familia ------------------------------------- */
   --font-sans: Montserrat, "Helvetica Neue", Arial, sans-serif;
-  --font-lema: "Permanent Marker", "Montserrat", cursive;
+
+  /* --- Espacio, radios y sombras ---------------------------------------- */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --space-9: 96px; --space-10: 120px;
+  --radius-campo: 14px;    /* campos de formulario */
+  --radius-tarjeta: 22px;  /* tarjetas */
+  --radius-panel: 28px;    /* bento, buzón, noticias destacadas */
+  --radius-pill: 999px;    /* botones, chips, redes */
+  --sombra-foto: 0 40px 120px rgba(0, 0, 0, 0.55);
+  --desenfoque-vidrio: 14px;
+
+  /* --- Medidas ---------------------------------------------------------- */
+  --ancho-contenido: 1240px;
+  --ancho-lectura: 720px;
+  --alto-encabezado: 76px;   /* 64 px en móvil */
+  --toque-minimo: 48px;
+
+  /* --- Compatibilidad con v1 -------------------------------------------
+     Los nombres v1 siguen existiendo para no romper vistas ni el panel
+     mientras se migra; apuntan a los valores v2. Retirar al terminar. */
+  --crema:          var(--marfil);
+  --azul-itagui:    var(--noche);
+  --azul-profundo:  var(--profundo);
+  --coral-texto:    var(--coral-hondo);
+  --verde-profundo: var(--esmeralda);
+  --verde-raiz:     var(--exito);
+  --borde-suave:    var(--borde-claro);
+  --foco:           var(--foco-claro);
+  --foco-inverso:   var(--foco-oscuro);
 }

@@ -54,6 +54,12 @@ class BannerResource extends Resource
                 SpatieMediaLibraryFileUpload::make('movil')->collection('movil')->label('Móvil (4:5)')->image()->imageEditor()->imageEditorAspectRatios(['4:5'])->maxSize(4096),
                 Forms\Components\TextInput::make('alt')->label('Texto alternativo')->required()->maxLength(200)->columnSpanFull()
                     ->helperText('Obligatorio. Describe la foto: «Rosa conversa con comerciantes en Santa María».'),
+                Forms\Components\TextInput::make('foco_x')->label('Punto focal horizontal (%)')->numeric()->minValue(0)->maxValue(100)->default(62)->dehydrated(false)
+                    ->afterStateHydrated(fn ($component, ?Banner $record) => $record && $component->state($record->getFirstMedia('escritorio')?->getCustomProperty('foco.x') ?? 62))
+                    ->helperText('0 = borde izquierdo, 100 = borde derecho. Pon aquí la cara de Rosa para que no se recorte.'),
+                Forms\Components\TextInput::make('foco_y')->label('Punto focal vertical (%)')->numeric()->minValue(0)->maxValue(100)->default(18)->dehydrated(false)
+                    ->afterStateHydrated(fn ($component, ?Banner $record) => $record && $component->state($record->getFirstMedia('escritorio')?->getCustomProperty('foco.y') ?? 18))
+                    ->helperText('0 = arriba, 100 = abajo.'),
             ]),
             Forms\Components\Section::make('Publicación')->columns(3)->schema([
                 Forms\Components\Select::make('pagina')->label('Página')->options(['inicio' => 'Inicio', 'comuna' => 'Página de comuna'])->default('inicio')->required()->live()->native(false),
@@ -67,6 +73,21 @@ class BannerResource extends Resource
                 Forms\Components\DateTimePicker::make('publicar_hasta')->label('Publicar hasta')->seconds(false)->native(false)->after('publicar_desde'),
             ]),
         ]);
+    }
+
+    /** Guarda el punto focal (diseño v2, §9.2) en las imágenes del banner, sin columnas nuevas. */
+    public static function guardarFoco(Banner $banner, array $datos): void
+    {
+        $foco = [
+            'x' => max(0, min(100, (int) ($datos['foco_x'] ?? 62))),
+            'y' => max(0, min(100, (int) ($datos['foco_y'] ?? 18))),
+        ];
+
+        foreach (['escritorio', 'movil'] as $coleccion) {
+            foreach ($banner->getMedia($coleccion) as $media) {
+                $media->setCustomProperty('foco', $foco)->save();
+            }
+        }
     }
 
     public static function table(Table $table): Table
