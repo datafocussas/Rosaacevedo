@@ -11,6 +11,7 @@ Sitio web oficial de la precandidatura de Rosa María Acevedo Jaramillo a la Alc
 | `docs/tokens.json` / `resources/css/tokens.css` | Tokens de diseño (colores, tipografía, espaciado, radios, sombras). No escribir colores ni medidas a mano: usar `var(--token)`. |
 | `resources/css/ra-componentes.css` | Kit CSS de componentes, clases con prefijo `ra-`. Es la base de estilos del sitio público. |
 | `docs/componentes/*.html` | Vista de referencia de cada componente y de la página de inicio completa (`PaginaInicio.html`). Recrearlos fielmente como componentes Blade. |
+| `docs/Diseno_Sitio_Web.md` | Diseño **tal como está implementado**: tokens, reglas de color (verde = escucha y comunidad), componentes, entrada de inicio, rosa, bloques, accesibilidad y procedimientos para modificarlo. **Leerlo antes de cualquier cambio visual y actualizarlo en el mismo commit.** |
 | `public/img/rosa-raices.svg` | Ilustración de marca para usos fuera del sitio; dentro del sitio va como SVG en línea (ver `componentes/RosaRaices.html`). |
 
 Si un documento anterior del proyecto (base técnica de agosto, plan de instrumentación) contradice la especificación, **manda la especificación**. En particular, el plan de instrumentación proponía Astro + PostgreSQL para el sitio público: quedó reemplazado por Laravel + MySQL en Hostinger.
