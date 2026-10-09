@@ -1,6 +1,6 @@
 @props(['banners'])
 {{-- Carrusel de banners (BannerPrincipal): titular en HTML, nunca dentro de la imagen; imagen fija, no video.
-     Si se pasa el slot «formulario» (página de inicio), el formulario ocupa la columna de la imagen. --}}
+     Si se pasa el slot «formulario» (página de inicio), el formulario flota sobre la foto; sin foto, ocupa la columna. --}}
 @php
     $total = $banners->count();
     $conFormulario = isset($formulario) && $formulario->isNotEmpty();
@@ -40,30 +40,33 @@
                     </div>
                 @endif
             </div>
-            @if ($conFormulario)
-                {{ $formulario }}
-            @else
-                <div>
-                    @foreach ($banners as $i => $banner)
-                        @php
-                            $escritorio = $banner->getFirstMedia('escritorio');
-                            $movil = $banner->getFirstMedia('movil') ?? $escritorio;
-                        @endphp
-                        @if ($escritorio)
-                            <picture @if ($total > 1) x-show="actual === {{ $i }}" @if ($i > 0) x-cloak @endif @endif>
-                                @if ($movil->hasGeneratedConversion('w800'))
-                                    <source media="(max-width: 899px)" type="image/webp" srcset="{{ $movil->getUrl('w400') }} 400w, {{ $movil->getUrl('w800') }} 800w" sizes="100vw">
-                                @endif
-                                @if ($escritorio->hasGeneratedConversion('w1200'))
-                                    <source media="(min-width: 900px)" type="image/webp" srcset="{{ $escritorio->getUrl('w800') }} 800w, {{ $escritorio->getUrl('w1200') }} 1200w, {{ $escritorio->getUrl('w1600') }} 1600w" sizes="50vw">
-                                @endif
-                                <img class="ra-banner-foto" src="{{ $escritorio->getUrl() }}" alt="{{ $banner->alt }}" width="800" height="1000"
-                                    @if ($i === 0) fetchpriority="high" @else loading="lazy" @endif decoding="async">
-                            </picture>
-                        @endif
-                    @endforeach
-                </div>
-            @endif
+            @php $conImagen = $banners->contains(fn ($b) => $b->getFirstMedia('escritorio')); @endphp
+            <div class="{{ $conFormulario && $conImagen ? 'ra-banner-media ra-banner-media-con-form' : 'ra-banner-media' }}">
+                @foreach ($banners as $i => $banner)
+                    @php
+                        $escritorio = $banner->getFirstMedia('escritorio');
+                        $movil = $banner->getFirstMedia('movil') ?? $escritorio;
+                    @endphp
+                    @if ($escritorio)
+                        <picture @if ($total > 1) x-show="actual === {{ $i }}" @if ($i > 0) x-cloak @endif @endif>
+                            @if ($movil->hasGeneratedConversion('w800'))
+                                <source media="(max-width: 899px)" type="image/webp" srcset="{{ $movil->getUrl('w400') }} 400w, {{ $movil->getUrl('w800') }} 800w" sizes="100vw">
+                            @else
+                                <source media="(max-width: 899px)" srcset="{{ $movil->getUrl() }}">
+                            @endif
+                            @if ($escritorio->hasGeneratedConversion('w1200'))
+                                <source media="(min-width: 900px)" type="image/webp" srcset="{{ $escritorio->getUrl('w800') }} 800w, {{ $escritorio->getUrl('w1200') }} 1200w, {{ $escritorio->getUrl('w1600') }} 1600w" sizes="50vw">
+                            @endif
+                            <img class="ra-banner-foto" src="{{ $escritorio->getUrl() }}" alt="{{ $banner->alt }}" width="800" height="1000"
+                                @if ($i === 0) fetchpriority="high" @else loading="lazy" @endif decoding="async">
+                        </picture>
+                    @endif
+                @endforeach
+                @if ($conFormulario)
+                    {{-- Formulario flotante (sombra-2) sobre la foto; sin foto ocupa toda la columna. --}}
+                    <div class="ra-banner-form">{{ $formulario }}</div>
+                @endif
+            </div>
         </div>
     </div>
 </section>

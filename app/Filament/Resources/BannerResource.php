@@ -61,7 +61,8 @@ class BannerResource extends Resource
                     ->visible(fn (Forms\Get $get) => $get('pagina') === 'comuna')->required(fn (Forms\Get $get) => $get('pagina') === 'comuna')->native(false),
                 Forms\Components\Select::make('variante')->label('Variante A/B')->options(['A' => 'A', 'B' => 'B', 'C' => 'C'])->native(false)
                     ->helperText('Déjalo vacío si no está en prueba. Solo aplica en inicio.'),
-                Forms\Components\Select::make('estado')->options(['borrador' => 'Borrador', 'activo' => 'Activo', 'archivado' => 'Archivado'])->default('borrador')->required()->native(false),
+                Forms\Components\Select::make('estado')->options(['borrador' => 'Borrador', 'activo' => 'Activo', 'archivado' => 'Archivado'])->default('borrador')->required()->native(false)
+                    ->helperText('Solo los banners «Activo» aparecen en el sitio, y dentro de las fechas de publicación si las tienen.'),
                 Forms\Components\DateTimePicker::make('publicar_desde')->label('Publicar desde')->seconds(false)->native(false),
                 Forms\Components\DateTimePicker::make('publicar_hasta')->label('Publicar hasta')->seconds(false)->native(false)->after('publicar_desde'),
             ]),

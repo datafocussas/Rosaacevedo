@@ -190,3 +190,11 @@ img { max-width: 100%; height: auto; }
 .ra-rosa .ra-r-texto { font-size: 15px; letter-spacing: 0.2em; }
 .ra-lema-fila .ra-rosa { width: 120px; }
 @media (min-width: 768px) { .ra-lema-fila .ra-rosa { width: 176px; } }
+
+/* Entrada de inicio: foto del banner con el formulario flotante encima */
+.ra-banner-media { position: relative; }
+.ra-banner-media-con-form .ra-banner-form { position: relative; margin: calc(-1 * var(--space-8)) var(--space-3) 0; }
+@media (min-width: 900px) {
+    .ra-banner-media-con-form .ra-banner-foto { height: 360px; }
+    .ra-banner-media-con-form .ra-banner-form { margin: calc(-1 * var(--space-9)) 0 0 var(--space-7); }
+}
