@@ -52,7 +52,7 @@
                 <input class="ra-input" id="{{ $id }}-correo" type="email" autocomplete="email" maxlength="160" x-model="datos.email" :aria-invalid="!!errores.email">
                 <template x-if="errores.email"><span class="ra-mensaje-error"><x-ra.icono nombre="alerta-circulo" tam="18" /> <span x-text="errores.email"></span></span></template>
             </div>
-            <div class="ra-campo">
+            <div class="ra-campo" x-show="barrios.length">
                 <label for="{{ $id }}-barrio">Barrio o vereda</label>
                 <select class="ra-select" id="{{ $id }}-barrio" x-model="datos.barrio_id" aria-describedby="{{ $id }}-barrio-ayuda" :aria-invalid="!!errores.barrio_id">
                     <option value="">Elige tu barrio o vereda</option>

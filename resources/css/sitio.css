@@ -304,7 +304,7 @@ h1, h2, h3, h4 { text-wrap: balance; }
 .ra-rosa.ra-entrada-rosa-sola { left: 50%; transform: translateX(-50%); width: auto; height: 100%; max-width: 260px; }
 @media (min-width: 980px) { .ra-rosa.ra-entrada-rosa-sola { max-width: 380px; } }
 .ra-entrada-nombre { position: absolute; z-index: 2; right: 20px; bottom: 12px; font-size: 11px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--oro-claro); }
-@media (min-width: 980px) { .ra-entrada-nombre { right: 40px; bottom: calc(32px - var(--entrada-pad-abajo)); } }
+@media (min-width: 980px) { .ra-entrada-nombre { right: 40px; bottom: 28px; } } /* la foto ya llega al borde inferior de la entrada */
 .ra-entrada-foto-caja { position: absolute; inset: 0; }
 .ra-entrada .ra-lema { margin-bottom: var(--space-2); }
 

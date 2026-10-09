@@ -18,6 +18,7 @@
                 @if ($paso === 2)
                     <h2 class="ra-h3" id="continuar-titulo">Cuéntanos de tu barrio</h2>
                     <x-ra.campo nombre="email" etiqueta="Correo" tipo="email" autocomplete="email" maxlength="160" :opcional="true" />
+                    @if ($barrios->isNotEmpty())
                     <x-ra.campo nombre="barrio_id" etiqueta="Barrio o vereda" tipo="select" ayuda="Con tu barrio te contamos lo que pasa en tu comuna.">
                         <option value="">Elige tu barrio o vereda</option>
                         @foreach ($barrios as $comuna => $lista)
@@ -28,6 +29,7 @@
                             </optgroup>
                         @endforeach
                     </x-ra.campo>
+                    @endif
                     <button type="submit" class="ra-btn ra-btn-principal ra-btn-bloque">Continuar</button>
                 @else
                     <h2 class="ra-h3" id="continuar-titulo">¿Quieres ayudar?</h2>

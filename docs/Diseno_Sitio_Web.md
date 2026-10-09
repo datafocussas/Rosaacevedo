@@ -106,14 +106,14 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 | Componente | Notas v2 |
 |---|---|
 | `encabezado` | Noche casi sólida (va en el flujo, sobre el marfil del cuerpo), filo oro, menú desde 980 px, menú móvil a pantalla completa. Botón con el ajuste `boton_encabezado` |
-| `banner` | Entrada: textos a la izquierda, foto a sangre a la derecha con tres fundidos, rosa delante, nombre de Rosa en oro. Varios banners = carrusel (cambian foto, textos y botones). Prop `corta` para comunas |
+| `banner` | Entrada: textos a la izquierda, foto a sangre a la derecha con tres fundidos, rosa delante, nombre de Rosa en oro. Varios banners = carrusel (cambian foto, textos y botones). El nombre va 28 px sobre el borde inferior de la foto, dentro de la entrada (nunca sobre la franja de escucha). Prop `corta` para comunas |
 | `formulario-registro` | Variante `capsula` (vidrio sobre noche; en escritorio, nombre, celular y botón en una fila) y `claro` (tarjeta blanca en Súmate). Lógica y pasos sin cambios |
 | `cabecera` | Cabecera oscura de páginas internas: rótulo, título, entradilla, foto opcional con punto focal. Slot `antes` |
 | `lema` | «Aquí / me planto.» con rosa opcional (`ra-lema-fila`) |
 | `aviso-escucha` | Franja esmeralda bajo la entrada |
 | `ejes` | `bento` (primer eje grande noche, tarjeta final coral) o `lista` |
 | `selector-comuna` | Red de raíces (prop `raices`); cada comuna enlaza solo si su página está publicada, si no muestra «Pronto» |
-| `buzon` | Temas como chips (radios), variante oscura en esmeralda |
+| `buzon` | Temas como chips (radios), variante oscura en esmeralda. El selector de barrio (opcional) solo aparece si hay catálogo cargado; igual en el paso 2 del registro |
 | `tarjeta-noticia` / `noticias` | Variantes `destacada`, `fila`, `rejilla`; sin imagen, la rosa-flor como marcador |
 | `agenda`, `franja-redes`, `redes`, `pie`, `compartir`, `marca`, `boton`, `campo`, `icono` | Reestilizados; misma interfaz |
 

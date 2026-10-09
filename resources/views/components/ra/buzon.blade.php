@@ -16,6 +16,8 @@
         @endforeach
     </fieldset>
     @error('tema_id')<span class="ra-mensaje-error" id="buzon-tema-err"><x-ra.icono nombre="alerta-circulo" tam="18" /> {{ $message }}</span>@enderror
+    {{-- Sin catálogo de barrios cargado (territorio:importar), el campo no se muestra: es opcional. --}}
+    @if ($barrios->isNotEmpty())
     <x-ra.campo nombre="barrio_id" etiqueta="Barrio o vereda" tipo="select" :opcional="true">
         <option value="">Elige tu barrio o vereda</option>
         @foreach ($barrios as $comuna => $lista)
@@ -26,6 +28,7 @@
             </optgroup>
         @endforeach
     </x-ra.campo>
+    @endif
     <x-ra.campo nombre="texto" etiqueta="Tu propuesta" tipo="textarea" maxlength="1500" required ayuda="Hasta 1.500 caracteres." />
     <div class="ra-campo {{ $errors->has('foto') ? 'ra-campo-error' : '' }}">
         <label for="buzon-foto" class="ra-leyenda">Foto <span class="ra-pequeno">(opcional, hasta 5 MB)</span></label>

@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Ajuste;
 use App\Models\Redireccion;
+use App\Models\TerritorioBarrio;
+use App\Models\TerritorioComuna;
 use App\Services\Ajustes;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,6 +25,18 @@ class SitioPublicoTest extends TestCase
     public function test_las_siete_comunas_y_el_corregimiento_aparecen_en_inicio(): void
     {
         $this->get('/')->assertSeeInOrder(['Comuna 1', 'Comuna 7', 'El Manzanillo'])->assertSee('Corregimiento');
+    }
+
+    public function test_el_selector_de_barrios_solo_aparece_con_el_catalogo_cargado(): void
+    {
+        $this->get('/buzon')->assertOk()->assertDontSee('Elige tu barrio o vereda');
+
+        TerritorioBarrio::query()->create([
+            'comuna_2024_id' => TerritorioComuna::query()->where('codigo', 'C04')->value('id'),
+            'nombre' => 'Barrio de prueba', 'tipo' => 'barrio', 'activo' => true,
+        ]);
+
+        $this->get('/buzon')->assertSee('Elige tu barrio o vereda')->assertSee('Barrio de prueba');
     }
 
     public function test_en_precampana_no_se_pide_el_voto(): void

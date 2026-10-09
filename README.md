@@ -46,7 +46,7 @@ El sitio queda en `http://localhost:8000` y el panel en `/admin`. En local `DOS_
 | `php artisan test` | Pruebas (SQLite en memoria; en CI corren contra MariaDB 10.11) |
 | `vendor/bin/pint` | Estilo de código |
 | `php artisan usuarios:crear correo --rol=editor` | Crear usuarios del panel (administrador, editor, moderador, analista) |
-| `php artisan territorio:importar barrios.csv --simular` | Validar y cargar el catálogo de barrios, sectores y veredas con su comuna 2024 y 2007 |
+| `php artisan territorio:importar barrios.csv --simular` | Validar y cargar el catálogo de barrios, sectores y veredas con su comuna 2024 y 2007 (formato en `docs/plantilla-territorio.csv`; sin `--simular` guarda). Mientras no se cargue, los formularios ocultan el selector de barrio |
 | `php artisan sitio:publicar-programados` | Publica noticias y banners programados (corre cada minuto) |
 | `php artisan schedule:work` | El cron en local |
 
