@@ -191,10 +191,20 @@ img { max-width: 100%; height: auto; }
 .ra-lema-fila .ra-rosa { width: 120px; }
 @media (min-width: 768px) { .ra-lema-fila .ra-rosa { width: 176px; } }
 
-/* Entrada de inicio: foto del banner con el formulario flotante encima */
-.ra-banner-media { position: relative; }
-.ra-banner-media-con-form .ra-banner-form { position: relative; margin: calc(-1 * var(--space-8)) var(--space-3) 0; }
+/* Entrada de inicio con foto. Móvil: titular, foto 4:5 y formulario montado sobre la foto.
+   Escritorio: foto a todo el ancho y, sobre su parte baja, la tarjeta del titular y el formulario flotante. */
+.ra-entrada { display: grid; gap: var(--space-5); grid-template-areas: "texto" "foto" "form"; }
+.ra-entrada .ra-banner-textos { grid-area: texto; }
+.ra-entrada .ra-banner-fotos { grid-area: foto; }
+.ra-entrada .ra-banner-form { grid-area: form; position: relative; margin: calc(-1 * var(--space-8)) var(--space-3) 0; }
 @media (min-width: 900px) {
-    .ra-banner-media-con-form .ra-banner-foto { height: 360px; }
-    .ra-banner-media-con-form .ra-banner-form { margin: calc(-1 * var(--space-9)) 0 0 var(--space-7); }
+    .ra-entrada { grid-template-columns: 7fr 5fr; grid-template-areas: "foto foto" "texto form"; column-gap: var(--space-6); row-gap: 0; }
+    .ra-entrada .ra-banner-foto { aspect-ratio: 16/9; height: auto; max-height: 440px; object-position: center 15%; }
+    .ra-banner:has(.ra-entrada) > .ra-seccion { padding-top: var(--space-5); }
+    .ra-entrada .ra-lema-fila .ra-rosa { width: 112px; }
+    .ra-entrada .ra-banner-titular { font-size: 44px; line-height: 48px; }
+    .ra-entrada .ra-banner-textos { position: relative; align-self: start; margin: calc(-1 * var(--space-9)) 0 0 var(--space-6);
+        background: var(--crema); border-radius: var(--radius-lg); padding: var(--space-6) var(--space-6) var(--space-5); box-shadow: var(--sombra-1); }
+    .ra-entrada .ra-banner-texto { padding: 0; }
+    .ra-entrada .ra-banner-form { align-self: start; margin: calc(-1 * var(--space-9) - var(--space-7)) var(--space-6) 0 0; }
 }
