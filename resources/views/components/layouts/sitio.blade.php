@@ -3,7 +3,7 @@
     $ajustes = app(\App\Services\Ajustes::class);
     $titulo = $titulo ? $titulo.' · Rosa Acevedo' : 'Rosa Acevedo · Por el futuro de Itagüí';
     $descripcion = $descripcion ?: 'Sitio oficial de Rosa María Acevedo Jaramillo. Aquí me planto por el futuro de Itagüí.';
-    $imagenRedes = $imagenRedes ?: ($ajustes->get('imagen_redes') ? asset('storage/'.$ajustes->get('imagen_redes')) : asset('img/redes-por-defecto.jpg'));
+    $imagenRedes = url($imagenRedes ?: ($ajustes->get('imagen_redes') ? 'storage/'.$ajustes->get('imagen_redes') : 'img/redes-por-defecto.jpg'));
     $canonica = $canonica ?: url()->current();
 @endphp
 <!doctype html>

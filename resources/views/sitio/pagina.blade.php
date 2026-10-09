@@ -2,7 +2,7 @@
     $esManifiesto = $pagina->slug === 'manifiesto';
     $imagenOg = $pagina->getFirstMedia('og');
 @endphp
-<x-layouts.sitio :titulo="$pagina->seo_titulo ?: $pagina->titulo" :descripcion="$pagina->seo_descripcion" :datos-estructurados="$datosEstructurados ?? null" :no-indexar="$vistaPrevia ?? false">
+<x-layouts.sitio :titulo="$pagina->seo_titulo ?: $pagina->titulo" :descripcion="$pagina->seo_descripcion" :imagen-redes="$imagenOg ? \App\Support\Medios::url($imagenOg) : null" :datos-estructurados="$datosEstructurados ?? null" :no-indexar="$vistaPrevia ?? false">
     <x-ra.cabecera :titulo="$pagina->titulo" :entradilla="$pagina->seo_descripcion" :etiqueta="$esManifiesto ? 'Manifiesto' : null"
         :imagen="\App\Support\Medios::url($imagenOg)" :foco="$imagenOg ? \App\Support\Medios::foco($imagenOg) : null">
         @if ($vistaPrevia ?? false)

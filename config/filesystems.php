@@ -41,7 +41,10 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            // Relativa a propósito: la imagen se pide al mismo dominio con el que se abrió el sitio
+            // (www o sin www, localhost o 127.0.0.1) y la CSP (img-src 'self') no la bloquea.
+            // Donde se necesita una URL completa (og:image, datos estructurados) se usa url().
+            'url' => '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,

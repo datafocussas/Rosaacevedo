@@ -43,7 +43,7 @@ class NoticiasController extends Controller
                 'description' => $noticia->resumen,
                 'datePublished' => $noticia->publicada_en?->toIso8601String(),
                 'dateModified' => $noticia->updated_at?->toIso8601String(),
-                'image' => $imagen ? [$imagen->getUrl()] : [],
+                'image' => $imagen ? [url($imagen->getUrl())] : [],
                 'author' => ['@type' => 'Organization', 'name' => 'Campaña Rosa Acevedo', 'url' => url('/')],
                 'publisher' => ['@type' => 'Organization', 'name' => 'Rosa Acevedo', 'url' => url('/')],
                 'mainEntityOfPage' => route('noticias.show', $noticia),

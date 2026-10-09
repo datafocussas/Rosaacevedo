@@ -149,6 +149,8 @@ Reglas, en orden: (1) dos oscuros seguidos: el segundo usa su primer fondo claro
 
 ## 11. Imágenes, punto focal y favicon
 
+- URLs de imágenes **relativas** (`/storage/…`): el disco `public` usa `url => '/storage'`, así la foto se pide al mismo dominio con el que se abrió el sitio (www o sin www, localhost o 127.0.0.1) y la CSP `img-src 'self'` no la bloquea. Donde hace falta una URL completa (`og:image`, datos estructurados) se envuelve en `url()`.
+- Bloque «Imagen»: foto completa, centrada, sin recortar, con alto máximo de 760 px.
 - Conversiones WebP de medialibrary sin cambios (`w400`, `w800`, `w1200`, `w1600`).
 - Punto focal: propiedad personalizada `foco` (`{x, y}` en %) de la imagen; por defecto 62 % / 18 %. Se edita en el banner («Punto focal horizontal/vertical») y se aplica en `object-position` con `Medios::foco()`. Sin columnas nuevas.
 - Favicon y manifiesto en `public/` desde `docs/favicon/` (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192/512`, `site.webmanifest`); `theme-color` `#04151f`.
