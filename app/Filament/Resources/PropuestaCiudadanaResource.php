@@ -73,11 +73,20 @@ class PropuestaCiudadanaResource extends Resource
                 Forms\Components\Placeholder::make('territorio')->label('Barrio · comuna')->content(fn (PropuestaCiudadana $r) => $r->barrio ? $r->barrio->nombre.' · '.$r->barrio->comuna?->nombre : 'Sin barrio'),
                 Forms\Components\Placeholder::make('texto')->label('Texto')->content(fn (PropuestaCiudadana $r) => $r->texto)->columnSpanFull(),
                 Forms\Components\Placeholder::make('foto')->label('Foto adjunta')->columnSpanFull()
-                    ->visible(fn (PropuestaCiudadana $r) => $r->hasMedia('foto'))
-                    ->content(fn (PropuestaCiudadana $r) => new HtmlString(sprintf(
-                        '<a href="%1$s" target="_blank" rel="noopener"><img src="%1$s" alt="Foto adjunta a la propuesta %2$s" style="max-width:100%%;max-height:480px;border-radius:12px"></a><br><a href="%1$s" target="_blank" rel="noopener" style="text-decoration:underline">Abrir en tamaño completo</a>',
-                        e(route('propuesta.foto', $r)), e($r->codigo)
-                    ))),
+                    ->content(function (PropuestaCiudadana $r) {
+                        $foto = $r->getFirstMedia('foto');
+                        if (! $foto) {
+                            return 'La persona no adjuntó foto.';
+                        }
+                        if (! is_readable($foto->getPath())) {
+                            return 'La foto está registrada, pero el archivo no está en el servidor.';
+                        }
+
+                        return new HtmlString(sprintf(
+                            '<a href="%1$s" target="_blank" rel="noopener"><img src="%1$s" alt="Foto adjunta a la propuesta %2$s" style="max-width:100%%;max-height:480px;border-radius:12px"></a><br><a href="%1$s" target="_blank" rel="noopener" style="text-decoration:underline">Abrir en tamaño completo</a>',
+                            e(route('propuesta.foto', $r)), e($r->codigo)
+                        ));
+                    }),
                 Forms\Components\Placeholder::make('autor')->label('Autor')->visible(fn () => auth()->user()->can('registros.ver'))
                     ->content(fn (PropuestaCiudadana $r) => $r->ciudadano->nombre.' · '.$r->ciudadano->celularEnmascarado()),
                 Forms\Components\Placeholder::make('publicable')->label('¿Autorizó publicarla sin su nombre?')->content(fn (PropuestaCiudadana $r) => $r->publicar_anonima ? 'Sí' : 'No'),
@@ -101,10 +110,12 @@ class PropuestaCiudadanaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->defaultSort('created_at', 'desc')
-            ->modifyQueryUsing(fn (Builder $query) => $query->with('tema', 'barrio.comuna'))
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('tema', 'barrio.comuna', 'media'))
             ->columns([
                 Tables\Columns\TextColumn::make('codigo')->label('Código')->searchable(),
                 Tables\Columns\TextColumn::make('texto')->limit(80)->wrap()->searchable(),
+                Tables\Columns\IconColumn::make('con_foto')->label('Foto')->boolean()->trueIcon('heroicon-o-photo')->falseIcon('heroicon-o-minus')
+                    ->state(fn (PropuestaCiudadana $record) => $record->media->contains('collection_name', 'foto')),
                 Tables\Columns\TextColumn::make('tema.nombre')->label('Tema')->badge(),
                 Tables\Columns\TextColumn::make('barrio.comuna.nombre')->label('Comuna')->limit(24)->placeholder('—'),
                 Tables\Columns\TextColumn::make('estado')->badge()->formatStateUsing(fn ($state) => PropuestaCiudadana::ESTADOS[$state])

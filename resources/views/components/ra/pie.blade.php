@@ -34,6 +34,7 @@
             @if ($contacto) · <a href="mailto:{{ $contacto }}">{{ $contacto }}</a>@endif
             @if (! $ajustes->enPrecampana() && $leyenda)<br>{{ $leyenda }}@endif
             <br><button type="button" class="ra-enlace-boton" data-abrir-cookies>Preferencias de cookies</button>
+            <span class="ra-pie-credito">Desarrollo: <a href="https://www.datafocussas.com" target="_blank" rel="noopener">DataFocus S.A.S.<span class="ra-sr"> (abre en una pestaña nueva)</span></a></span>
         </div>
     </div>
     <span class="ra-pie-itagui" aria-hidden="true">Itagüí</span>

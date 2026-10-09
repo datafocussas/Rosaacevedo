@@ -115,7 +115,8 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 | `selector-comuna` | Red de raíces (prop `raices`); cada comuna enlaza solo si su página está publicada, si no muestra «Pronto» |
 | `buzon` | Temas como chips (radios), variante oscura en esmeralda. El selector de barrio (opcional) solo aparece si hay catálogo cargado; igual en el paso 2 del registro |
 | `tarjeta-noticia` / `noticias` | Variantes `destacada`, `fila`, `rejilla`; sin imagen, la rosa-flor como marcador |
-| `agenda`, `franja-redes`, `redes`, `pie`, `compartir`, `marca`, `boton`, `campo`, `icono` | Reestilizados; misma interfaz |
+| `pie` | Noche, «Itagüí» en contorno; en la franja legal, responsable del tratamiento, cookies y el crédito «Desarrollo: DataFocus S.A.S.» (enlace a www.datafocussas.com, pestaña nueva) |
+| `agenda`, `franja-redes`, `redes`, `compartir`, `marca`, `boton`, `campo`, `icono` | Reestilizados; misma interfaz |
 
 ## 9. Páginas
 
