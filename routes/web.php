@@ -10,6 +10,7 @@ use App\Http\Controllers\PropuestasController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\SitioController;
 use App\Http\Controllers\TitularController;
+use App\Models\Pagina;
 use Illuminate\Support\Facades\Route;
 
 // Sitio público. Orden: variante A/B → origen → CSP → caché de respuestas completa.
@@ -40,6 +41,10 @@ Route::middleware(['variante', 'origen', 'csp', 'cache.respuesta'])->group(funct
 
     Route::get('/robots.txt', [SitioController::class, 'robots']);
     Route::get('/sitemap.xml', [SitioController::class, 'sitemap']);
+
+    // Páginas creadas en el panel: rosaacevedo.com/{ruta}. Va de última y no toma rutas reservadas.
+    Route::get('/{slug}', [SitioController::class, 'pagina'])->name('pagina')
+        ->where('slug', '(?!(?:'.implode('|', Pagina::RESERVADAS).'|inicio)$)[a-z0-9]+(?:-[a-z0-9]+)*');
 });
 
 // Formularios HTML clásicos (funcionan sin JavaScript) y páginas que no se cachean.

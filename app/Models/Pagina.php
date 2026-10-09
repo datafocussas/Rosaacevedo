@@ -21,6 +21,28 @@ class Pagina extends Model implements HasMedia
 
     protected $casts = ['bloques' => 'array'];
 
+    /** Páginas con ruta propia en el código: su dirección no se cambia desde el panel. */
+    public const FIJAS = ['inicio', 'conoce-a-rosa', 'manifiesto', 'uso-de-ia'];
+
+    /** Direcciones que ya usa el sitio y no pueden ser la ruta de una página. */
+    public const RESERVADAS = [
+        'admin', 'api', 'livewire', 'filament', 'storage', 'build', 'css', 'js', 'img', 'fonts', 'up',
+        'propuestas', 'comunas', 'noticias', 'agenda', 'buzon', 'sumate', 'enlaces', 'mis-datos',
+        'politica-de-datos', 'transparencia', 'q', 'vista-previa', 'sitemap', 'robots', 'prensa', 'participa',
+    ];
+
+    protected static function booted(): void
+    {
+        // Al borrar la página, sus enlaces del menú también se van.
+        static::deleted(fn (Pagina $pagina) => MenuItem::query()->where('url', $pagina->ruta())->delete());
+    }
+
+    /** «/» para inicio; «/mi-pagina» para las demás. */
+    public function ruta(): string
+    {
+        return $this->slug === 'inicio' ? '/' : '/'.$this->slug;
+    }
+
     public function scopePublicadas(Builder $query): Builder
     {
         return $query->where('estado', 'publicada');

@@ -281,7 +281,7 @@ Varios banners activos forman un carrusel: los textos y las fotos cambian juntos
 | Ruta | Vista | Composición |
 |---|---|---|
 | `/` | `sitio/inicio` | Bloques de la página «inicio» (§11), en el orden del panel; el aviso de escucha va después del bloque «registro» |
-| `/conoce-a-rosa`, `/manifiesto`, `/uso-de-ia` | `sitio/pagina` | Cabecera (h1 display; lema en el manifiesto) → bloques → compartir (Conoce y Manifiesto) → llamado «Súmate» |
+| `/conoce-a-rosa`, `/manifiesto`, `/uso-de-ia` y toda página creada en el panel (`/{ruta}`) | `sitio/pagina` | Cabecera (h1 display; lema en el manifiesto) → bloques → compartir (Conoce y Manifiesto) → llamado «Súmate» |
 | `/propuestas` | `sitio/propuestas` | Cabecera → lista de ejes en fondo blanco → llamado al buzón |
 | `/propuestas/{eje}` | `sitio/eje` | Cabecera con ícono → bloques del eje → compromisos (tarjetas con check verde) → propuestas destacadas → noticias → buzón filtrado (verde) → compartir → otros ejes |
 | `/comunas`, `/comunas/{slug}` | `sitio/comunas`, `sitio/comuna` | Banners de la comuna → saludo + registro con comuna preseleccionada → aviso de escucha → bloques → destacadas → agenda → noticias → barrios → otras comunas |
@@ -404,6 +404,10 @@ Agregar o modificar la regla en `sitio.css`, en la sección correspondiente, sin
 1. `Block::make('tipo')` en `app/Filament/Bloques.php`, con el campo `activo`.
 2. `resources/views/partials/bloques/{tipo}.blade.php` que reciba `$d`.
 3. Agregarlo a §11.
+
+### 17.4 bis Crear una página nueva
+
+Desde el panel (Contenido → Páginas): la dirección se llena sola con el título (`/nuestro-equipo`), solo se ve si está «Publicada», y la sección «Menú» la pone en el menú principal (máximo 6 ítems) o en el pie. Las direcciones que ya usa el sitio están reservadas (`App\Models\Pagina::RESERVADAS`); si se crea una sección nueva con ruta propia en el código, agregarla a esa lista.
 
 ### 17.5 Cambiar la entrada de inicio
 

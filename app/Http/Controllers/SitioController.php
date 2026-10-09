@@ -102,8 +102,8 @@ class SitioController extends Controller
             ['loc' => route('mis-datos'), 'prioridad' => '0.3'],
         ]);
 
-        Pagina::query()->publicadas()->whereIn('slug', ['conoce-a-rosa', 'manifiesto', 'uso-de-ia'])->get()
-            ->each(fn ($p) => $urls->push(['loc' => url('/'.$p->slug), 'modificada' => $p->updated_at, 'prioridad' => '0.8']));
+        Pagina::query()->publicadas()->where('slug', '!=', 'inicio')->get()
+            ->each(fn ($p) => $urls->push(['loc' => url($p->ruta()), 'modificada' => $p->updated_at, 'prioridad' => '0.7']));
         Eje::query()->publicados()->get()
             ->each(fn ($e) => $urls->push(['loc' => route('propuestas.eje', $e), 'modificada' => $e->updated_at, 'prioridad' => '0.7']));
         TerritorioComuna::query()->vigente()->whereHas('pagina', fn ($q) => $q->where('publicada', true))->get()
