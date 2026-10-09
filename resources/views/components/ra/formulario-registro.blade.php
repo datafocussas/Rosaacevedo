@@ -45,7 +45,7 @@
     </div>
 
     {{-- Paso 2 (solo con JavaScript; sin él, /sumate/continuar) --}}
-    <template x-if="paso === 2">
+    <template x-if="paso === 2 && !terminado">
         <div class="ra-form-paso">
             <div class="ra-campo">
                 <label for="{{ $id }}-correo">Correo <span class="ra-pequeno">(opcional)</span></label>
@@ -68,8 +68,9 @@
         </div>
     </template>
 
-    {{-- Paso 3: voluntariado --}}
-    <template x-if="paso === 3">
+    {{-- Paso 3: voluntariado. Solo en los formularios de 3 pasos (Súmate); en los de 2 el servidor igual
+         devuelve un token para el paso 3, pero aquí el formulario ya terminó. --}}
+    <template x-if="paso === 3 && pasos >= 3 && !terminado">
         <div class="ra-form-paso">
             @include('partials.campos-voluntariado', ['prefijo' => $id, 'alpine' => true])
         </div>
