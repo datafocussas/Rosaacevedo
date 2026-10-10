@@ -18,7 +18,7 @@ El documento rector es [`docs/Especificacion_Sitio_Web_Rosa_Alcaldesa_2027.md`](
 | Migraciones (25 tablas de `docs/schema-mysql.sql`) y semillas | `database/` |
 | CI y despliegue | `.github/workflows/`, `deploy/` |
 
-Rutas públicas: `/`, `/conoce-a-rosa`, `/manifiesto`, `/propuestas`, `/propuestas/{eje}`, `/comunas`, `/comunas/{slug}`, `/buzon`, `/sumate`, `/noticias`, `/agenda`, `/enlaces`, `/politica-de-datos`, `/mis-datos`, `/uso-de-ia`, `/transparencia` (solo modo campaña), `/q/{codigo}`, `/sitemap.xml`, `/robots.txt`. API en `/api/v1` (sección 05).
+Rutas públicas: `/`, `/conoce-a-rosa`, `/manifiesto`, `/propuestas`, `/propuestas/{eje}`, `/comunas`, `/comunas/{slug}`, `/buzon`, `/sumate`, `/noticias`, `/agenda`, `/enlaces`, `/politica-de-datos`, `/mis-datos`, `/transparencia` (solo modo campaña), `/q/{codigo}`, `/sitemap.xml`, `/robots.txt`. API en `/api/v1` (sección 05).
 
 ## Desarrollo local
 
@@ -117,7 +117,7 @@ DNS en Cloudflare con proxy activo, TLS **completo (estricto)** y certificado de
 - **Revocatoria y supresión** desde `/mis-datos`: se radican y se aplican desde el panel (acción «Aplicar retiro») después de verificar la identidad, para que nadie retire los datos de otra persona con solo escribir su número.
 - **Contrato del CRM**: la conexión se configura en el panel (Sitio → Conexión con el CRM): URL para registros y para propuestas, autenticación (Bearer o encabezado propio) con la API key cifrada, y qué campos del sitio viajan con qué nombre. Cada minuto se envía lo pendiente del outbox (con `X-Idempotencia`) y la ficha de cada registro muestra si se envió o el error. Si el panel no está activo, sigue sirviendo la propuesta de la sección 05 por `.env` (`CRM_DRIVER=http`, `POST {CRM_URL}/ingesta/{entidad}` con `X-Firma`). El CRM debe actualizar el mismo contacto (por `uuid` o celular), porque un registro genera varios envíos.
 - **Comuna obligatoria**: el paso 2 del registro y el buzón piden la comuna (7 comunas + corregimiento) aunque no haya catálogo de barrios; se guarda en `ciudadanos.comuna_id` y `propuestas_ciudadanas.comuna_id`.
-- **Clasificación con IA (RF-22)**: es de fase 2 y no está implementada; el aviso del buzón y `/uso-de-ia` la anuncian. Decisión pendiente de la campaña.
+- **Sin menciones de IA (10 oct 2026)**: la clasificación con IA (RF-22, fase 2) no está implementada, así que el sitio no la anuncia: se retiró el aviso del buzón, la página `/uso-de-ia` quedó archivada y fuera del menú, y la política de datos pasó a la versión 0.2 sin esa sección (la 0.1 queda como evidencia). El panel conserva el análisis de propuestas (estado, tema confirmado, asignación, respuesta) y el campo «Clasificación sugerida». Si se activa la IA, la Circular SIC 002 de 2026 obliga a volver a informarlo.
 - **Contraste del lema**: el coral `#f45a43` del «me planto.» sobre crema da 2,97:1 (axe lo marca; el mínimo para texto grande es 3:1). Es una decisión de marca: Comunicaciones decide si se oscurece un poco o se espera el lettering en SVG.
 - **CSP**: Alpine.js necesita `'unsafe-eval'`; no hay scripts en línea. Sin nonces, para que funcione con la caché de páginas completas.
 - **Textos legales**: las semillas crean la versión `0.1` de cada texto como borrador técnico, para que los formularios funcionen. Antes de producción el jurídico aprueba la `1.0` y se activa en **Sitio → Políticas**.

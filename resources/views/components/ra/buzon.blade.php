@@ -46,7 +46,6 @@
     <x-ra.campo nombre="celular" etiqueta="Celular" tipo="tel" inputmode="tel" autocomplete="tel-national" maxlength="16" required ayuda="Para contarte qué pasó con tu propuesta." />
     <x-ra.consentimiento tipo="autorizacion_general" nombre="general" :obligatorio="true" />
     <x-ra.consentimiento tipo="publicar_propuesta" nombre="publicar" nota="Opcional." />
-    <div class="ra-aviso ra-aviso-alerta" role="note"><x-ra.icono nombre="alerta" /><span>Usamos herramientas de inteligencia artificial para clasificar las propuestas que recibimos. Una persona revisa cada clasificación. <a href="{{ route('uso-de-ia') }}">Cómo usamos la IA</a>.</span></div>
     <x-ra.antispam :comuna-id="$comunaId" />
     <button type="submit" class="ra-btn ra-btn-principal ra-btn-bloque" :disabled="enviando"><span x-text="enviando ? 'Enviando…' : 'Enviar propuesta'">Enviar propuesta</span></button>
 </form>

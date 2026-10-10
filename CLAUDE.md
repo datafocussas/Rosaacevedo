@@ -63,7 +63,7 @@ El CRM de la campaña vive en `https://aplicativo.rosaacevedo.co` (Laravel; docu
 ## Plan inmediato (sección 08)
 
 - **Sprint 0 (6–10 oct 2026):** repositorio, CI/CD, verificación del plan de Hostinger (SSH, cron, PHP 8.3), esqueleto Laravel + Filament, tokens y CSS en Vite, componentes Blade, migraciones, semillas (comunas, ejes, redes, ajustes).
-- **Sprint 1 (13–23 oct):** captación MVP (registro pasos 1–2, consentimientos, outbox), panel (banners, noticias, páginas, ejes, menú, redes, configuración), políticas, `/mis-datos`, `/uso-de-ia`, `/q/` + QR, `/enlaces`, A/B del banner, Umami, Turnstile, redirecciones.
+- **Sprint 1 (13–23 oct):** captación MVP (registro pasos 1–2, consentimientos, outbox), panel (banners, noticias, páginas, ejes, menú, redes, configuración), políticas, `/mis-datos`, `/q/` + QR, `/enlaces`, A/B del banner, Umami, Turnstile, redirecciones.
 - **Salida a producción:** 24 oct 2026. Hito crítico: captar datos antes de terminar octubre.
 
 ## Pendientes de la campaña (no bloquean el código, sí la salida)

@@ -40,15 +40,6 @@ class PaginasSeeder extends Seeder
         $this->crear('manifiesto', 'Rosa no se trasplanta', [
             ['type' => 'texto', 'data' => ['contenido' => '<p><strong>Aquí me planto.</strong> Por el futuro de Itagüí.</p><p>Raíces que permanecen. Compromisos que cumplimos.</p><p>Mis raíces están aquí. Y las raíces no se trasplantan.</p><p>[POR CONFIRMAR] Texto completo del manifiesto, versión final de Comunicaciones.</p><p>#AquíMePlantoPorItagüí · #RosaAlcaldesa</p>']],
         ], 'Manifiesto · Rosa no se trasplanta', 'Aquí me planto. Por el futuro de Itagüí. El manifiesto de Rosa Acevedo.');
-
-        $this->crear('uso-de-ia', 'Uso de inteligencia artificial', [
-            ['type' => 'texto', 'data' => ['contenido' => '<p>Te contamos qué hacemos con herramientas de inteligencia artificial en este sitio y quién revisa su trabajo (Circular Externa SIC 002 de 2026).</p>'
-                .'<h2>Qué se automatiza</h2><ul><li>Sugerir el tema, la comuna, el tono y un resumen de cada propuesta que llega al buzón ciudadano.</li></ul>'
-                .'<h2>Qué datos recibe la herramienta</h2><p>Solo el texto de la propuesta. Nunca tu nombre, tu celular ni tu correo.</p>'
-                .'<h2>Quién revisa</h2><p>Una persona del equipo de Escucha confirma o corrige cada sugerencia antes de usarla. La herramienta no toma decisiones sobre ti ni te responde de forma automática.</p>'
-                .'<h2>Qué no hacemos</h2><ul><li>No usamos inteligencia artificial para perfilarte por afinidad política.</li><li>No enviamos mensajes automáticos desde este sitio.</li></ul>'
-                .'<p>Si tienes preguntas, escríbenos desde la página Mis datos.</p>']],
-        ], 'Uso de inteligencia artificial', 'Qué automatizamos con inteligencia artificial y quién lo revisa.');
     }
 
     private function crear(string $slug, string $titulo, array $bloques, string $seoTitulo, string $seoDescripcion): void

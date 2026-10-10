@@ -16,7 +16,7 @@ class SitioPublicoTest extends TestCase
 
     public function test_las_paginas_publicas_responden(): void
     {
-        foreach (['/', '/sumate', '/buzon', '/propuestas', '/propuestas/salud', '/conoce-a-rosa', '/manifiesto', '/uso-de-ia',
+        foreach (['/', '/sumate', '/buzon', '/propuestas', '/propuestas/salud', '/conoce-a-rosa', '/manifiesto',
             '/politica-de-datos', '/mis-datos', '/noticias', '/agenda', '/comunas', '/comunas/el-manzanillo', '/enlaces', '/sitemap.xml', '/robots.txt'] as $ruta) {
             $this->get($ruta)->assertOk();
         }
@@ -37,6 +37,14 @@ class SitioPublicoTest extends TestCase
         ]);
 
         $this->get('/buzon')->assertSee('Elige tu barrio o vereda')->assertSee('Barrio de prueba');
+    }
+
+    public function test_el_sitio_no_anuncia_inteligencia_artificial(): void
+    {
+        $this->get('/uso-de-ia')->assertNotFound();
+        $this->get('/buzon')->assertOk()->assertDontSee('inteligencia artificial');
+        $this->get('/')->assertOk()->assertDontSee('Uso de inteligencia artificial');
+        $this->get('/politica-de-datos')->assertOk()->assertDontSee('Inteligencia artificial');
     }
 
     public function test_en_precampana_no_se_pide_el_voto(): void

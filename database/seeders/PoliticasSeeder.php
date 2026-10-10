@@ -21,7 +21,6 @@ class PoliticasSeeder extends Seeder
             'publicar_propuesta' => 'Pueden publicar mi propuesta sin mi nombre.',
             'tratamiento_datos' => self::politicaBorrador(),
             'cookies' => 'Por defecto usamos solo cookies técnicas: sesión, protección contra falsificación de formularios y la variante de la página que ves (prueba A/B de primera parte). La analítica del sitio (Umami) no usa cookies. Las publicaciones incrustadas de redes sociales y la medición de campañas solo se activan si las aceptas. Tu elección se guarda seis meses.',
-            'uso_ia' => 'Usamos herramientas de inteligencia artificial para sugerir el tema, la comuna y un resumen de las propuestas que recibimos. Una persona del equipo revisa y confirma cada clasificación. La herramienta recibe solo el texto de la propuesta, sin tu nombre ni tu celular.',
         ];
 
         foreach ($textos as $tipo => $texto) {
@@ -61,7 +60,7 @@ class PoliticasSeeder extends Seeder
 - Informarte sobre la campaña y las propuestas para tu comuna.
 - Invitarte a encuentros en tu barrio.
 - Organizar el voluntariado.
-- Leer, clasificar y responder tus propuestas.
+- Leer, clasificar y responder tus propuestas. Una persona del equipo las revisa.
 
 ## Segmentación por comuna e intereses
 
@@ -74,10 +73,6 @@ La afinidad política es un dato sensible. No estás obligado a darla. Solo la t
 ## WhatsApp
 
 Solo te escribimos por WhatsApp si lo autorizas. Nunca te agregamos a grupos o listas sin tu consentimiento previo.
-
-## Inteligencia artificial
-
-Usamos inteligencia artificial para sugerir la clasificación de las propuestas. Una persona revisa cada sugerencia. Más información en la página de uso de inteligencia artificial.
 
 ## Con quién compartimos tus datos
 

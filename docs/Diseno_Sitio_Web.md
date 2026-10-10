@@ -98,6 +98,7 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 - **Rosa «Aquí me planto» (desde el 10 oct 2026):** pieza de la campaña `public/img/SCR-20261010-mcyq.jpeg` (rosa roja con raíces turquesa luminosas). Se le quitó el fondo gris conservando el halo («color a alfa» contra el fondo estimado por zonas), se recortó la franja gris de la captura y se exportó en WebP con transparencia: `public/img/marca/rosa-aqui-me-planto-{420,820}.webp`. Está pensada para fondos oscuros.
 - `x-ra.rosa-raices` ahora pinta esa imagen (`<img>` con `srcset`). Props: `decorativa` (alt vacío cuando hay texto equivalente), `etiqueta`, `prioridad` (carga temprana en la entrada); `halo` se conserva por compatibilidad. Aparece junto al lema: entrada de inicio, Súmate, gracias, manifiesto y `/enlaces`.
 - **Raíces:** pieza `public/img/rosa-raices.png` (brote verde con raíces luminosas). Mismo tratamiento, recortada al brote y las raíces y fundida sobre el color abismo (único fondo del bloque «Raíces»): `public/img/marca/raices-{520,900}.webp`. Se ve en la franja «Raíces» de inicio cuando el bloque no trae foto ni cifras, con un fundido elíptico en los bordes.
+- **Raíces en fondo claro («Tu comuna»):** la misma pieza convertida a tinta (lo luminoso pasa a trazo esmeralda y jade; el brote en verde; sin la neblina sobre la tierra): `public/img/marca/raices-tinta-{640,900}.webp`, centrada sobre las tarjetas de comunas.
 - `x-ra.rosa-flor`: solo la flor (SVG v3), para marcadores de imagen de noticias.
 - Entrada de inicio: con foto, la rosa va delante a la izquierda de la foto (300 px en escritorio); sin foto, ocupa el alto de la columna, centrada (`object-fit: contain`, máximo 460 px).
 - `x-ra.marca`: «ROSA» coral + «ACEVEDO», cargo en rótulo oro. No es un logotipo: cuando Comunicaciones entregue el SVG, se reemplaza aquí.
@@ -197,6 +198,8 @@ Reglas, en orden: (1) dos oscuros seguidos: el segundo usa su primer fondo claro
 | 9 oct 2026 | Las cifras y datos de las maquetas v2 no se publican; Raíces muestra cifras solo si el panel las carga | Vigente |
 | 10 oct 2026 | Rosa y raíces: piezas raster de la campaña en lugar de la rosa SVG v3 (§7) | Vigente |
 | 10 oct 2026 | Comunas nombradas solo por su número en el sitio | Vigente |
+| 10 oct 2026 | «Tu comuna» usa las raíces de la pieza de la campaña en tinta esmeralda (`raices-tinta-*.webp`) en lugar de las líneas SVG | Vigente |
+| 10 oct 2026 | Sin aviso de IA en el buzón ni página `/uso-de-ia` (la IA no está activa) | Vigente |
 | Pendiente | Logotipo y lettering «Aquí me planto» en SVG | Comunicaciones |
 | Pendiente | Fotografías definitivas (16:9 y 4:5) para banners y cabeceras | Comunicaciones |
 | Pendiente | Hoja de vida oficial para Raíces y «Conoce a Rosa» | Campaña |

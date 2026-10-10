@@ -20,7 +20,6 @@ Route::middleware(['variante', 'origen', 'csp', 'cache.respuesta'])->group(funct
     Route::get('/', [SitioController::class, 'inicio'])->name('inicio');
     Route::get('/conoce-a-rosa', [SitioController::class, 'pagina'])->defaults('slug', 'conoce-a-rosa')->name('conoce-a-rosa');
     Route::get('/manifiesto', [SitioController::class, 'pagina'])->defaults('slug', 'manifiesto')->name('manifiesto');
-    Route::get('/uso-de-ia', [SitioController::class, 'pagina'])->defaults('slug', 'uso-de-ia')->name('uso-de-ia');
     Route::get('/politica-de-datos', [SitioController::class, 'politicaDatos'])->name('politica-de-datos');
     Route::get('/transparencia', [SitioController::class, 'transparencia'])->name('transparencia');
     Route::get('/enlaces', [SitioController::class, 'enlaces'])->name('enlaces');

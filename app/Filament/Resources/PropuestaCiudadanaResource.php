@@ -93,8 +93,8 @@ class PropuestaCiudadanaResource extends Resource
                 Forms\Components\Placeholder::make('autor')->label('Autor')->visible(fn () => auth()->user()->can('registros.ver'))
                     ->content(fn (PropuestaCiudadana $r) => $r->ciudadano->nombre.' · '.$r->ciudadano->celularEnmascarado()),
                 Forms\Components\Placeholder::make('publicable')->label('¿Autorizó publicarla sin su nombre?')->content(fn (PropuestaCiudadana $r) => $r->publicar_anonima ? 'Sí' : 'No'),
-                Forms\Components\Placeholder::make('sugerencia')->label('Sugerencia de la IA (para confirmar)')
-                    ->content(fn (PropuestaCiudadana $r) => $r->sugerencia_ia ? collect($r->sugerencia_ia)->only(['tema', 'comuna', 'sentimiento', 'resumen'])->map(fn ($v, $k) => "$k: $v")->join(' · ') : 'Sin sugerencia (fase 2).'),
+                Forms\Components\Placeholder::make('sugerencia')->label('Clasificación sugerida (para confirmar)')
+                    ->content(fn (PropuestaCiudadana $r) => $r->sugerencia_ia ? collect($r->sugerencia_ia)->only(['tema', 'comuna', 'sentimiento', 'resumen'])->map(fn ($v, $k) => "$k: $v")->join(' · ') : 'Sin sugerencia.'),
             ]),
             Forms\Components\Section::make('Moderación')->columns(2)->schema([
                 Forms\Components\Select::make('estado')->options(PropuestaCiudadana::ESTADOS)->required()->native(false),

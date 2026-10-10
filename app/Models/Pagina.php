@@ -22,7 +22,7 @@ class Pagina extends Model implements HasMedia
     protected $casts = ['bloques' => 'array'];
 
     /** Páginas con ruta propia en el código: su dirección no se cambia desde el panel. */
-    public const FIJAS = ['inicio', 'conoce-a-rosa', 'manifiesto', 'uso-de-ia'];
+    public const FIJAS = ['inicio', 'conoce-a-rosa', 'manifiesto'];
 
     /** Direcciones que ya usa el sitio y no pueden ser la ruta de una página. */
     public const RESERVADAS = [

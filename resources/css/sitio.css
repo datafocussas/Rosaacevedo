@@ -444,11 +444,11 @@ h1, h2, h3, h4 { text-wrap: balance; }
 /* --------------------------------------------------------------------------
    14. Tu comuna (§6.6)
    -------------------------------------------------------------------------- */
-.ra-red-raices { display: none; width: 100%; height: 90px; margin: calc(-1 * var(--space-5)) 0 var(--space-2); }
-@media (min-width: 980px) { .ra-red-raices { display: block; } }
+.ra-raices-comunas { display: block; width: 100%; max-width: 420px; height: auto; margin: calc(-1 * var(--space-5)) auto var(--space-3); }
+@media (min-width: 768px) { .ra-raices-comunas { max-width: 560px; margin-bottom: calc(-1 * var(--space-4)); } }
 .ra-comunas { display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (min-width: 980px) { .ra-comunas { grid-template-columns: repeat(4, 1fr); gap: var(--space-4); } }
-.ra-comuna { display: flex; flex-direction: column; gap: var(--space-1); padding: 22px; min-width: 0; overflow-wrap: anywhere; min-height: 132px; background: var(--blanco); border: 1px solid var(--borde-verde); border-radius: var(--radius-tarjeta); text-decoration: none !important; }
+.ra-comuna { display: flex; flex-direction: column; gap: var(--space-1); padding: 22px; min-width: 0; overflow-wrap: break-word; hyphens: auto; min-height: 132px; background: var(--blanco); border: 1px solid var(--borde-verde); border-radius: var(--radius-tarjeta); text-decoration: none !important; }
 .ra .ra-comuna { color: var(--tinta); }
 a.ra-comuna:hover, a.ra-comuna:focus-visible, .ra-comuna[aria-current="true"] { border: 2px solid var(--esmeralda); padding: 21px; }
 .ra-comuna-num { font-size: 36px; line-height: 1; font-weight: 800; color: var(--esmeralda); margin-bottom: var(--space-2); }
@@ -655,4 +655,5 @@ a.ra-comuna:hover, a.ra-comuna:focus-visible, .ra-comuna[aria-current="true"] { 
 }
 @media (max-width: 359px) { .ra-lema { font-size: 44px; } }
 .ra-cabecera-texto > .ra-lema-fila { margin-bottom: var(--space-6); }
-@media (max-width: 359px) { .ra-comuna { padding: 16px; } .ra-comuna-corregimiento .ra-comuna-nombre { font-size: 18px; } }
+@media (max-width: 479px) { .ra-comuna-corregimiento .ra-comuna-nombre { font-size: 18px; } }
+@media (max-width: 359px) { .ra-comuna { padding: 16px; } .ra-comuna-corregimiento .ra-comuna-nombre { font-size: 16px; } }

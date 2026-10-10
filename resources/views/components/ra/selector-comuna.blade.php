@@ -1,17 +1,13 @@
 @props(['comunas', 'actual' => null, 'raices' => true])
-{{-- Tu comuna (diseño v2, §6.6): red de raíces decorativa y 8 tarjetas (7 comunas + El Manzanillo, Acuerdo 017 de 2024).
+{{-- Tu comuna (diseño v2, §6.6): raíces decorativas y 8 tarjetas (7 comunas + El Manzanillo, Acuerdo 017 de 2024).
      Las comunas van solo con su número («Comuna 4»); el corregimiento con su nombre.
      Una comuna sin página publicada se muestra sin enlace, en tinta suave, con la etiqueta «Pronto». --}}
 @if ($raices)
-    <svg class="ra-red-raices" viewBox="0 0 1176 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-        <defs><linearGradient id="red-raices-trazo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9a86a"/><stop offset="1" stop-color="#0f5c45"/></linearGradient></defs>
-        <g fill="none" stroke="url(#red-raices-trazo)" stroke-width="2" vector-effect="non-scaling-stroke">
-            @foreach ([73, 220, 367, 514, 661, 808, 955, 1102] as $x)
-                <path d="M588 6 C588 46 {{ $x }} 40 {{ $x }} 88" />
-            @endforeach
-        </g>
-        <circle cx="588" cy="6" r="5" fill="#c9a86a" />
-    </svg>
+    {{-- Las raíces de la pieza de la campaña (brote con raíces), en tinta esmeralda para fondo claro, para que el sitio
+         use una sola ilustración de raíces. Fuente: public/img/rosa-raices.png. --}}
+    <img class="ra-raices-comunas" src="{{ asset('img/marca/raices-tinta-640.webp') }}"
+        srcset="{{ asset('img/marca/raices-tinta-640.webp') }} 640w, {{ asset('img/marca/raices-tinta-900.webp') }} 900w"
+        sizes="(min-width: 768px) 560px, 92vw" width="900" height="540" alt="" aria-hidden="true" loading="lazy" decoding="async">
 @endif
 <div class="ra-comunas">
     @foreach ($comunas as $comuna)
