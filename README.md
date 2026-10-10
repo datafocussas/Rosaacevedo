@@ -101,7 +101,15 @@ Y la variable `URL_SITIO` (`https://rosaacevedo.com` o `https://pruebas.rosaacev
 
 Cada push a `main` corre las pruebas contra MariaDB 10.11, construye (`composer install --no-dev`, `npm run build`), sube por `rsync` a `releases/AAAAMMDD-HHMMSS-sha/`, ejecuta `deploy/activar.sh` (migraciones, cachés de config, rutas, vistas y Filament), cambia el enlace `current` de forma atómica, limpia la caché de respuestas y verifica `/up`. Se conservan las últimas 5 versiones; `deploy/revertir.sh` vuelve a la anterior con un cambio de enlace (no revierte migraciones).
 
-Primer usuario en el servidor: `cd ~/rosaacevedo/current && php artisan usuarios:crear correo@rosaacevedo.com --rol=administrador`. Configura el doble factor en su primer ingreso.
+**Solo después del primer despliegue**, por SSH, cargar los datos base (comunas, ejes, temas, redes, menú, roles, políticas y páginas; no crea usuarios ni datos de prueba) y crear el primer usuario:
+
+```bash
+cd ~/rosaacevedo/current
+/opt/alt/php83/usr/bin/php artisan db:seed --force
+/opt/alt/php83/usr/bin/php artisan usuarios:crear correo@rosaacevedo.com --rol=administrador
+```
+
+El usuario configura el doble factor en su primer ingreso. Los seeders no duplican nada si se vuelven a correr.
 
 ### 4. Cloudflare
 
