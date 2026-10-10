@@ -8,7 +8,7 @@
             <x-ra.boton :href="route('sumate', ['utm_source' => 'bio', 'utm_medium' => 'enlaces'])" :bloque="true">Súmate</x-ra.boton>
             @foreach ($enlaces as $enlace)
                 <a class="ra-btn ra-btn-fantasma ra-btn-bloque" href="{{ $enlace->url }}" @if (\Illuminate\Support\Str::startsWith($enlace->url, 'http') && ! \Illuminate\Support\Str::startsWith($enlace->url, url('/'))) target="_blank" rel="noopener" @endif>
-                    @if ($enlace->icono)<x-ra.icono :nombre="$enlace->icono" />@endif {{ $enlace->texto }}
+                    @if ($icono = \App\Support\IconoRed::para($enlace->icono, $enlace->url))<x-ra.icono :nombre="$icono" />@endif {{ $enlace->texto }}
                 </a>
             @endforeach
             @php $whatsapp = app(\App\Services\Ajustes::class)->enlaceWhatsapp('BIO'); @endphp

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Ajuste;
 use App\Models\Redireccion;
+use App\Models\RedSocial;
 use App\Models\TerritorioBarrio;
 use App\Models\TerritorioComuna;
 use App\Services\Ajustes;
@@ -37,6 +38,13 @@ class SitioPublicoTest extends TestCase
         ]);
 
         $this->get('/buzon')->assertSee('Elige tu barrio o vereda')->assertSee('Barrio de prueba');
+    }
+
+    public function test_una_red_de_youtube_muestra_su_logo_aunque_el_icono_sea_otro(): void
+    {
+        RedSocial::query()->create(['nombre' => 'Youtube', 'url' => 'https://www.youtube.com/@rosaacevedoj', 'icono' => 'enlace', 'activa' => true, 'orden' => 0]);
+
+        $this->get('/')->assertOk()->assertSee('<rect x="1.5" y="4.5" width="21" height="15" rx="4.5"/>', false);
     }
 
     public function test_el_sitio_no_anuncia_inteligencia_artificial(): void

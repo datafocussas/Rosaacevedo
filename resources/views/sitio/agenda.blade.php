@@ -7,7 +7,7 @@
                 @php $redes = \App\Models\RedSocial::query()->where('activa', true)->orderBy('orden')->get(); @endphp
                 <div class="ra-acciones">
                     @foreach ($redes as $red)
-                        <a class="ra-btn ra-btn-fantasma ra-btn-compacto" href="{{ $red->url }}" target="_blank" rel="noopener"><x-ra.icono :nombre="$red->icono" /> {{ $red->nombre }}</a>
+                        <a class="ra-btn ra-btn-fantasma ra-btn-compacto" href="{{ $red->url }}" target="_blank" rel="noopener"><x-ra.icono :nombre="\App\Support\IconoRed::para($red->icono, $red->url)" /> {{ $red->nombre }}</a>
                     @endforeach
                 </div>
             @else
