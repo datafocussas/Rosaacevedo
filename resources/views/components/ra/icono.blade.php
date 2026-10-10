@@ -24,7 +24,8 @@
         'facebook' => '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
         'instagram' => '<rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
         'x' => '<path d="M4 4l16 16M20 4 4 20"/>',
-        'youtube' => '<path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/>',
+        // YouTube dibujado como Instagram (rectángulo redondeado de trazo 2 px a lo ancho del cuadro) para que pese igual.
+        'youtube' => '<rect x="1.5" y="4.5" width="21" height="15" rx="4.5"/><path d="M10 9.2v5.6l4.8-2.8z"/>',
     ];
     $rellenos = [
         'play' => '<path d="M6 4l14 8-14 8z"/>',
