@@ -70,7 +70,10 @@ class PropuestaCiudadanaResource extends Resource
             Forms\Components\Section::make('Propuesta')->columns(3)->schema([
                 Forms\Components\Placeholder::make('codigo')->label('Código')->content(fn (PropuestaCiudadana $r) => $r->codigo),
                 Forms\Components\Placeholder::make('tema')->label('Tema elegido')->content(fn (PropuestaCiudadana $r) => $r->tema?->nombre),
-                Forms\Components\Placeholder::make('territorio')->label('Barrio · comuna')->content(fn (PropuestaCiudadana $r) => $r->barrio ? $r->barrio->nombre.' · '.$r->barrio->comuna?->nombre : 'Sin barrio'),
+                Forms\Components\Placeholder::make('territorio')->label('Comuna · barrio')->content(fn (PropuestaCiudadana $r) => collect([
+                    ($r->comuna ?? $r->barrio?->comuna)?->nombre ?? 'Sin comuna',
+                    $r->barrio?->nombre,
+                ])->filter()->join(' · ')),
                 Forms\Components\Placeholder::make('texto')->label('Texto')->content(fn (PropuestaCiudadana $r) => $r->texto)->columnSpanFull(),
                 Forms\Components\Placeholder::make('foto')->label('Foto adjunta')->columnSpanFull()
                     ->content(function (PropuestaCiudadana $r) {
@@ -110,14 +113,15 @@ class PropuestaCiudadanaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->defaultSort('created_at', 'desc')
-            ->modifyQueryUsing(fn (Builder $query) => $query->with('tema', 'barrio.comuna', 'media'))
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('tema', 'comuna', 'barrio.comuna', 'media'))
             ->columns([
                 Tables\Columns\TextColumn::make('codigo')->label('Código')->searchable(),
                 Tables\Columns\TextColumn::make('texto')->limit(80)->wrap()->searchable(),
                 Tables\Columns\IconColumn::make('con_foto')->label('Foto')->boolean()->trueIcon('heroicon-o-photo')->falseIcon('heroicon-o-minus')
                     ->state(fn (PropuestaCiudadana $record) => $record->media->contains('collection_name', 'foto')),
                 Tables\Columns\TextColumn::make('tema.nombre')->label('Tema')->badge(),
-                Tables\Columns\TextColumn::make('barrio.comuna.nombre')->label('Comuna')->limit(24)->placeholder('—'),
+                Tables\Columns\TextColumn::make('comuna')->label('Comuna')->placeholder('—')
+                    ->state(fn (PropuestaCiudadana $record) => ($record->comuna ?? $record->barrio?->comuna)?->nombrePublico()),
                 Tables\Columns\TextColumn::make('estado')->badge()->formatStateUsing(fn ($state) => PropuestaCiudadana::ESTADOS[$state])
                     ->color(fn ($state) => match ($state) {
                         'recibida' => 'warning', 'incorporada', 'respondida' => 'success', 'descartada' => 'gray', default => 'info'
@@ -130,7 +134,8 @@ class PropuestaCiudadanaResource extends Resource
                 Tables\Filters\SelectFilter::make('tema_id')->label('Tema')->relationship('tema', 'nombre'),
                 Tables\Filters\SelectFilter::make('comuna')->label('Comuna')
                     ->options(fn () => TerritorioComuna::query()->where('division', '2024')->pluck('nombre', 'id'))
-                    ->query(fn (Builder $query, array $data) => $data['value'] ? $query->whereHas('barrio', fn ($b) => $b->where('comuna_2024_id', $data['value'])) : $query),
+                    ->query(fn (Builder $query, array $data) => $data['value'] ? $query->where(fn ($q) => $q->where('comuna_id', $data['value'])
+                        ->orWhereHas('barrio', fn ($b) => $b->where('comuna_2024_id', $data['value']))) : $query),
             ])
             ->actions([Tables\Actions\EditAction::make()->label('Moderar')]);
     }

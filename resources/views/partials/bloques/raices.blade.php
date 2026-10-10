@@ -29,7 +29,12 @@
                 @endforeach
             </div>
         @else
-            <x-ra.rosa-raices class="ra-raices-rosa" :decorativa="true" />
+            {{-- Pieza «Raíces» de la campaña: brote verde con raíces luminosas (fuente: public/img/rosa-raices.png), ya fundida
+                 sobre el color abismo, que es el único fondo permitido de este bloque. --}}
+            <figure class="ra-raices-imagen" data-aparecer>
+                <img src="{{ asset('img/marca/raices-520.webp') }}" srcset="{{ asset('img/marca/raices-520.webp') }} 520w, {{ asset('img/marca/raices-900.webp') }} 900w"
+                    sizes="(min-width: 980px) 480px, 90vw" width="900" height="940" alt="" loading="lazy" decoding="async">
+            </figure>
         @endif
     </div>
 </section>

@@ -3,7 +3,7 @@
         entradilla="Cuéntanos qué necesita tu barrio. Leemos cada propuesta, la clasificamos por tema y comuna, y te contamos qué pasó con ella." />
     <section class="ra-seccion ra-fondo-marfil">
         <div class="ra-contenedor"><div class="ra-angosto ra-centrar">
-            <x-ra.buzon :temas="$temas" :barrios="$barrios" :tema-id="$temaId" />
+            <x-ra.buzon :temas="$temas" :barrios="$barrios" :tema-id="$temaId" :comuna-id="$comunaId" />
         </div></div>
     </section>
 </x-layouts.sitio>

@@ -13,6 +13,6 @@
         <x-ra.formulario-registro variante="capsula" boton="Me planto"
             :titulo="$d['titulo_formulario'] ?? 'Recibe las propuestas para tu barrio'"
             :etiqueta="$d['etiqueta_formulario'] ?? 'Súmate a la siembra'"
-            :pasos="2" id="registro-inicio" />
+            :pasos="3" id="registro-inicio" />
     </x-slot:formulario>
 </x-ra.banner>

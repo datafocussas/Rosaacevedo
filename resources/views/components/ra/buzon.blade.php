@@ -16,6 +16,13 @@
         @endforeach
     </fieldset>
     @error('tema_id')<span class="ra-mensaje-error" id="buzon-tema-err"><x-ra.icono nombre="alerta-circulo" tam="18" /> {{ $message }}</span>@enderror
+    @php $comunaElegida = (string) old('comuna_id', $comunaId); @endphp
+    <x-ra.campo nombre="comuna_id" etiqueta="Tu comuna" tipo="select" required>
+        <option value="">Elige tu comuna o el corregimiento</option>
+        @foreach (\App\Models\TerritorioComuna::opcionesPublicas() as $comunaOpcion => $comunaNombre)
+            <option value="{{ $comunaOpcion }}" @selected($comunaElegida === (string) $comunaOpcion)>{{ $comunaNombre }}</option>
+        @endforeach
+    </x-ra.campo>
     {{-- Sin catálogo de barrios cargado (territorio:importar), el campo no se muestra: es opcional. --}}
     @if ($barrios->isNotEmpty())
     <x-ra.campo nombre="barrio_id" etiqueta="Barrio o vereda" tipo="select" :opcional="true">

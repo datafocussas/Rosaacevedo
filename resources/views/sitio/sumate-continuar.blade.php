@@ -18,6 +18,12 @@
                 @if ($paso === 2)
                     <h2 class="ra-h3" id="continuar-titulo">Cuéntanos de tu barrio</h2>
                     <x-ra.campo nombre="email" etiqueta="Correo" tipo="email" autocomplete="email" maxlength="160" :opcional="true" />
+                    <x-ra.campo nombre="comuna_id" etiqueta="Tu comuna" tipo="select" required>
+                        <option value="">Elige tu comuna o el corregimiento</option>
+                        @foreach (\App\Models\TerritorioComuna::opcionesPublicas() as $comunaOpcion => $comunaNombre)
+                            <option value="{{ $comunaOpcion }}" @selected((string) old('comuna_id') === (string) $comunaOpcion)>{{ $comunaNombre }}</option>
+                        @endforeach
+                    </x-ra.campo>
                     @if ($barrios->isNotEmpty())
                     <x-ra.campo nombre="barrio_id" etiqueta="Barrio o vereda" tipo="select" ayuda="Con tu barrio te contamos lo que pasa en tu comuna.">
                         <option value="">Elige tu barrio o vereda</option>

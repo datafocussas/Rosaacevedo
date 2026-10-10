@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\PropuestaCiudadana;
 use App\Models\Tema;
+use App\Models\TerritorioComuna;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -29,6 +30,7 @@ class FotoPropuestaTest extends TestCase
         $this->post('/buzon', [
             'tema_id' => Tema::query()->value('id'),
             'texto' => 'El parque del barrio necesita luz en la noche.',
+            'comuna_id' => TerritorioComuna::query()->where('division', '2024')->value('id'),
             'nombre' => 'Diana',
             'celular' => '3001234567',
             'consent' => ['general' => '1'],

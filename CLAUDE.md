@@ -13,7 +13,8 @@ Sitio web oficial de la precandidatura de Rosa María Acevedo Jaramillo a la Alc
 | `resources/css/sitio.css` | Todos los estilos del sitio público (v2), clases con prefijo `ra-`. El kit v1 `ra-componentes.css` queda como histórico y ya no se importa. |
 | `docs/componentes/*.html` | Referencia v1 de los componentes (histórico; para lo visual manda la v2). |
 | `docs/Diseno_Sitio_Web.md` | Diseño **tal como está implementado**: tokens, reglas de color (verde = escucha y comunidad), componentes, entrada de inicio, rosa, bloques, accesibilidad y procedimientos para modificarlo. **Leerlo antes de cualquier cambio visual y actualizarlo en el mismo commit.** |
-| `public/img/rosa-raices.svg` | Ilustración de marca para usos fuera del sitio; dentro del sitio va como SVG en línea (ver `componentes/RosaRaices.html`). |
+| `public/img/marca/` | Rosa «Aquí me planto» y raíces que usa el sitio (WebP optimizados a partir de las piezas de la campaña en `public/img/`). Ver §7 de `docs/Diseno_Sitio_Web.md`. |
+| `docs/Guia_Paginas_y_Bloques.md` | Cómo se arma una página en el panel, qué hace cada bloque y a dónde va la información de los formularios. |
 
 Si un documento anterior del proyecto (base técnica de agosto, plan de instrumentación) contradice la especificación, **manda la especificación**. En particular, el plan de instrumentación proponía Astro + PostgreSQL para el sitio público: quedó reemplazado por Laravel + MySQL en Hostinger.
 
@@ -57,7 +58,7 @@ Si un documento anterior del proyecto (base técnica de agosto, plan de instrume
 
 ## Integración con el CRM
 
-El CRM de la campaña vive en `https://aplicativo.rosaacevedo.co` (Laravel; documentación de API en `/docs/api`, hoy con acceso restringido, 403). **Pendiente**: obtener la especificación OpenAPI (`php artisan scramble:export`) y ajustar la sección 05. Mientras tanto, implementar la sincronización detrás de una interfaz (`App\Contracts\CrmCliente`) con el outbox, para cambiar solo el adaptador cuando llegue el contrato real. No inventar endpoints del CRM.
+El CRM de la campaña vive en `https://aplicativo.rosaacevedo.co` (Laravel; documentación de API en `/docs/api`, hoy con acceso restringido, 403). La sincronización va detrás de `App\Contracts\CrmCliente` con el outbox. La conexión se configura en el panel (Sitio → Conexión con el CRM: URL por tipo de dato, API key cifrada y mapeo de campos; `App\Services\Crm\CrmConexion`); el envío es automático cada minuto. No inventar endpoints del CRM: la URL y los campos los pone la campaña según la documentación del CRM.
 
 ## Plan inmediato (sección 08)
 

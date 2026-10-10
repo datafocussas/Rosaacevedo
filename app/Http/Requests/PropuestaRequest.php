@@ -16,6 +16,7 @@ class PropuestaRequest extends FormRequest
         return [
             'tema_id' => ['required', 'integer', Rule::exists('temas', 'id')->where('activo', true)],
             'barrio_id' => ['nullable', 'integer', Rule::exists('territorio_barrio', 'id')->where('activo', true)],
+            'comuna_id' => ['required_without:barrio_id', 'nullable', 'integer', Rule::exists('territorio_comuna', 'id')->where('division', '2024')],
             'texto' => ['required', 'string', 'min:10', 'max:1500'],
             'foto' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
             'nombre' => ['required', 'string', 'min:2', 'max:120'],
@@ -33,6 +34,8 @@ class PropuestaRequest extends FormRequest
     {
         return [
             'tema_id.required' => 'Elige un tema.',
+            'comuna_id.required_without' => 'Elige tu comuna o el corregimiento.',
+            'comuna_id.exists' => 'Elige tu comuna o el corregimiento de la lista.',
             'texto.required' => 'Escribe tu propuesta.',
             'texto.min' => 'Cuéntanos un poco más: al menos 10 caracteres.',
             'texto.max' => 'Tu propuesta puede tener hasta 1.500 caracteres.',

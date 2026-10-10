@@ -11,7 +11,7 @@
                 <p class="ra-noticia-meta ra-sin-margen">
                     @if ($noticia->eje)<a class="ra-noticia-cat" href="{{ route('propuestas.eje', $noticia->eje) }}">{{ $noticia->eje->nombreCorto() }}</a><span aria-hidden="true">·</span>@endif
                     @if ($noticia->publicada_en)<time datetime="{{ $noticia->publicada_en->toIso8601String() }}">{{ $noticia->publicada_en->translatedFormat('j \d\e F \d\e Y') }}</time>@endif
-                    @if ($noticia->comunas->isNotEmpty())<span aria-hidden="true">·</span> {{ $noticia->comunas->map->rotulo()->join(', ') }}@endif
+                    @if ($noticia->comunas->isNotEmpty())<span aria-hidden="true">·</span> {{ $noticia->comunas->map->nombrePublico()->join(', ') }}@endif
                 </p>
             </x-slot:antes>
         </x-ra.cabecera>

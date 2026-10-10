@@ -1,5 +1,6 @@
 @props(['comunas', 'actual' => null, 'raices' => true])
 {{-- Tu comuna (diseño v2, §6.6): red de raíces decorativa y 8 tarjetas (7 comunas + El Manzanillo, Acuerdo 017 de 2024).
+     Las comunas van solo con su número («Comuna 4»); el corregimiento con su nombre.
      Una comuna sin página publicada se muestra sin enlace, en tinta suave, con la etiqueta «Pronto». --}}
 @if ($raices)
     <svg class="ra-red-raices" viewBox="0 0 1176 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
@@ -17,7 +18,7 @@
         @php
             $corregimiento = $comuna->esCorregimiento();
             $publicada = (bool) $comuna->pagina?->publicada;
-            $numero = $corregimiento ? 'El M.' : str_pad(ltrim(substr($comuna->codigo, 1), '0'), 2, '0', STR_PAD_LEFT);
+            $numero = $corregimiento ? null : str_pad(ltrim(substr($comuna->codigo, 1), '0'), 2, '0', STR_PAD_LEFT);
             $clases = 'ra-comuna'.($corregimiento ? ' ra-comuna-corregimiento' : '').($publicada ? '' : ' ra-comuna-pronto');
         @endphp
         @if ($publicada)
@@ -25,9 +26,14 @@
         @else
             <div class="{{ $clases }}">
         @endif
-            <span class="ra-comuna-num" aria-hidden="true">{{ $numero }}</span>
-            <span class="ra-comuna-nombre">{{ $comuna->nombreCorto() }}</span>
-            <span class="ra-comuna-barrios">{{ $comuna->rotulo() }}</span>
+            {{-- En el sitio las comunas se nombran solo por su número; el corregimiento, por su nombre. --}}
+            @if ($corregimiento)
+                <span class="ra-comuna-barrios">Corregimiento</span>
+                <span class="ra-comuna-nombre">El Manzanillo</span>
+            @else
+                <span class="ra-comuna-num" aria-hidden="true">{{ $numero }}</span>
+                <span class="ra-comuna-nombre">{{ $comuna->nombrePublico() }}</span>
+            @endif
             @unless ($publicada)<span class="ra-pronto">Pronto</span>@endunless
         @if ($publicada)
             </a>

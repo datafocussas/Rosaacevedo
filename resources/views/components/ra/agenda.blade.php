@@ -15,7 +15,7 @@
                 <x-ra.icono nombre="map-pin" tam="16" />
                 <span>
                     <time datetime="{{ $evento->inicia_en->toIso8601String() }}">{{ ucfirst($evento->inicia_en->translatedFormat('l j \d\e F')) }} · {{ $evento->inicia_en->format('g:i') }} {{ $evento->inicia_en->format('a') === 'am' ? 'a. m.' : 'p. m.' }}</time>
-                    @if ($evento->comuna) · {{ $evento->comuna->rotulo() }}@endif
+                    @if ($evento->comuna) · {{ $evento->comuna->nombrePublico() }}@endif
                     @if ($evento->lugar) · {{ $evento->lugar }}@endif
                 </span>
             </p>

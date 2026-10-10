@@ -60,7 +60,7 @@
                     @if ($conFoto)
                         <x-ra.rosa-raices class="ra-entrada-rosa" :decorativa="true" />
                     @else
-                        <x-ra.rosa-raices class="ra-entrada-rosa ra-entrada-rosa-sola" />
+                        <x-ra.rosa-raices class="ra-entrada-rosa ra-entrada-rosa-sola" :prioridad="true" />
                     @endif
                 @endunless
             </div>

@@ -18,7 +18,7 @@ class TerritorioController extends Controller
                 'id' => $b->id,
                 'nombre' => $b->nombre,
                 'tipo' => $b->tipo,
-                'comuna' => ['id' => $b->comuna->id, 'codigo' => $b->comuna->codigo, 'nombre' => $b->comuna->nombre],
+                'comuna' => ['id' => $b->comuna->id, 'codigo' => $b->comuna->codigo, 'nombre' => $b->comuna->nombrePublico()],
             ])->values()->all());
 
         return response()->json($barrios)->header('Cache-Control', 'public, max-age=86400');

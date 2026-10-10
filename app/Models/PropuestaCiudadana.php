@@ -62,6 +62,12 @@ class PropuestaCiudadana extends Model implements HasMedia
         return $this->belongsTo(TerritorioBarrio::class, 'barrio_id');
     }
 
+    /** Comuna 2024 elegida en el formulario (o derivada del barrio). */
+    public function comuna(): BelongsTo
+    {
+        return $this->belongsTo(TerritorioComuna::class, 'comuna_id');
+    }
+
     public function asignada(): BelongsTo
     {
         return $this->belongsTo(User::class, 'asignada_a');

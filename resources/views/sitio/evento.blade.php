@@ -7,7 +7,7 @@
     'organizer' => ['@type' => 'Organization', 'name' => 'Campaña Rosa Acevedo', 'url' => url('/')],
 ]">
     @php $imagen = $evento->getFirstMedia('imagen'); @endphp
-    <x-ra.cabecera :etiqueta="ucfirst($evento->tipo).($evento->comuna ? ' · '.$evento->comuna->rotulo() : '')" :titulo="$evento->titulo"
+    <x-ra.cabecera :etiqueta="ucfirst($evento->tipo).($evento->comuna ? ' · '.$evento->comuna->nombrePublico() : '')" :titulo="$evento->titulo"
         :imagen="\App\Support\Medios::url($imagen)" :foco="$imagen ? \App\Support\Medios::foco($imagen, [50, 40]) : null">
         <x-slot:antes><a class="ra-volver" href="{{ route('agenda') }}">Agenda</a></x-slot:antes>
         @if ($evento->estado === 'cancelado')<span class="ra-cancelado">Este encuentro se canceló</span>@endif

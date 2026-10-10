@@ -6,6 +6,7 @@ use App\Contracts\CrmCliente;
 use App\Models\MenuItem;
 use App\Models\RedSocial;
 use App\Services\Ajustes;
+use App\Services\Crm\CrmConexion;
 use App\Services\Crm\HttpCrmCliente;
 use App\Services\Crm\NuloCrmCliente;
 use App\Services\TextosLegales;
@@ -26,10 +27,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(TextosLegales::class);
 
         // El sitio solo conoce la interfaz: cuando llegue el contrato del CRM se cambia el adaptador.
-        $this->app->bind(CrmCliente::class, fn () => match (config('rosa.crm.driver')) {
-            'http' => new HttpCrmCliente,
-            default => new NuloCrmCliente,
-        });
+        // La conexión se configura en el panel (Sitio → Conexión con el CRM) o, en su defecto, en el .env.
+        $this->app->bind(CrmCliente::class, fn () => CrmConexion::habilitada() ? new HttpCrmCliente : new NuloCrmCliente);
     }
 
     public function boot(): void

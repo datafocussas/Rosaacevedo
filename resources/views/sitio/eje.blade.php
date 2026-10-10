@@ -38,7 +38,7 @@
                     @foreach ($destacadas as $propuesta)
                         <blockquote class="ra-cita ra-cita-tarjeta">
                             <p>{{ \Illuminate\Support\Str::limit($propuesta->texto, 280) }}</p>
-                            <footer>Propuesta ciudadana · {{ $propuesta->barrio?->comuna?->rotulo() ?? 'Itagüí' }} · {{ \App\Models\PropuestaCiudadana::ESTADOS[$propuesta->estado] }}</footer>
+                            <footer>Propuesta ciudadana · {{ ($propuesta->comuna ?? $propuesta->barrio?->comuna)?->nombrePublico() ?? 'Itagüí' }} · {{ \App\Models\PropuestaCiudadana::ESTADOS[$propuesta->estado] }}</footer>
                         </blockquote>
                     @endforeach
                 </div>

@@ -52,11 +52,21 @@
                 <input class="ra-input" id="{{ $id }}-correo" type="email" autocomplete="email" maxlength="160" x-model="datos.email" :aria-invalid="!!errores.email">
                 <template x-if="errores.email"><span class="ra-mensaje-error"><x-ra.icono nombre="alerta-circulo" tam="18" /> <span x-text="errores.email"></span></span></template>
             </div>
-            <div class="ra-campo" x-show="barrios.length">
-                <label for="{{ $id }}-barrio">Barrio o vereda</label>
+            <div class="ra-campo" :class="{ 'ra-campo-error': errores.comuna_id }">
+                <label for="{{ $id }}-comuna">Tu comuna</label>
+                <select class="ra-select" id="{{ $id }}-comuna" x-model="datos.comuna_id" @change="datos.barrio_id = ''; delete errores.comuna_id" required :aria-invalid="!!errores.comuna_id">
+                    <option value="">Elige tu comuna o el corregimiento</option>
+                    @foreach (\App\Models\TerritorioComuna::opcionesPublicas() as $comunaOpcion => $comunaNombre)
+                        <option value="{{ $comunaOpcion }}">{{ $comunaNombre }}</option>
+                    @endforeach
+                </select>
+                <template x-if="errores.comuna_id"><span class="ra-mensaje-error"><x-ra.icono nombre="alerta-circulo" tam="18" /> <span x-text="errores.comuna_id"></span></span></template>
+            </div>
+            <div class="ra-campo" x-show="barriosVisibles().length">
+                <label for="{{ $id }}-barrio">Barrio o vereda <span class="ra-pequeno">(opcional)</span></label>
                 <select class="ra-select" id="{{ $id }}-barrio" x-model="datos.barrio_id" aria-describedby="{{ $id }}-barrio-ayuda" :aria-invalid="!!errores.barrio_id">
                     <option value="">Elige tu barrio o vereda</option>
-                    <template x-for="grupo in barrios" :key="grupo.comuna">
+                    <template x-for="grupo in barriosVisibles()" :key="grupo.comuna">
                         <optgroup :label="grupo.comuna">
                             <template x-for="b in grupo.items" :key="b.id"><option :value="b.id" x-text="b.nombre"></option></template>
                         </optgroup>

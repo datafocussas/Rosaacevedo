@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PropuestaRequest;
 use App\Models\PropuestaCiudadana;
 use App\Models\Tema;
+use App\Models\TerritorioBarrio;
 use App\Services\Consentimientos;
 use App\Services\Crm\Outbox;
 use App\Services\Crm\Payloads;
@@ -22,6 +23,7 @@ class BuzonController extends Controller
         return view('sitio.buzon', [
             'temas' => Tema::query()->where('activo', true)->orderBy('orden')->get(),
             'barrios' => RegistroController::barriosAgrupados(),
+            'comunaId' => $request->integer('comuna') ?: null,
             'temaId' => $request->integer('tema') ?: null,
         ]);
     }
@@ -39,17 +41,24 @@ class BuzonController extends Controller
                 $consentimientos->registrar($ciudadano, 'publicar_propuesta', true, 'buzon', $request);
             }
 
+            $barrio = $request->integer('barrio_id') ? TerritorioBarrio::query()->find($request->integer('barrio_id')) : null;
+            $comunaId = $barrio?->comuna_2024_id ?? ($request->integer('comuna_id') ?: null);
+
             $propuesta = PropuestaCiudadana::query()->create([
                 'codigo' => PropuestaCiudadana::siguienteCodigo(),
                 'ciudadano_id' => $ciudadano->id,
                 'tema_id' => $request->integer('tema_id'),
-                'barrio_id' => $request->integer('barrio_id') ?: null,
+                'barrio_id' => $barrio?->id,
+                'comuna_id' => $comunaId,
                 'texto' => trim(strip_tags($request->input('texto'))),
                 'publicar_anonima' => $request->boolean('consent.publicar'),
             ]);
 
             if (! $ciudadano->barrio_id && $propuesta->barrio_id) {
                 $ciudadano->update(['barrio_id' => $propuesta->barrio_id]);
+            }
+            if (! $ciudadano->comuna_id && $propuesta->comuna_id) {
+                $ciudadano->update(['comuna_id' => $propuesta->comuna_id]);
             }
 
             Outbox::registrar('ciudadano', $ciudadano->id, 'actualizado', Payloads::ciudadano($ciudadano->fresh(), 'actualizado'));

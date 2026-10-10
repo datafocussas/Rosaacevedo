@@ -1,13 +1,7 @@
 {{-- Paso 3 (voluntariado). La afinidad política es dato sensible: casilla separada y facultativa.
      El puesto de votación solo si la persona lo comparte (regla 5). --}}
 @php
-    $intereses = [
-        'vecinos' => 'Hablar con mis vecinos',
-        'redes' => 'Compartir contenido en redes',
-        'eventos' => 'Apoyar eventos en mi comuna',
-        'testigo' => 'Ser testigo electoral',
-        'transporte' => 'Apoyar con transporte',
-    ];
+    $intereses = \App\Models\Voluntariado::INTERESES;
     $alpine = $alpine ?? false;
 @endphp
 <fieldset class="ra-campo ra-fieldset">
@@ -18,7 +12,7 @@
 </fieldset>
 <fieldset class="ra-campo ra-fieldset">
     <legend class="ra-leyenda">¿Cuándo puedes? <span class="ra-pequeno">(opcional)</span></legend>
-    @foreach (['semana' => 'Entre semana', 'fin_de_semana' => 'Fines de semana', 'noches' => 'En las noches'] as $valor => $texto)
+    @foreach (\App\Models\Voluntariado::DISPONIBILIDAD as $valor => $texto)
         <label class="ra-check"><input type="checkbox" name="disponibilidad[]" value="{{ $valor }}" @if ($alpine) x-model="datos.disponibilidad" @endif> {{ $texto }}</label>
     @endforeach
 </fieldset>

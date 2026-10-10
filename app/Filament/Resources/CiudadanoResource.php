@@ -4,7 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CiudadanoResource\Pages;
 use App\Models\Ciudadano;
+use App\Models\CrmOutbox;
 use App\Models\TerritorioComuna;
+use App\Models\Voluntariado;
+use App\Services\Crm\CrmConexion;
 use App\Support\Celular;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists;
@@ -70,7 +73,7 @@ class CiudadanoResource extends Resource
         $completo = static::verCompleto();
 
         return $table->defaultSort('created_at', 'desc')
-            ->modifyQueryUsing(fn (Builder $query) => $query->with('barrio.comuna', 'barrio.comuna2007'))
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('comuna', 'barrio.comuna', 'barrio.comuna2007'))
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')->searchable(),
                 Tables\Columns\TextColumn::make('celular')->label('Celular')->visible($completo)
@@ -81,7 +84,8 @@ class CiudadanoResource extends Resource
 
                         return $e164 ? $query->orWhere('celular_hash', Celular::hmac($e164)) : $query;
                     }),
-                Tables\Columns\TextColumn::make('barrio.comuna.nombre')->label('Comuna')->placeholder('Sin barrio')->limit(28),
+                Tables\Columns\TextColumn::make('comuna')->label('Comuna')->placeholder('Sin comuna')
+                    ->state(fn (Ciudadano $r) => ($r->comuna ?? $r->barrio?->comuna)?->nombrePublico()),
                 Tables\Columns\TextColumn::make('barrio.nombre')->label('Barrio')->visible($completo),
                 Tables\Columns\TextColumn::make('paso_alcanzado')->label('Paso')->visible($completo),
                 Tables\Columns\IconColumn::make('es_voluntario')->label('Voluntario')->boolean()->visible($completo),
@@ -94,8 +98,9 @@ class CiudadanoResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('comuna')->label('Comuna')
-                    ->options(fn () => TerritorioComuna::query()->where('division', '2024')->pluck('nombre', 'id'))
-                    ->query(fn (Builder $query, array $data) => $data['value'] ? $query->whereHas('barrio', fn ($b) => $b->where('comuna_2024_id', $data['value'])) : $query),
+                    ->options(fn () => TerritorioComuna::opcionesPublicas())
+                    ->query(fn (Builder $query, array $data) => $data['value'] ? $query->where(fn ($q) => $q->where('comuna_id', $data['value'])
+                        ->orWhereHas('barrio', fn ($b) => $b->where('comuna_2024_id', $data['value']))) : $query),
                 Tables\Filters\SelectFilter::make('paso_alcanzado')->label('Paso')->options([1 => 'Paso 1', 2 => 'Paso 2', 3 => 'Paso 3']),
                 Tables\Filters\SelectFilter::make('crm_sync_estado')->label('Sincronización')->options(['pendiente' => 'Pendiente', 'sincronizado' => 'Sincronizado', 'error' => 'Error']),
                 Tables\Filters\SelectFilter::make('estado')->options(['activo' => 'Activo', 'inactivo' => 'Inactivo', 'retirado' => 'Retirado']),
@@ -114,7 +119,8 @@ class CiudadanoResource extends Resource
         return $infolist->schema([
             Infolists\Components\Section::make('Datos')->columns(3)->schema([
                 Infolists\Components\TextEntry::make('nombre'),
-                Infolists\Components\TextEntry::make('barrio.comuna.nombre')->label('Comuna (2024)')->placeholder('Sin barrio'),
+                Infolists\Components\TextEntry::make('comuna')->label('Comuna (2024)')->placeholder('No la indicó')
+                    ->state(fn (Ciudadano $r) => ($r->comuna ?? $r->barrio?->comuna)?->nombre),
                 Infolists\Components\TextEntry::make('barrio.comuna2007.nombre')->label('Comuna (2007, JAL)')->placeholder('—')->visible($completo),
                 Infolists\Components\TextEntry::make('celular')->label('Celular')->state(fn (Ciudadano $r) => Celular::formatear($r->celular()))->copyable()->visible($completo),
                 Infolists\Components\TextEntry::make('email')->label('Correo')->placeholder('—')->visible($completo),
@@ -122,7 +128,10 @@ class CiudadanoResource extends Resource
                 Infolists\Components\TextEntry::make('codigo')->label('Código')->state(fn (Ciudadano $r) => $r->codigo())->visible($completo),
                 Infolists\Components\TextEntry::make('paso_alcanzado')->label('Paso alcanzado')->visible($completo),
                 Infolists\Components\TextEntry::make('estado')->badge()->visible($completo),
-                Infolists\Components\TextEntry::make('voluntariado.intereses')->label('Voluntariado')->badge()->placeholder('—')->visible($completo),
+                Infolists\Components\TextEntry::make('voluntariado.intereses')->label('¿Cómo quiere ayudar?')->badge()->placeholder('No lo indicó')->visible($completo)
+                    ->formatStateUsing(fn ($state) => Voluntariado::INTERESES[$state] ?? $state),
+                Infolists\Components\TextEntry::make('voluntariado.disponibilidad')->label('Disponibilidad')->badge()->placeholder('—')->visible($completo)
+                    ->formatStateUsing(fn ($state) => Voluntariado::DISPONIBILIDAD[$state] ?? $state),
                 Infolists\Components\TextEntry::make('voluntariado.puesto_votacion')->label('Puesto de votación')->placeholder('No lo compartió')->visible($completo),
                 Infolists\Components\TextEntry::make('primer_origen')->label('Primer origen')->visible($completo)
                     ->state(fn (Ciudadano $r) => collect($r->primer_origen ?? [])->map(fn ($v, $k) => "$k: $v")->join(' · ') ?: '—'),
@@ -148,11 +157,29 @@ class CiudadanoResource extends Resource
                     Infolists\Components\TextEntry::make('variante')->placeholder('—'),
                 ]),
             ]),
-            Infolists\Components\Section::make('Sincronización con el CRM')->visible($completo)->columns(3)->schema([
-                Infolists\Components\TextEntry::make('crm_sync_estado')->label('Estado')->badge(),
-                Infolists\Components\TextEntry::make('crm_id')->label('ID en el CRM')->placeholder('—'),
-                Infolists\Components\TextEntry::make('crm_sync_en')->label('Última sincronización')->dateTime()->placeholder('—'),
-            ]),
+            Infolists\Components\Section::make('Sincronización con el CRM')->visible($completo)->columns(3)
+                ->description(fn () => CrmConexion::habilitada() ? 'El envío es automático cada minuto.' : 'La conexión con el CRM está apagada (Sitio → Conexión con el CRM). El registro queda en espera.')
+                ->schema([
+                    Infolists\Components\TextEntry::make('crm_sync_estado')->label('Estado')->badge()
+                        ->formatStateUsing(fn ($state) => ['pendiente' => 'Pendiente', 'sincronizado' => 'Enviado con éxito', 'error' => 'Error al enviar'][$state] ?? $state)
+                        ->color(fn ($state) => match ($state) {
+                            'sincronizado' => 'success', 'error' => 'danger', default => 'warning'
+                        }),
+                    Infolists\Components\TextEntry::make('crm_id')->label('ID en el CRM')->placeholder('—'),
+                    Infolists\Components\TextEntry::make('crm_sync_en')->label('Último envío exitoso')->dateTime('d M Y g:i a')->placeholder('—'),
+                    Infolists\Components\TextEntry::make('envios_crm')->label('Envíos')->columnSpanFull()
+                        ->state(function (Ciudadano $r) {
+                            $filas = CrmOutbox::query()->where('entidad', 'ciudadano')->where('entidad_id', $r->id)->get(['estado']);
+
+                            return $filas->isEmpty() ? 'Ninguno' : $filas->countBy('estado')
+                                ->map(fn ($n, $estado) => (['pendiente' => 'en espera', 'enviado' => 'enviados', 'error' => 'con error'][$estado] ?? $estado).': '.$n)->join(' · ');
+                        }),
+                    Infolists\Components\TextEntry::make('ultimo_error_crm')->label('Último error')->columnSpanFull()->color('danger')
+                        ->state(fn (Ciudadano $r) => CrmOutbox::query()->where('entidad', 'ciudadano')->where('entidad_id', $r->id)->where('estado', 'error')->latest('updated_at')->first()
+                            ?->only(['ultimo_error', 'intentos', 'proximo_intento']))
+                        ->formatStateUsing(fn ($state) => is_array($state) ? $state['ultimo_error'].' ('.$state['intentos'].' intento(s); próximo: '.($state['proximo_intento']?->format('d M g:i a') ?? '—').')' : $state)
+                        ->visible(fn (Ciudadano $r) => $r->crm_sync_estado === 'error'),
+                ]),
         ]);
     }
 

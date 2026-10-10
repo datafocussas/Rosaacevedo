@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Services\Ajustes;
+use App\Services\Crm\CrmConexion;
 use App\Support\CacheSitio;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -89,11 +90,11 @@ class Configuracion extends Page implements HasForms
                 Forms\Components\FileUpload::make('imagen_redes')->label('Imagen para compartir (1200 × 630)')->image()->disk('public')->directory('sitio')
                     ->imageEditor()->imageEditorAspectRatios(['1.91:1'])->maxSize(2048),
             ]),
-            Forms\Components\Section::make('Integraciones (se configuran en el .env del servidor)')->collapsed()->schema([
+            Forms\Components\Section::make('Integraciones')->description('La conexión con el CRM se configura en Sitio → Conexión con el CRM. Turnstile, Umami y el correo, en el .env del servidor.')->collapsed()->schema([
                 Forms\Components\Placeholder::make('estado_integraciones')->label('')->content(fn () => collect([
                     'Turnstile' => filled(config('rosa.turnstile.secret')),
                     'Umami' => filled(config('rosa.umami.website_id')),
-                    'CRM' => config('rosa.crm.driver') !== 'nulo',
+                    'CRM' => CrmConexion::habilitada(),
                     'Correo (Brevo)' => config('mail.default') === 'smtp',
                 ])->map(fn ($ok, $nombre) => $nombre.': '.($ok ? 'activo' : 'sin configurar'))->join(' · ')),
             ]),

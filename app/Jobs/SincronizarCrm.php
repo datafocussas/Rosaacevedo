@@ -7,6 +7,7 @@ use App\Models\Ciudadano;
 use App\Models\CrmOutbox;
 use App\Models\User;
 use App\Notifications\FalloSincronizacionCrm;
+use App\Services\Crm\CrmConexion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,12 +34,17 @@ class SincronizarCrm implements ShouldBeUnique, ShouldQueue
 
     public function handle(CrmCliente $crm): void
     {
-        if (config('rosa.crm.driver') === 'nulo') {
+        if (! CrmConexion::habilitada()) {
             return; // Sin CRM configurado, las filas esperan pendientes.
         }
 
+        // Con la conexión del panel solo viajan los tipos de dato que tienen URL; el resto espera.
+        $conexion = app(CrmConexion::class);
+        $entidades = $conexion->activa() ? $conexion->entidades() : null;
+
         $filas = CrmOutbox::query()
             ->whereIn('estado', ['pendiente', 'error'])
+            ->when($entidades !== null, fn ($q) => $q->whereIn('entidad', $entidades))
             ->where(fn ($q) => $q->whereNull('proximo_intento')->orWhere('proximo_intento', '<=', now()))
             ->orderBy('id')
             ->limit(config('rosa.crm.lote', 50))

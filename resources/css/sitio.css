@@ -298,11 +298,11 @@ h1, h2, h3, h4 { text-wrap: balance; }
         linear-gradient(to right, var(--noche) 0%, rgba(4, 21, 31, .55) 28%, transparent 58%),
         linear-gradient(to top, var(--noche) 0%, transparent 38%),
         linear-gradient(to bottom, var(--noche) 0%, transparent 22%); }
-.ra-rosa.ra-entrada-rosa { position: absolute; z-index: 2; bottom: 0; left: 0; width: 200px; }
-@media (min-width: 980px) { .ra-rosa.ra-entrada-rosa { width: 240px; left: -64px; } }
+.ra-rosa.ra-entrada-rosa { position: absolute; z-index: 2; bottom: 0; left: 0; width: 200px; height: auto; }
+@media (min-width: 980px) { .ra-rosa.ra-entrada-rosa { width: 300px; left: -96px; } }
 /* Sin foto: la rosa ocupa el alto de la columna, centrada, sin salirse por arriba. */
-.ra-rosa.ra-entrada-rosa-sola { left: 50%; transform: translateX(-50%); width: auto; height: 100%; max-width: 260px; }
-@media (min-width: 980px) { .ra-rosa.ra-entrada-rosa-sola { max-width: 380px; } }
+.ra-rosa.ra-entrada-rosa-sola { left: 50%; transform: translateX(-50%); width: auto; height: 100%; max-width: 300px; object-fit: contain; object-position: bottom center; }
+@media (min-width: 980px) { .ra-rosa.ra-entrada-rosa-sola { max-width: 460px; } }
 .ra-entrada-nombre { position: absolute; z-index: 2; right: 20px; bottom: 12px; font-size: 11px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--oro-claro); }
 @media (min-width: 980px) { .ra-entrada-nombre { right: 40px; bottom: 28px; } } /* la foto ya llega al borde inferior de la entrada */
 .ra-entrada-foto-caja { position: absolute; inset: 0; }
@@ -446,9 +446,9 @@ h1, h2, h3, h4 { text-wrap: balance; }
    -------------------------------------------------------------------------- */
 .ra-red-raices { display: none; width: 100%; height: 90px; margin: calc(-1 * var(--space-5)) 0 var(--space-2); }
 @media (min-width: 980px) { .ra-red-raices { display: block; } }
-.ra-comunas { display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr); }
+.ra-comunas { display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (min-width: 980px) { .ra-comunas { grid-template-columns: repeat(4, 1fr); gap: var(--space-4); } }
-.ra-comuna { display: flex; flex-direction: column; gap: var(--space-1); padding: 22px; min-height: 132px; background: var(--blanco); border: 1px solid var(--borde-verde); border-radius: var(--radius-tarjeta); text-decoration: none !important; }
+.ra-comuna { display: flex; flex-direction: column; gap: var(--space-1); padding: 22px; min-width: 0; overflow-wrap: anywhere; min-height: 132px; background: var(--blanco); border: 1px solid var(--borde-verde); border-radius: var(--radius-tarjeta); text-decoration: none !important; }
 .ra .ra-comuna { color: var(--tinta); }
 a.ra-comuna:hover, a.ra-comuna:focus-visible, .ra-comuna[aria-current="true"] { border: 2px solid var(--esmeralda); padding: 21px; }
 .ra-comuna-num { font-size: 36px; line-height: 1; font-weight: 800; color: var(--esmeralda); margin-bottom: var(--space-2); }
@@ -456,6 +456,7 @@ a.ra-comuna:hover, a.ra-comuna:focus-visible, .ra-comuna[aria-current="true"] { 
 .ra-comuna-barrios { font-size: 13px; line-height: 18px; color: var(--tinta-suave); }
 .ra-comuna-corregimiento { background: var(--arena); }
 .ra-comuna-corregimiento .ra-comuna-num { color: var(--oro-oscuro); }
+.ra-comuna-corregimiento .ra-comuna-nombre { font-size: 22px; line-height: 1.15; font-weight: 800; color: var(--oro-oscuro); margin-top: var(--space-1); }
 .ra-comuna-pronto { color: var(--tinta-suave) !important; }
 .ra-comuna-pronto .ra-comuna-num { color: var(--tinta-suave); }
 .ra-comuna-pronto .ra-comuna-nombre { color: var(--tinta-suave); }
@@ -607,7 +608,7 @@ a.ra-comuna:hover, a.ra-comuna:focus-visible, .ra-comuna[aria-current="true"] { 
 .ra-compromisos li { display: flex; gap: var(--space-3); align-items: flex-start; background: var(--blanco); padding: var(--space-5); border-radius: var(--radius-tarjeta); border: 1px solid var(--borde-claro); }
 .ra-compromisos svg { width: 22px; height: 22px; flex: none; color: var(--esmeralda); }
 .ra-enlaces { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-3); text-align: center; align-items: stretch; }
-.ra-rosa-enlaces { width: 120px; margin: 0 auto; }
+.ra-rosa.ra-rosa-enlaces { width: 150px; margin: 0 auto; }
 .ra-paginacion { display: flex; gap: var(--space-3); justify-content: center; margin-top: var(--space-7); }
 .ra-tabla-simple { width: 100%; border-collapse: collapse; background: var(--blanco); border-radius: var(--radius-tarjeta); overflow: hidden; font-size: 15px; }
 .ra-tabla-simple th, .ra-tabla-simple td { text-align: left; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--separador); }
@@ -627,7 +628,11 @@ a.ra-comuna:hover, a.ra-comuna:focus-visible, .ra-comuna[aria-current="true"] { 
 .ra-js [data-aparecer] { opacity: 0; transform: translateY(12px); transition: opacity .4s ease-out, transform .4s ease-out; }
 .ra-js [data-aparecer].ra-visible { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .ra-js [data-aparecer] { opacity: 1; transform: none; } }
-.ra-raices-rosa { max-width: 280px; margin: 0 auto; }
+.ra-raices-imagen { margin: 0 auto; max-width: 480px; width: 100%; }
+.ra-raices-imagen img { display: block; width: 100%; height: auto;
+    /* Fondo transparente; el fundido elíptico evita que la línea de tierra y el halo terminen en seco. */
+    -webkit-mask-image: radial-gradient(ellipse 72% 68% at 50% 46%, #000 62%, transparent 100%);
+    mask-image: radial-gradient(ellipse 72% 68% at 50% 46%, #000 62%, transparent 100%); }
 .ra-centrar { margin-left: auto; margin-right: auto; }
 .ra-pie-compartir { padding-bottom: var(--space-7); }
 .ra-galeria-noticia { margin: var(--space-6) 0; }
@@ -650,3 +655,4 @@ a.ra-comuna:hover, a.ra-comuna:focus-visible, .ra-comuna[aria-current="true"] { 
 }
 @media (max-width: 359px) { .ra-lema { font-size: 44px; } }
 .ra-cabecera-texto > .ra-lema-fila { margin-bottom: var(--space-6); }
+@media (max-width: 359px) { .ra-comuna { padding: 16px; } .ra-comuna-corregimiento .ra-comuna-nombre { font-size: 18px; } }

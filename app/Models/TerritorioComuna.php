@@ -49,6 +49,18 @@ class TerritorioComuna extends Model
         return $this->esCorregimiento() ? 'Corregimiento' : 'Comuna '.ltrim(substr($this->codigo, 1), '0');
     }
 
+    /** Nombre en el sitio público: solo el número de la comuna; el corregimiento con su nombre. */
+    public function nombrePublico(): string
+    {
+        return $this->esCorregimiento() ? 'Corregimiento El Manzanillo' : $this->rotulo();
+    }
+
+    /** Opciones para los selectores del sitio: [id => «Comuna 1»…, «Corregimiento El Manzanillo»]. */
+    public static function opcionesPublicas(): array
+    {
+        return static::query()->vigente()->get()->mapWithKeys(fn (self $c) => [$c->id => $c->nombrePublico()])->all();
+    }
+
     /** «Santa María» a partir de «Comuna 4 · Santa María». */
     public function nombreCorto(): string
     {

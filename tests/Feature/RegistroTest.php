@@ -6,6 +6,7 @@ use App\Models\Ciudadano;
 use App\Models\Consentimiento;
 use App\Models\CrmOutbox;
 use App\Models\Interaccion;
+use App\Models\TerritorioComuna;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use LogicException;
@@ -148,9 +149,33 @@ class RegistroTest extends TestCase
             'consent' => ['general' => '1'],
         ])->assertRedirect('/sumate/continuar');
 
-        $this->get('/sumate/continuar')->assertOk()->assertSee('Cuéntanos de tu barrio');
-        $this->post('/sumate/continuar', ['email' => 'carlos@ejemplo.co'])->assertRedirect('/sumate/continuar');
+        $this->get('/sumate/continuar')->assertOk()->assertSee('Cuéntanos de tu barrio')->assertSee('Elige tu comuna o el corregimiento');
+        // Sin comuna no avanza, y el token sigue sirviendo para volver a intentarlo.
+        $this->post('/sumate/continuar', ['email' => 'carlos@ejemplo.co'])->assertSessionHasErrors('comuna_id');
+        $comuna = TerritorioComuna::query()->where('division', '2024')->where('codigo', 'C03')->value('id');
+        $this->post('/sumate/continuar', ['email' => 'carlos@ejemplo.co', 'comuna_id' => $comuna])->assertRedirect('/sumate/continuar');
         $this->assertSame(2, Ciudadano::query()->sole()->paso_alcanzado);
+        $this->assertSame($comuna, Ciudadano::query()->sole()->comuna_id);
+
+        // Paso 3: ¿cómo quieres ayudar? se guarda.
+        $this->get('/sumate/continuar')->assertOk()->assertSee('¿Cómo quieres ayudar?');
+        $this->post('/sumate/continuar', ['intereses' => ['eventos', 'testigo'], 'disponibilidad' => ['noches']])->assertRedirect('/sumate/gracias');
+        $voluntariado = Ciudadano::query()->sole()->voluntariado;
+        $this->assertSame(['eventos', 'testigo'], $voluntariado->intereses);
+        $this->assertSame(['noches'], $voluntariado->disponibilidad);
+    }
+
+    public function test_la_comuna_es_obligatoria_en_el_paso_2_y_se_guarda(): void
+    {
+        $token = $this->registrar()->json('token');
+        $comuna = TerritorioComuna::query()->where('division', '2024')->where('codigo', 'CORR')->value('id');
+
+        $this->patchJson('/api/v1/registro/'.$token, ['email' => 'diana@ejemplo.co'])->assertUnprocessable()->assertJsonValidationErrors(['comuna_id']);
+        $this->patchJson('/api/v1/registro/'.$token, ['email' => 'diana@ejemplo.co', 'comuna_id' => $comuna])->assertOk()->assertJson(['paso' => 2]);
+
+        $ciudadano = Ciudadano::query()->sole();
+        $this->assertSame($comuna, $ciudadano->comuna_id);
+        $this->assertSame('CORR', CrmOutbox::query()->where('entidad', 'ciudadano')->latest('id')->first()->payload['comuna']['codigo']);
     }
 
     public function test_cada_envio_escribe_en_el_outbox_del_crm(): void

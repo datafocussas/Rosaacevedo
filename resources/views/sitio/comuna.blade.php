@@ -1,10 +1,11 @@
-<x-layouts.sitio :titulo="$comuna->rotulo().' · '.$comuna->nombreCorto()" :descripcion="'Propuestas, agenda y noticias de Rosa Acevedo en '.$comuna->nombre.'.'">
+@php $etiquetaComuna = $comuna->esCorregimiento() ? 'Corregimiento' : 'Tu comuna'; @endphp
+<x-layouts.sitio :titulo="$comuna->nombrePublico()" :descripcion="'Propuestas, agenda y noticias de Rosa Acevedo en '.($comuna->esCorregimiento() ? 'el ' : 'la ').$comuna->nombrePublico().'.'">
     @if ($banners->isNotEmpty())
         <x-ra.banner :banners="$banners" :corta="true" :h1="false" />
     @endif
     @php $imagen = $pagina?->getFirstMedia('imagen'); @endphp
     @if ($banners->isEmpty())
-        <x-ra.cabecera :etiqueta="$comuna->rotulo()" :titulo="$comuna->nombreCorto()"
+        <x-ra.cabecera :etiqueta="$etiquetaComuna" :titulo="$comuna->nombrePublico()"
             :imagen="\App\Support\Medios::url($imagen)" :foco="$imagen ? \App\Support\Medios::foco($imagen, [50, 40]) : null" />
     @endif
 
@@ -14,8 +15,8 @@
         <div class="ra-contenedor ra-dos-columnas">
             <div class="ra-pila-4">
                 @if ($banners->isNotEmpty())
-                    <span class="ra-etiqueta">{{ $comuna->rotulo() }}</span>
-                    <h1 class="ra-h2">{{ $comuna->nombreCorto() }}</h1>
+                    <span class="ra-etiqueta">{{ $etiquetaComuna }}</span>
+                    <h1 class="ra-h2">{{ $comuna->nombrePublico() }}</h1>
                 @endif
                 @if ($pagina?->saludo)
                     <div class="ra-prosa">{{ \App\Support\Texto::enriquecido($pagina->saludo) }}</div>
@@ -26,7 +27,7 @@
                     <a class="ra-btn ra-btn-whatsapp ra-alinear-inicio" href="{{ $whatsapp }}" target="_blank" rel="noopener" data-conversion="whatsapp_clic" data-umami-event="whatsapp_clic"><x-ra.icono nombre="whatsapp" /> Escríbenos por WhatsApp</a>
                 @endif
             </div>
-            <x-ra.formulario-registro :titulo="'Súmate en '.$comuna->nombreCorto()" :comuna-id="$comuna->id" :pasos="2" id="registro-comuna" boton="Me planto" />
+            <x-ra.formulario-registro :titulo="'Súmate en '.($comuna->esCorregimiento() ? 'El Manzanillo' : $comuna->nombrePublico())" :comuna-id="$comuna->id" :pasos="3" id="registro-comuna" boton="Me planto" />
         </div>
     </section>
 
@@ -45,8 +46,8 @@
         </section>
     @endif
 
-    @include('partials.bloques.agenda', ['d' => ['titulo' => 'Encuentros en '.$comuna->nombreCorto()], 'clasesFondo' => 'ra-fondo-arena'])
-    @include('partials.bloques.noticias', ['d' => ['titulo' => 'Noticias de '.$comuna->nombreCorto()], 'clasesFondo' => 'ra-fondo-marfil'])
+    @include('partials.bloques.agenda', ['d' => ['titulo' => 'Encuentros en '.($comuna->esCorregimiento() ? 'El Manzanillo' : 'la '.$comuna->nombrePublico())], 'clasesFondo' => 'ra-fondo-arena'])
+    @include('partials.bloques.noticias', ['d' => ['titulo' => 'Noticias de '.($comuna->esCorregimiento() ? 'El Manzanillo' : 'la '.$comuna->nombrePublico())], 'clasesFondo' => 'ra-fondo-marfil'])
 
     @if ($barrios->isNotEmpty())
         <section class="ra-seccion-compacta ra-fondo-blanco" aria-labelledby="barrios">

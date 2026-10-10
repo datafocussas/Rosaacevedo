@@ -12,15 +12,18 @@ class Payloads
 {
     public static function ciudadano(Ciudadano $ciudadano, string $evento): array
     {
-        $ciudadano->loadMissing('barrio.comuna', 'barrio.comuna2007', 'voluntariado');
+        $ciudadano->loadMissing('comuna', 'barrio.comuna', 'barrio.comuna2007', 'voluntariado');
         $barrio = $ciudadano->barrio;
+        $comuna = $ciudadano->comuna ?? $barrio?->comuna;
 
         return [
             'evento' => $evento,
             'uuid' => $ciudadano->uuid,
+            'codigo' => $ciudadano->codigo(),
             'celular' => $ciudadano->celular(),
             'nombre' => $ciudadano->nombre,
             'email' => $ciudadano->email,
+            'comuna' => $comuna ? ['codigo' => $comuna->codigo, 'nombre' => $comuna->nombrePublico()] : null,
             'barrio' => $barrio ? [
                 'codigo' => $barrio->codigo_externo,
                 'nombre' => $barrio->nombre,
@@ -62,7 +65,7 @@ class Payloads
 
     public static function propuesta(PropuestaCiudadana $propuesta, string $evento): array
     {
-        $propuesta->loadMissing('ciudadano', 'tema', 'temaConfirmado', 'barrio.comuna');
+        $propuesta->loadMissing('ciudadano', 'tema', 'temaConfirmado', 'comuna', 'barrio.comuna');
 
         return [
             'evento' => $evento,
@@ -71,7 +74,7 @@ class Payloads
             'tema' => $propuesta->tema?->nombre,
             'tema_confirmado' => $propuesta->temaConfirmado?->nombre,
             'barrio' => $propuesta->barrio?->codigo_externo,
-            'comuna_2024' => $propuesta->barrio?->comuna?->codigo,
+            'comuna_2024' => ($propuesta->comuna ?? $propuesta->barrio?->comuna)?->codigo,
             'texto' => $propuesta->texto,
             'estado' => $propuesta->estado,
             'publicar_anonima' => $propuesta->publicar_anonima,

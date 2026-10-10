@@ -97,6 +97,6 @@ class RegistroController extends Controller
         return TerritorioBarrio::query()->with('comuna')->where('activo', true)
             ->get()
             ->sortBy([fn ($b) => $b->comuna->codigo === 'CORR' ? 'Z' : $b->comuna->codigo, 'nombre'])
-            ->groupBy(fn ($b) => $b->comuna->esCorregimiento() ? 'Corregimiento El Manzanillo' : $b->comuna->nombre);
+            ->groupBy(fn ($b) => $b->comuna->nombrePublico());
     }
 }

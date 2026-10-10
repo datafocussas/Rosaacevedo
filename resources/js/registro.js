@@ -24,7 +24,7 @@ export default ({ pasos = 3, api, comuna = null }) => ({
     errores: {},
     errorGeneral: '',
     barrios: [],
-    datos: { email: '', barrio_id: '', intereses: [], disponibilidad: [], puesto_votacion: '', consent_afinidad: false },
+    datos: { email: '', comuna_id: comuna ? String(comuna) : '', barrio_id: '', intereses: [], disponibilidad: [], puesto_votacion: '', consent_afinidad: false },
     titulos: { 2: 'Cuéntanos de tu barrio', 3: '¿Quieres ayudar?' },
     botones: { 2: 'Continuar', 3: 'Quiero ser voluntario' },
 
@@ -71,7 +71,7 @@ export default ({ pasos = 3, api, comuna = null }) => ({
 
     async completar() {
         const cuerpo = this.paso === 2
-            ? { email: this.datos.email || null, barrio_id: this.datos.barrio_id || null }
+            ? { email: this.datos.email || null, comuna_id: this.datos.comuna_id || null, barrio_id: this.datos.barrio_id || null }
             : {
                 intereses: this.datos.intereses,
                 disponibilidad: this.datos.disponibilidad,
@@ -148,7 +148,7 @@ export default ({ pasos = 3, api, comuna = null }) => ({
                 if (!grupos.has(nombre)) grupos.set(nombre, []);
                 grupos.get(nombre).push(barrio);
             });
-            this.barrios = [...grupos].map(([nombre, items]) => ({ comuna: nombre, items }));
+            this.barrios = [...grupos].map(([nombre, items]) => ({ comuna: nombre, comunaId: String(items[0].comuna.id), items }));
             if (comuna) {
                 // Comuna preseleccionada en las páginas territoriales: sus barrios primero.
                 const propia = (grupo) => (grupo.items[0].comuna.id === comuna ? 1 : 0);
@@ -157,6 +157,11 @@ export default ({ pasos = 3, api, comuna = null }) => ({
         } catch {
             this.barrios = [];
         }
+    },
+
+    // Con una comuna elegida, el selector de barrio solo muestra los de esa comuna.
+    barriosVisibles() {
+        return this.datos.comuna_id ? this.barrios.filter((g) => g.comunaId === String(this.datos.comuna_id)) : this.barrios;
     },
 
     init() {

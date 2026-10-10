@@ -44,6 +44,14 @@ final class TokenRegistro
         return ['uuid' => $datos['c'], 'paso' => (int) $datos['p']];
     }
 
+    /** Datos de un token válido que aún no se ha usado, sin consumirlo. */
+    public static function disponible(string $token): ?array
+    {
+        $datos = self::leer($token);
+
+        return $datos && ! Cache::has('token-registro:'.$datos['j']) ? $datos : null;
+    }
+
     public static function leer(string $token): ?array
     {
         [$cuerpo, $firma] = array_pad(explode('.', $token, 2), 2, '');

@@ -6,6 +6,7 @@ use App\Models\Ciudadano;
 use App\Models\PropuestaCiudadana;
 use App\Models\SolicitudTitular;
 use App\Models\Tema;
+use App\Models\TerritorioComuna;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,6 +22,7 @@ class BuzonYTitularTest extends TestCase
         $respuesta = $this->postJson('/api/v1/propuestas', [
             'tema_id' => $tema->id,
             'texto' => 'El puesto de salud de San Pío X necesita atender en la tarde.',
+            'comuna_id' => TerritorioComuna::query()->where('division', '2024')->where('codigo', 'C02')->value('id'),
             'nombre' => 'Diana',
             'celular' => '3001234567',
             'consent' => ['general' => true, 'publicar' => true],
@@ -29,6 +31,19 @@ class BuzonYTitularTest extends TestCase
         $this->assertMatchesRegularExpression('/^PR-\d{4}-0001$/', $respuesta->json('codigo'));
         $this->assertSame(1, Ciudadano::query()->count());
         $this->assertTrue(PropuestaCiudadana::query()->sole()->publicar_anonima);
+        $this->assertSame('C02', PropuestaCiudadana::query()->sole()->comuna->codigo);
+        $this->assertSame('C02', Ciudadano::query()->sole()->comuna->codigo);
+    }
+
+    public function test_el_buzon_pide_la_comuna(): void
+    {
+        $this->postJson('/api/v1/propuestas', [
+            'tema_id' => Tema::query()->value('id'),
+            'texto' => 'Necesitamos más luz en el parque del barrio.',
+            'nombre' => 'Diana',
+            'celular' => '3001234567',
+            'consent' => ['general' => true],
+        ])->assertUnprocessable()->assertJsonValidationErrors(['comuna_id']);
     }
 
     public function test_la_solicitud_del_titular_queda_radicada_con_plazo(): void

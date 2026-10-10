@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Ciudadano;
 use App\Models\Interaccion;
+use App\Models\TerritorioBarrio;
 use App\Models\Voluntariado;
 use App\Services\Crm\Outbox;
 use App\Services\Crm\Payloads;
@@ -68,6 +69,15 @@ class RegistroCiudadano
      */
     public function completar(string $token, array $datos, Origen $origen, Request $request): array
     {
+        // La comuna es obligatoria en el paso 2 (con o sin catálogo de barrios). Se valida antes de consumir
+        // el token para que un error no obligue a la persona a empezar de nuevo.
+        $previo = TokenRegistro::disponible($token);
+        $barrio = ! empty($datos['barrio_id']) ? TerritorioBarrio::query()->find($datos['barrio_id']) : null;
+        $comunaId = $barrio?->comuna_2024_id ?? ($datos['comuna_id'] ?? null);
+        if ($previo && (int) $previo['p'] === 2 && ! $comunaId) {
+            throw ValidationException::withMessages(['comuna_id' => 'Elige tu comuna o el corregimiento.']);
+        }
+
         $leido = TokenRegistro::consumir($token);
         $ciudadano = $leido ? Ciudadano::query()->where('uuid', $leido['uuid'])->first() : null;
 
@@ -77,10 +87,11 @@ class RegistroCiudadano
 
         $paso = $leido['paso'];
 
-        DB::transaction(function () use ($ciudadano, $paso, $datos, $origen, $request) {
+        DB::transaction(function () use ($ciudadano, $paso, $datos, $origen, $request, $barrio, $comunaId) {
             if ($paso === 2) {
                 $ciudadano->email = $datos['email'] ?? $ciudadano->email;
-                $ciudadano->barrio_id = $datos['barrio_id'] ?? $ciudadano->barrio_id;
+                $ciudadano->barrio_id = $barrio?->id ?? $ciudadano->barrio_id;
+                $ciudadano->comuna_id = $comunaId ?? $ciudadano->comuna_id;
             } else {
                 $ciudadano->es_voluntario = true;
                 Voluntariado::query()->updateOrCreate(['ciudadano_id' => $ciudadano->id], [

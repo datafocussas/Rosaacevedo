@@ -93,11 +93,13 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 - `ra-contenedor`: máximo 1240 px, gutter 20 px (16 px en el encabezado bajo 360 px) y 32 px desde 768 px. `ra-seccion`: 56 px de alto de relleno en móvil, 112 px en escritorio.
 - Puntos de quiebre: 768 y 980 px (menú completo, entrada en dos columnas, bento de 4 columnas).
 
-## 7. La rosa v3 y la marca tipográfica
+## 7. La rosa, las raíces y la marca tipográfica
 
-- `x-ra.rosa-raices` (viewBox `0 0 400 760`): rosa coral, tallo, hojas, roca «ITAGÜÍ» y raíces oro. Props: `halo` (quitarlo sobre claro o foto), `decorativa` (oculta a lectores cuando hay texto equivalente), `etiqueta`. Los ids de degradados llevan un prefijo único por instancia.
-- `x-ra.rosa-flor`: solo la flor, para marcadores de imagen y piezas pequeñas.
-- Entrada de inicio: con foto, la rosa va delante a la izquierda de la foto (240 px); sin foto, ocupa el alto de la columna, centrada (máximo 380 px).
+- **Rosa «Aquí me planto» (desde el 10 oct 2026):** pieza de la campaña `public/img/SCR-20261010-mcyq.jpeg` (rosa roja con raíces turquesa luminosas). Se le quitó el fondo gris conservando el halo («color a alfa» contra el fondo estimado por zonas), se recortó la franja gris de la captura y se exportó en WebP con transparencia: `public/img/marca/rosa-aqui-me-planto-{420,820}.webp`. Está pensada para fondos oscuros.
+- `x-ra.rosa-raices` ahora pinta esa imagen (`<img>` con `srcset`). Props: `decorativa` (alt vacío cuando hay texto equivalente), `etiqueta`, `prioridad` (carga temprana en la entrada); `halo` se conserva por compatibilidad. Aparece junto al lema: entrada de inicio, Súmate, gracias, manifiesto y `/enlaces`.
+- **Raíces:** pieza `public/img/rosa-raices.png` (brote verde con raíces luminosas). Mismo tratamiento, recortada al brote y las raíces y fundida sobre el color abismo (único fondo del bloque «Raíces»): `public/img/marca/raices-{520,900}.webp`. Se ve en la franja «Raíces» de inicio cuando el bloque no trae foto ni cifras, con un fundido elíptico en los bordes.
+- `x-ra.rosa-flor`: solo la flor (SVG v3), para marcadores de imagen de noticias.
+- Entrada de inicio: con foto, la rosa va delante a la izquierda de la foto (300 px en escritorio); sin foto, ocupa el alto de la columna, centrada (`object-fit: contain`, máximo 460 px).
 - `x-ra.marca`: «ROSA» coral + «ACEVEDO», cargo en rótulo oro. No es un logotipo: cuando Comunicaciones entregue el SVG, se reemplaza aquí.
 - Archivos fuera del sitio: `public/img/rosa-raices.svg` (v3) y `public/img/redes-por-defecto.jpg` (de `docs/diseno-v2/piezas/og-redes-1200x630.png`).
 
@@ -112,7 +114,7 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 | `lema` | «Aquí / me planto.» con rosa opcional (`ra-lema-fila`) |
 | `aviso-escucha` | Franja esmeralda bajo la entrada |
 | `ejes` | `bento` (primer eje grande noche, tarjeta final coral) o `lista` |
-| `selector-comuna` | Red de raíces (prop `raices`); cada comuna enlaza solo si su página está publicada, si no muestra «Pronto» |
+| `selector-comuna` | Red de raíces (prop `raices`); cada comuna enlaza solo si su página está publicada, si no muestra «Pronto». En todo el sitio las comunas se nombran solo por su número («Comuna 4», `TerritorioComuna::nombrePublico()`); el corregimiento, «Corregimiento El Manzanillo» |
 | `buzon` | Temas como chips (radios), variante oscura en esmeralda. El selector de barrio (opcional) solo aparece si hay catálogo cargado; igual en el paso 2 del registro |
 | `tarjeta-noticia` / `noticias` | Variantes `destacada`, `fila`, `rejilla`; sin imagen, la rosa-flor como marcador |
 | `pie` | Noche, «Itagüí» en contorno; en la franja legal, responsable del tratamiento, cookies y el crédito «Desarrollo: DataFocus S.A.S.» (enlace a www.datafocussas.com, pestaña nueva) |
@@ -180,7 +182,7 @@ Reglas, en orden: (1) dos oscuros seguidos: el segundo usa su primer fondo claro
 2. **Componente nuevo:** `resources/views/components/ra/{nombre}.blade.php` con `@props` y comentario; estilos `ra-{nombre}` en la sección que corresponda de `sitio.css`; que funcione con y sin `ra-oscuro`; agregarlo a §8.
 3. **Bloque nuevo:** `Block::make('tipo')` con `activo` (y `...self::fondo('tipo')` si admite varios fondos) en `Bloques.php`; sus fondos en `Fondos::PERMITIDOS`; vista en `partials/bloques/{tipo}.blade.php` usando `$clasesFondo`; agregarlo a §10.
 4. **Página nueva:** desde el panel, sin código (Contenido → Páginas). Las rutas propias del código van en `Pagina::RESERVADAS`.
-5. **Rosa, lema o logotipo de Comunicaciones:** reemplazar el SVG en `rosa-raices.blade.php` (conservar el prefijo de ids), `public/img/rosa-raices.svg` y `redes-por-defecto.jpg`; el lettering va en `lema.blade.php` con `role="img"` y `aria-label="Aquí me planto."`.
+5. **Rosa, raíces, lema o logotipo de Comunicaciones:** la rosa se cambia reemplazando `public/img/marca/rosa-aqui-me-planto-*.webp` (fondo transparente, mismas proporciones o ajustando `width`/`height` en `rosa-raices.blade.php`); las raíces, `public/img/marca/raices-*.webp`. El lettering va en `lema.blade.php` con `role="img"` y `aria-label="Aquí me planto."`.
 6. **Antes de entregar:** `npm run build`, `vendor/bin/pint`, `php artisan test`; revisión visual en 390, 1280 y 1440 px (desplazando la página para que aparezcan las secciones); axe de las páginas de §13; actualizar este documento en el mismo commit.
 
 ## 16. Decisiones registradas y pendientes
@@ -193,6 +195,8 @@ Reglas, en orden: (1) dos oscuros seguidos: el segundo usa su primer fondo claro
 | 9 oct 2026 | Fondos por bloque con alternancia automática y aviso 70/30 | Vigente |
 | 9 oct 2026 | Permanent Marker retirado; el lema va en Montserrat 800 | Vigente hasta el lettering SVG |
 | 9 oct 2026 | Las cifras y datos de las maquetas v2 no se publican; Raíces muestra cifras solo si el panel las carga | Vigente |
+| 10 oct 2026 | Rosa y raíces: piezas raster de la campaña en lugar de la rosa SVG v3 (§7) | Vigente |
+| 10 oct 2026 | Comunas nombradas solo por su número en el sitio | Vigente |
 | Pendiente | Logotipo y lettering «Aquí me planto» en SVG | Comunicaciones |
 | Pendiente | Fotografías definitivas (16:9 y 4:5) para banners y cabeceras | Comunicaciones |
 | Pendiente | Hoja de vida oficial para Raíces y «Conoce a Rosa» | Campaña |
