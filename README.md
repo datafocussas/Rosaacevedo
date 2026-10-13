@@ -60,56 +60,17 @@ El Ajizal,vereda,CORR,CORR,CORR-AJ
 
 ## Despliegue en Hostinger
 
-Requisitos del plan (sección 06): Business o Cloud Startup con SSH, cron, PHP 8.3 y MySQL. El servidor no necesita Composer ni Node: todo se construye en GitHub Actions.
+**Guía paso a paso para el equipo:** [`docs/Guia_Despliegue_Paso_a_Paso.md`](docs/Guia_Despliegue_Paso_a_Paso.md).
 
-### 1. Preparar Hostinger (una vez)
+Resumen técnico: cada push a `main` (o «Run workflow» en Actions) corre las pruebas contra MariaDB 10.11, construye en el runner (`composer install --no-dev`, `npm run build`), sube por `rsync` a `releases/AAAAMMDD-HHMMSS-sha/` y por SSH ejecuta:
 
-1. En hPanel: **Avanzado → PHP** en 8.3 para el dominio; extensiones `gd`, `intl`, `zip`, `exif`, `pdo_mysql`, `sodium` activas.
-2. **Bases de datos → MySQL**: crear `uXXXX_rosa` y su usuario.
-3. **Avanzado → Acceso SSH**: activar y agregar la llave pública del despliegue. El puerto suele ser `65002`.
-4. Por SSH, ubicar el PHP 8.3 de la línea de comandos (`php -v`; si no es 8.3, usar la ruta completa, por ejemplo `/opt/alt/php83/usr/bin/php`).
-5. Crear `~/rosaacevedo/shared/.env` a partir de `.env.example`, con:
-   - `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL=https://rosaacevedo.com`, `APP_KEY` (generar con `php artisan key:generate --show` en local).
-   - `DB_HOST=localhost` y los datos de la base.
-   - `CELULAR_HMAC_KEY` (32 bytes aleatorios en hexadecimal). **No cambiarla nunca después**: rompe la deduplicación.
-   - `SESSION_SECURE_COOKIE=true`, `RESPONSE_CACHE_ENABLED=true`, `DOS_FACTORES=true`.
-   - Turnstile, Umami, Brevo, `CRM_*` y `BACKUP_*` cuando estén.
-6. Subir y ejecutar `deploy/primera-vez.sh ~/rosaacevedo ~/domains/rosaacevedo.com/public_html`. Crea `releases/`, `shared/storage` y deja `public_html` como enlace a `current/public`.
-   Si hPanel no permite el enlace simbólico, usar `deploy/public_html.htaccess` (instrucciones dentro del archivo).
-7. **Avanzado → Cron Jobs**, cada minuto:
-   ```
-   cd /home/uXXXX/rosaacevedo/current && /opt/alt/php83/usr/bin/php artisan schedule:run >> /dev/null 2>&1
-   ```
-   El programador vacía la cola cada minuto (`queue:work --stop-when-empty`), sincroniza el CRM, publica lo programado y hace las copias nocturnas. No hay procesos permanentes.
+1. `deploy/preparar.sh`: la primera vez crea `shared/` y `shared/.env` (desde `.env.example`, con `APP_KEY` y `CELULAR_HMAC_KEY` generadas en el servidor; nunca lo sobrescribe) y enlaza `public_html` → `current/public` (guarda la carpeta anterior como respaldo). En cada despliegue ajusta `PRUEBAS_USUARIO`/`PRUEBAS_CLAVE` según los secretos `SITIO_USUARIO`/`SITIO_CLAVE` (sitio cerrado con contraseña y `noindex`; sin ellos, abierto).
+2. `deploy/activar.sh`: migraciones, `db:seed` solo la primera vez (marca `shared/.datos-base-cargados`), primer administrador desde `PANEL_CORREO`/`PANEL_CLAVE` si no hay usuarios, cachés, cambio atómico de `current`, limpieza de caché de respuestas. Si algo falla, el sitio sale del modo mantenimiento y sigue la versión anterior. Conserva 5 versiones; `deploy/revertir.sh` vuelve a la anterior (no revierte migraciones).
+3. `deploy/php.sh` ubica un PHP ≥ 8.3 (`HOSTINGER_PHP_BIN`, `/opt/alt/php83/usr/bin/php`, `php`).
 
-### 2. Configurar GitHub (una vez)
+Secretos del entorno `produccion` en GitHub: `HOSTINGER_SSH_HOST`, `HOSTINGER_SSH_PORT` (por defecto 65002), `HOSTINGER_SSH_USER`, `HOSTINGER_SSH_KEY`, `DB_NOMBRE`, `DB_USUARIO`, `DB_CLAVE`, `PANEL_CORREO`, `PANEL_CLAVE`, y opcionales `SITIO_USUARIO`, `SITIO_CLAVE`, `HOSTINGER_RUTA` (por defecto `~/rosaacevedo`), `HOSTINGER_PUBLIC_HTML` (por defecto `~/domains/{dominio}/public_html`), `HOSTINGER_PHP_BIN`. Variable: `URL_SITIO`.
 
-En **Settings → Environments** crear `produccion` (y `pruebas` si aplica) con estos secretos:
-
-| Secreto | Ejemplo |
-|---|---|
-| `HOSTINGER_SSH_HOST` | `123.45.67.89` |
-| `HOSTINGER_SSH_PORT` | `65002` |
-| `HOSTINGER_SSH_USER` | `u123456789` |
-| `HOSTINGER_SSH_KEY` | llave privada ed25519 del despliegue |
-| `HOSTINGER_RUTA` | `/home/u123456789/rosaacevedo` |
-| `HOSTINGER_PHP_BIN` | `/opt/alt/php83/usr/bin/php` |
-
-Y la variable `URL_SITIO` (`https://rosaacevedo.com` o `https://pruebas.rosaacevedo.com`).
-
-### 3. Desplegar
-
-Cada push a `main` corre las pruebas contra MariaDB 10.11, construye (`composer install --no-dev`, `npm run build`), sube por `rsync` a `releases/AAAAMMDD-HHMMSS-sha/`, ejecuta `deploy/activar.sh` (migraciones, cachés de config, rutas, vistas y Filament), cambia el enlace `current` de forma atómica, limpia la caché de respuestas y verifica `/up`. Se conservan las últimas 5 versiones; `deploy/revertir.sh` vuelve a la anterior con un cambio de enlace (no revierte migraciones).
-
-**Solo después del primer despliegue**, por SSH, cargar los datos base (comunas, ejes, temas, redes, menú, roles, políticas y páginas; no crea usuarios ni datos de prueba) y crear el primer usuario:
-
-```bash
-cd ~/rosaacevedo/current
-/opt/alt/php83/usr/bin/php artisan db:seed --force
-/opt/alt/php83/usr/bin/php artisan usuarios:crear correo@rosaacevedo.com --rol=administrador
-```
-
-El usuario configura el doble factor en su primer ingreso. Los seeders no duplican nada si se vuelven a correr.
+Una vez en hPanel: PHP 8.3, base de datos, SSH con la llave pública y el cron cada minuto (el comando exacto queda en el resumen del despliegue en Actions). Turnstile, Umami, Brevo y copias externas se agregan después en `shared/.env`.
 
 ### 4. Cloudflare
 

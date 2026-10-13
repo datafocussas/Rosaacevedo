@@ -14,7 +14,7 @@
     <title>{{ $titulo }}</title>
     <meta name="description" content="{{ $descripcion }}">
     <link rel="canonical" href="{{ $canonica }}">
-    @if (app()->environment('pruebas', 'staging') || $noIndexar)
+    @if (app()->environment('pruebas', 'staging') || config('rosa.pruebas.usuario') || $noIndexar)
         <meta name="robots" content="noindex, nofollow">
     @endif
     <meta property="og:site_name" content="Rosa Acevedo">

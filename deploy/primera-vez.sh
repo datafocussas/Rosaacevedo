@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Prepara la estructura en Hostinger la primera vez (por SSH). Uso:
+# OBSOLETO: el despliegue ya prepara el servidor solo (deploy/preparar.sh). Se conserva como referencia manual.
 #   bash primera-vez.sh /home/uXXXX/rosaacevedo /home/uXXXX/domains/rosaacevedo.com/public_html
 set -euo pipefail
 RUTA="$1"

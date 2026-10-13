@@ -3,7 +3,7 @@
 # Ojo: no revierte migraciones. Si la versión nueva migró la base, revisar antes de revertir.
 set -euo pipefail
 RUTA="$1"
-PHP="${PHP_BIN:-php}"
+PHP="$(bash "$(dirname "$0")/php.sh")"
 ACTUAL=$(readlink -f "$RUTA/current")
 ANTERIOR=$(ls -1dt "$RUTA"/releases/*/ | sed 's#/$##' | grep -v "^$ACTUAL$" | head -1)
 [ -n "$ANTERIOR" ] || { echo "No hay versión anterior."; exit 1; }

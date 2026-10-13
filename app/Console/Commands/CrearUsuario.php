@@ -9,7 +9,9 @@ use Illuminate\Validation\Rules\Password;
 
 class CrearUsuario extends Command
 {
-    protected $signature = 'usuarios:crear {email} {--nombre=} {--rol=administrador}';
+    protected $signature = 'usuarios:crear {email} {--nombre=} {--rol=administrador}
+        {--clave-del-entorno : Toma la contraseña de la variable PANEL_CLAVE (despliegue automático)}
+        {--si-no-hay-usuarios : No hace nada si ya existe algún usuario}';
 
     protected $description = 'Crea un usuario del panel con su rol (administrador, editor, moderador o analista).';
 
@@ -22,7 +24,15 @@ class CrearUsuario extends Command
             return self::FAILURE;
         }
 
-        $clave = $this->secret('Contraseña (mínimo 12 caracteres, mayúsculas, minúsculas y números)');
+        if ($this->option('si-no-hay-usuarios') && User::query()->exists()) {
+            $this->line('Ya hay usuarios en el panel: no se crea ninguno.');
+
+            return self::SUCCESS;
+        }
+
+        $clave = $this->option('clave-del-entorno')
+            ? (string) getenv('PANEL_CLAVE')
+            : $this->secret('Contraseña (mínimo 12 caracteres, mayúsculas, minúsculas y números)');
         $validador = Validator::make(['email' => $this->argument('email'), 'clave' => $clave], [
             'email' => ['required', 'email', 'unique:users,email'],
             'clave' => ['required', Password::min(12)->letters()->mixedCase()->numbers()],

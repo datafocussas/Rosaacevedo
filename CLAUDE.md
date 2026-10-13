@@ -14,6 +14,7 @@ Sitio web oficial de la precandidatura de Rosa María Acevedo Jaramillo a la Alc
 | `docs/componentes/*.html` | Referencia v1 de los componentes (histórico; para lo visual manda la v2). |
 | `docs/Diseno_Sitio_Web.md` | Diseño **tal como está implementado**: tokens, reglas de color (verde = escucha y comunidad), componentes, entrada de inicio, rosa, bloques, accesibilidad y procedimientos para modificarlo. **Leerlo antes de cualquier cambio visual y actualizarlo en el mismo commit.** |
 | `public/img/marca/` | Rosa «Aquí me planto» y raíces que usa el sitio (WebP optimizados a partir de las piezas de la campaña en `public/img/`). Ver §7 de `docs/Diseno_Sitio_Web.md`. |
+| `docs/Guia_Despliegue_Paso_a_Paso.md` | Despliegue en Hostinger explicado para el equipo, paso a paso (Hostinger, llaves SSH, secretos de GitHub, merge, cron, dominio, primer ingreso, abrir el sitio). |
 | `docs/Guia_Paginas_y_Bloques.md` | Cómo se arma una página en el panel, qué hace cada bloque y a dónde va la información de los formularios. |
 
 Si un documento anterior del proyecto (base técnica de agosto, plan de instrumentación) contradice la especificación, **manda la especificación**. En particular, el plan de instrumentación proponía Astro + PostgreSQL para el sitio público: quedó reemplazado por Laravel + MySQL en Hostinger.

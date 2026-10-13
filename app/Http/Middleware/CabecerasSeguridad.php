@@ -22,7 +22,8 @@ class CabecerasSeguridad
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }
 
-        if (app()->environment('pruebas')) {
+        // Entorno de pruebas o sitio cerrado con clave: que los buscadores no lo indexen.
+        if (app()->environment('pruebas') || config('rosa.pruebas.usuario')) {
             $response->headers->set('X-Robots-Tag', 'noindex, nofollow');
         }
 
