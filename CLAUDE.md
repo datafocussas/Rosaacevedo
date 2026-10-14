@@ -8,10 +8,14 @@ Sitio web oficial de la precandidatura de Rosa María Acevedo Jaramillo a la Alc
 |---|---|
 | `docs/Especificacion_Sitio_Web_Rosa_Alcaldesa_2027.md` | Manual de marca + secciones 01–08: mapa del sitio, requerimientos (RF-xx, RNF-xx), panel, modelo de datos, API, despliegue, cumplimiento legal, plan y criterios de aceptación. **Es el documento rector.** |
 | `docs/schema-mysql.sql` | Modelo de datos de referencia (25 tablas, MySQL 8 / MariaDB 10.6+, probado en MariaDB 10.11) con datos semilla. Las migraciones de Laravel se escriben a partir de él. |
-| `docs/tokens.json` / `resources/css/tokens.css` | Tokens de diseño (colores, tipografía, espaciado, radios, sombras). No escribir colores ni medidas a mano: usar `var(--token)`. |
-| `resources/css/ra-componentes.css` | Kit CSS de componentes, clases con prefijo `ra-`. Es la base de estilos del sitio público. |
-| `docs/componentes/*.html` | Vista de referencia de cada componente y de la página de inicio completa (`PaginaInicio.html`). Recrearlos fielmente como componentes Blade. |
-| `public/img/rosa-raices.svg` | Ilustración de marca para usos fuera del sitio; dentro del sitio va como SVG en línea (ver `componentes/RosaRaices.html`). |
+| `docs/diseno-v2/Diseno_Visual_v2_Noche_de_Raices.md` | Lenguaje visual vigente (v2 «Noche de raíces»): superficies, tipografía, componentes, rosa v3 y reglas para contenido del panel. Sus maquetas traen cifras sin confirmar: no copiarlas. |
+| `docs/tokens.json` / `resources/css/tokens.css` | Tokens de diseño v2 (copia de `docs/diseno-v2/tokens-v2.css`). No escribir colores ni medidas a mano: usar `var(--token)`. |
+| `resources/css/sitio.css` | Todos los estilos del sitio público (v2), clases con prefijo `ra-`. El kit v1 `ra-componentes.css` queda como histórico y ya no se importa. |
+| `docs/componentes/*.html` | Referencia v1 de los componentes (histórico; para lo visual manda la v2). |
+| `docs/Diseno_Sitio_Web.md` | Diseño **tal como está implementado**: tokens, reglas de color (verde = escucha y comunidad), componentes, entrada de inicio, rosa, bloques, accesibilidad y procedimientos para modificarlo. **Leerlo antes de cualquier cambio visual y actualizarlo en el mismo commit.** |
+| `public/img/marca/` | Rosa «Aquí me planto» y raíces que usa el sitio (WebP optimizados a partir de las piezas de la campaña en `public/img/`). Ver §7 de `docs/Diseno_Sitio_Web.md`. |
+| `docs/Guia_Despliegue_Paso_a_Paso.md` | Despliegue en Hostinger explicado para el equipo, paso a paso (Hostinger, llaves SSH, secretos de GitHub, merge, cron, dominio, primer ingreso, abrir el sitio). |
+| `docs/Guia_Paginas_y_Bloques.md` | Cómo se arma una página en el panel, qué hace cada bloque y a dónde va la información de los formularios. |
 
 Si un documento anterior del proyecto (base técnica de agosto, plan de instrumentación) contradice la especificación, **manda la especificación**. En particular, el plan de instrumentación proponía Astro + PostgreSQL para el sitio público: quedó reemplazado por Laravel + MySQL en Hostinger.
 
@@ -28,7 +32,7 @@ Si un documento anterior del proyecto (base técnica de agosto, plan de instrume
 ## Convenciones
 
 - Un componente Blade por componente del sistema: `<x-ra.boton>`, `<x-ra.encabezado>`, `<x-ra.banner>`, `<x-ra.formulario-registro>`, `<x-ra.consentimiento>`, `<x-ra.ejes>`, `<x-ra.buzon>`, `<x-ra.selector-comuna>`, `<x-ra.tarjeta-noticia>`, `<x-ra.agenda>`, `<x-ra.franja-redes>`, `<x-ra.pie>`, `<x-ra.rosa-raices>`.
-- Tema de Filament con `azul-itagui` como primario y Montserrat. Montserrat autoalojada en WOFF2 en producción.
+- Tema de Filament con esmeralda (`#0f5c45`) como primario y Montserrat. Montserrat autoalojada en WOFF2 en producción.
 - Nombres de tablas, columnas, modelos y rutas en español, como en `schema-mysql.sql`.
 - Tono del sitio: tuteo («Súmate», «Cuéntanos»). Sin emojis. Sin «¡!» en titulares.
 - Accesibilidad WCAG 2.1 AA: no quitar el anillo de foco, alto mínimo de controles 48 px, etiquetas asociadas, errores escritos (no solo color). El coral `#f45a43` nunca va en texto pequeño: usar `coral-texto`.
@@ -55,18 +59,18 @@ Si un documento anterior del proyecto (base técnica de agosto, plan de instrume
 
 ## Integración con el CRM
 
-El CRM de la campaña vive en `https://aplicativo.rosaacevedo.co` (Laravel; documentación de API en `/docs/api`, hoy con acceso restringido, 403). **Pendiente**: obtener la especificación OpenAPI (`php artisan scramble:export`) y ajustar la sección 05. Mientras tanto, implementar la sincronización detrás de una interfaz (`App\Contracts\CrmCliente`) con el outbox, para cambiar solo el adaptador cuando llegue el contrato real. No inventar endpoints del CRM.
+El CRM de la campaña vive en `https://aplicativo.rosaacevedo.co` (Laravel; documentación de API en `/docs/api`, hoy con acceso restringido, 403). La sincronización va detrás de `App\Contracts\CrmCliente` con el outbox. La conexión se configura en el panel (Sitio → Conexión con el CRM: URL por tipo de dato, API key cifrada y mapeo de campos; `App\Services\Crm\CrmConexion`); el envío es automático cada minuto. No inventar endpoints del CRM: la URL y los campos los pone la campaña según la documentación del CRM.
 
 ## Plan inmediato (sección 08)
 
 - **Sprint 0 (6–10 oct 2026):** repositorio, CI/CD, verificación del plan de Hostinger (SSH, cron, PHP 8.3), esqueleto Laravel + Filament, tokens y CSS en Vite, componentes Blade, migraciones, semillas (comunas, ejes, redes, ajustes).
-- **Sprint 1 (13–23 oct):** captación MVP (registro pasos 1–2, consentimientos, outbox), panel (banners, noticias, páginas, ejes, menú, redes, configuración), políticas, `/mis-datos`, `/uso-de-ia`, `/q/` + QR, `/enlaces`, A/B del banner, Umami, Turnstile, redirecciones.
+- **Sprint 1 (13–23 oct):** captación MVP (registro pasos 1–2, consentimientos, outbox), panel (banners, noticias, páginas, ejes, menú, redes, configuración), políticas, `/mis-datos`, `/q/` + QR, `/enlaces`, A/B del banner, Umami, Turnstile, redirecciones.
 - **Salida a producción:** 24 oct 2026. Hito crítico: captar datos antes de terminar octubre.
 
 ## Pendientes de la campaña (no bloquean el código, sí la salida)
 
 - Hoja de vida oficial de Rosa (formación, cargos, periodos) para «Conoce a Rosa».
-- Logotipo y rotulado «Aquí me planto» en SVG (hoy el lema usa Permanent Marker como sustituto).
+- Logotipo y rotulado «Aquí me planto» en SVG (hoy el lema va en Montserrat 800 como sustituto).
 - Fotografías definitivas en alta (la foto actual es un recorte de una pieza, solo para maquetas).
 - Textos de los 7 ejes y validación del eje de salud con Estrategia.
 - Número de WhatsApp Business de la campaña (distinto del canal).
@@ -74,3 +78,7 @@ El CRM de la campaña vive en `https://aplicativo.rosaacevedo.co` (Laravel; docu
 - Catálogo corregido de 84 barrios + 6 sectores + 8 veredas con su correspondencia 2007.
 - Especificación de la API del CRM.
 - Datos del plan de Hostinger, acceso SSH y acceso al DNS de rosaacevedo.com.
+
+## Estado del código y comandos
+
+El esqueleto del Sprint 0 y la captación del Sprint 1 están en el repositorio (ver `README.md`). Antes de entregar cambios: `vendor/bin/pint`, `php artisan test` y `npm run build`. Decisiones abiertas y desviaciones de la especificación: sección «Decisiones y desviaciones para revisar» del `README.md`.

@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Rosa Alcaldesa 2027 · Tokens de diseño v2 «Noche de raíces»
+   Aprobado el 9 de octubre de 2026. Reemplaza resources/css/tokens.css (v1).
+   Regla: ningún color, espacio, radio o sombra se escribe a mano en las vistas.
+   Contrastes WCAG 2.1 verificados (ver docs/diseno/Diseno_Visual_v2.md, §4).
+   ========================================================================== */
+
+:root {
+  /* --- Superficies ------------------------------------------------------ */
+  --noche:          #04151f;  /* fondo oscuro principal (encabezado, cita, redes) */
+  --abismo:         #0a2533;  /* oscuro alterno (franja «Raíces») */
+  --profundo:       #020d14;  /* pie de página */
+  --marfil:         #f6f1ea;  /* fondo claro principal: el 70 % del sitio */
+  --arena:          #ece4d8;  /* claro alterno (agenda, tarjeta El Manzanillo) */
+  --blanco:         #ffffff;  /* tarjetas y campos sobre marfil */
+  --esmeralda:      #0f5c45;  /* escucha: buzón; números de comuna; fechas */
+
+  /* --- Texto ------------------------------------------------------------ */
+  --tinta:          #04151f;  /* texto y titulares sobre claro (16,5:1 en marfil) */
+  --tinta-suave:    #4f5f68;  /* texto secundario sobre claro (5,9:1) */
+  --marfil-texto:   #f4eee6;  /* texto sobre oscuro (16,1:1 en noche) */
+  --niebla:         #9fb3bf;  /* texto secundario sobre oscuro (8,5:1) */
+
+  /* --- Acentos ---------------------------------------------------------- */
+  --coral:          #ff6b4e;  /* acción y flor. Botón principal con texto --noche (6,6:1) */
+  --coral-hondo:    #b8321f;  /* coral para texto sobre claro (5,3:1) */
+  --oro:            #c9a86a;  /* filos, rótulos sobre oscuro (8,2:1), líneas */
+  --oro-claro:      #e2c58b;  /* cifras, enlaces y foco sobre oscuro (11,1:1) */
+  --oro-oscuro:     #7d5f27;  /* rótulos sobre claro (5,3:1 en marfil) */
+  --jade:           #3ddc97;  /* verde sobre oscuro (10,5:1): botón canal WhatsApp, rótulo «Raíces» */
+
+  /* --- Bordes ----------------------------------------------------------- */
+  --borde-claro:    #e3d8c8;  /* tarjetas sobre marfil */
+  --borde-verde:    #d3e4da;  /* tarjetas de comuna */
+  --separador:      #d9cdbb;  /* filas de noticias */
+  --filo-oro:       rgba(226, 197, 139, 0.30);  /* tarjetas y cápsulas sobre oscuro */
+  --campo-oscuro:   rgba(244, 238, 230, 0.45);  /* borde de campos sobre noche (4,1:1) */
+  --campo-esmeralda: rgba(244, 238, 230, 0.60); /* borde de campos sobre esmeralda */
+  --borde-control:  #857b70;  /* borde de campos y casillas sobre claro (3,7:1 en marfil) */
+  --vidrio:         rgba(244, 238, 230, 0.05);  /* relleno de cápsulas de vidrio */
+  --vidrio-barra:   rgba(4, 21, 31, 0.72);      /* encabezado fijo */
+
+  /* --- Estados (se conservan de v1) ------------------------------------- */
+  --exito:          #2f7d5b;
+  --alerta:         #9a5b00;
+  --alerta-tenue:   #fbf0dc;
+  --error:          #a4231b;
+  --error-sobre-oscuro: #ff8a75;
+
+  /* --- Foco ------------------------------------------------------------- */
+  --foco-claro:     #04151f;  /* anillo sobre marfil, arena y blanco */
+  --foco-oscuro:    #e2c58b;  /* anillo sobre noche, abismo y esmeralda */
+
+  /* --- Tipografía: una sola familia ------------------------------------- */
+  --font-sans: Montserrat, "Helvetica Neue", Arial, sans-serif;
+
+  /* --- Espacio, radios y sombras ---------------------------------------- */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --space-9: 96px; --space-10: 120px;
+  --radius-campo: 14px;    /* campos de formulario */
+  --radius-tarjeta: 22px;  /* tarjetas */
+  --radius-panel: 28px;    /* bento, buzón, noticias destacadas */
+  --radius-pill: 999px;    /* botones, chips, redes */
+  --sombra-foto: 0 40px 120px rgba(0, 0, 0, 0.55);
+  --desenfoque-vidrio: 14px;
+
+  /* --- Medidas ---------------------------------------------------------- */
+  --ancho-contenido: 1240px;
+  --ancho-lectura: 720px;
+  --alto-encabezado: 76px;   /* 64 px en móvil */
+  --toque-minimo: 48px;
+
+  /* --- Compatibilidad con v1 -------------------------------------------
+     Los nombres v1 siguen existiendo para no romper vistas ni el panel
+     mientras se migra; apuntan a los valores v2. Retirar al terminar. */
+  --crema:          var(--marfil);
+  --azul-itagui:    var(--noche);
+  --azul-profundo:  var(--profundo);
+  --coral-texto:    var(--coral-hondo);
+  --verde-profundo: var(--esmeralda);
+  --verde-raiz:     var(--exito);
+  --borde-suave:    var(--borde-claro);
+  --foco:           var(--foco-claro);
+  --foco-inverso:   var(--foco-oscuro);
+}

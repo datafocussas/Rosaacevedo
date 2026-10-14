@@ -1,0 +1,53 @@
+name: Pruebas
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+  workflow_call:
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MARIADB_DATABASE: rosa_pruebas
+          MARIADB_USER: rosa
+          MARIADB_PASSWORD: rosa
+          MARIADB_ROOT_PASSWORD: raiz
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-retries=20
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_DATABASE: rosa_pruebas
+      DB_USERNAME: rosa
+      DB_PASSWORD: rosa
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, gd, intl, zip, exif, bcmath
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Dependencias
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+          npm ci
+      - name: Recursos (Vite)
+        run: npm run build
+      - name: Estilo de código (Pint)
+        run: vendor/bin/pint --test
+      - name: Pruebas
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan test

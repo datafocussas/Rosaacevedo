@@ -1,0 +1,131 @@
+name: Despliegue a Hostinger
+
+# Pruebas → composer --no-dev y npm run build en el runner → rsync por SSH a releases/ →
+# migraciones y cachés → cambio del enlace current (sección 06).
+on:
+  push:
+    branches: [main]
+  # Botón «Run workflow» en la pestaña Actions (por ejemplo, para abrir o cerrar el sitio con clave).
+  workflow_dispatch:
+
+# Los secretos van en Settings → Secrets and variables → Actions (secretos del repositorio). No se usan
+# «Environments» porque en repositorios privados sin plan pago de GitHub no están disponibles.
+concurrency:
+  group: despliegue-produccion
+  cancel-in-progress: false
+
+jobs:
+  pruebas:
+    uses: ./.github/workflows/ci.yml
+
+  desplegar:
+    needs: pruebas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: gd, intl, zip, exif, bcmath
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Construir
+        run: |
+          composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-progress
+          npm ci && npm run build
+          php artisan filament:assets
+      - name: Llave SSH
+        run: |
+          if [ -z "${{ secrets.HOSTINGER_SSH_KEY }}" ] || [ -z "${{ secrets.HOSTINGER_SSH_HOST }}" ] || [ -z "${{ secrets.HOSTINGER_SSH_USER }}" ]; then
+            echo "::error::Faltan secretos de Hostinger (HOSTINGER_SSH_HOST, HOSTINGER_SSH_USER, HOSTINGER_SSH_KEY). Revisa la guía docs/Guia_Despliegue_Paso_a_Paso.md."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "${{ secrets.HOSTINGER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${{ secrets.HOSTINGER_SSH_PORT || '65002' }}" "${{ secrets.HOSTINGER_SSH_HOST }}" >> ~/.ssh/known_hosts
+      - name: Rutas en el servidor
+        env:
+          DESTINO: ${{ secrets.HOSTINGER_SSH_USER }}@${{ secrets.HOSTINGER_SSH_HOST }}
+          PUERTO: ${{ secrets.HOSTINGER_SSH_PORT || '65002' }}
+          URL_SITIO: ${{ vars.URL_SITIO || 'https://rosaacevedo.com' }}
+        run: |
+          CASA=$(ssh -p "$PUERTO" "$DESTINO" 'echo $HOME')
+          DOMINIO=$(echo "$URL_SITIO" | sed -E 's#^https?://##; s#/.*$##; s#^www\.##')
+          RUTA="${{ secrets.HOSTINGER_RUTA }}"; RUTA="${RUTA:-$CASA/rosaacevedo}"
+          PUBLIC_HTML="${{ secrets.HOSTINGER_PUBLIC_HTML }}"; PUBLIC_HTML="${PUBLIC_HTML:-$CASA/domains/$DOMINIO/public_html}"
+          echo "RUTA=$RUTA" >> $GITHUB_ENV
+          echo "PUBLIC_HTML=$PUBLIC_HTML" >> $GITHUB_ENV
+          echo "Sitio en $RUTA · public_html: $PUBLIC_HTML"
+      - name: Subir versión
+        env:
+          DESTINO: ${{ secrets.HOSTINGER_SSH_USER }}@${{ secrets.HOSTINGER_SSH_HOST }}
+          PUERTO: ${{ secrets.HOSTINGER_SSH_PORT || '65002' }}
+        run: |
+          VERSION=$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          ssh -p "$PUERTO" "$DESTINO" "mkdir -p '$RUTA/releases'"
+          # --link-dest reutiliza los archivos sin cambios de la versión activa (vendor/ no se sube completo cada vez).
+          ENLAZAR=""
+          if ssh -p "$PUERTO" "$DESTINO" "test -d '$RUTA/current/'"; then ENLAZAR="--link-dest=$RUTA/current/"; fi
+          rsync -az --delete -e "ssh -p $PUERTO" $ENLAZAR \
+            --exclude='/.git' --exclude='/.github' --exclude='/node_modules' --exclude='/tests' --exclude='/docs' \
+            --exclude='/.env' --exclude='/storage' --exclude='/public/storage' --exclude='/public/hot' --exclude='/docker' \
+            ./ "$DESTINO:$RUTA/releases/$VERSION/"
+      - name: Preparar el servidor (la primera vez crea .env, carpetas y public_html)
+        env:
+          DESTINO: ${{ secrets.HOSTINGER_SSH_USER }}@${{ secrets.HOSTINGER_SSH_HOST }}
+          PUERTO: ${{ secrets.HOSTINGER_SSH_PORT || '65002' }}
+          PHP_BIN: ${{ secrets.HOSTINGER_PHP_BIN }}
+          URL_SITIO: ${{ vars.URL_SITIO || 'https://rosaacevedo.com' }}
+          DB_NOMBRE: ${{ secrets.DB_NOMBRE }}
+          DB_USUARIO: ${{ secrets.DB_USUARIO }}
+          DB_CLAVE: ${{ secrets.DB_CLAVE }}
+          SITIO_USUARIO: ${{ secrets.SITIO_USUARIO }}
+          SITIO_CLAVE: ${{ secrets.SITIO_CLAVE }}
+        run: |
+          # Las claves viajan por la entrada estándar del SSH, no en la línea de comandos.
+          {
+            printf 'export PHP_BIN=%q URL_SITIO=%q DB_NOMBRE=%q DB_USUARIO=%q DB_CLAVE=%q SITIO_USUARIO=%q SITIO_CLAVE=%q\n' \
+              "$PHP_BIN" "$URL_SITIO" "$DB_NOMBRE" "$DB_USUARIO" "$DB_CLAVE" "$SITIO_USUARIO" "$SITIO_CLAVE"
+            printf 'bash %q %q %q %q\n' "$RUTA/releases/$VERSION/deploy/preparar.sh" "$RUTA" "$VERSION" "$PUBLIC_HTML"
+          } | ssh -p "$PUERTO" "$DESTINO" bash -s
+      - name: Activar versión (migraciones, datos base la primera vez y usuario del panel)
+        env:
+          DESTINO: ${{ secrets.HOSTINGER_SSH_USER }}@${{ secrets.HOSTINGER_SSH_HOST }}
+          PUERTO: ${{ secrets.HOSTINGER_SSH_PORT || '65002' }}
+          PHP_BIN: ${{ secrets.HOSTINGER_PHP_BIN }}
+          PANEL_CORREO: ${{ secrets.PANEL_CORREO }}
+          PANEL_CLAVE: ${{ secrets.PANEL_CLAVE }}
+        run: |
+          {
+            printf 'export PHP_BIN=%q PANEL_CORREO=%q PANEL_CLAVE=%q\n' "$PHP_BIN" "$PANEL_CORREO" "$PANEL_CLAVE"
+            printf 'bash %q %q %q\n' "$RUTA/releases/$VERSION/deploy/activar.sh" "$RUTA" "$VERSION"
+          } | ssh -p "$PUERTO" "$DESTINO" bash -s
+      - name: Instrucciones del cron
+        env:
+          DESTINO: ${{ secrets.HOSTINGER_SSH_USER }}@${{ secrets.HOSTINGER_SSH_HOST }}
+          PUERTO: ${{ secrets.HOSTINGER_SSH_PORT || '65002' }}
+          PHP_BIN: ${{ secrets.HOSTINGER_PHP_BIN }}
+        run: |
+          PHP=$(ssh -p "$PUERTO" "$DESTINO" "PHP_BIN='$PHP_BIN' bash '$RUTA/current/deploy/php.sh'")
+          {
+            echo "## Despliegue listo: $VERSION"
+            echo ""
+            echo "Si aún no creaste la tarea programada (cron) en hPanel, este es el comando exacto para pegar:"
+            echo ""
+            echo '```'
+            echo "cd $RUTA/current && $PHP artisan schedule:run >> /dev/null 2>&1"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Verificar que el sitio responde
+        continue-on-error: true
+        run: |
+          if curl -fsS --retry 3 "${{ vars.URL_SITIO || 'https://rosaacevedo.com' }}/up" > /dev/null; then
+            echo "El sitio responde."
+          else
+            echo "::warning::El sitio no respondió en ${{ vars.URL_SITIO || 'https://rosaacevedo.com' }}. Si el dominio todavía no apunta a Hostinger o el SSL no está activo, es normal."
+          fi

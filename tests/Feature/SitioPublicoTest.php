@@ -1,0 +1,108 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Ajuste;
+use App\Models\Banner;
+use App\Models\Redireccion;
+use App\Models\RedSocial;
+use App\Models\TerritorioBarrio;
+use App\Models\TerritorioComuna;
+use App\Services\Ajustes;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
+
+class SitioPublicoTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_las_paginas_publicas_responden(): void
+    {
+        foreach (['/', '/sumate', '/buzon', '/propuestas', '/propuestas/salud', '/conoce-a-rosa', '/manifiesto',
+            '/politica-de-datos', '/mis-datos', '/noticias', '/agenda', '/comunas', '/comunas/el-manzanillo', '/enlaces', '/sitemap.xml', '/robots.txt'] as $ruta) {
+            $this->get($ruta)->assertOk();
+        }
+    }
+
+    public function test_las_siete_comunas_y_el_corregimiento_aparecen_en_inicio(): void
+    {
+        $this->get('/')->assertSeeInOrder(['Comuna 1', 'Comuna 7', 'El Manzanillo'])->assertSee('Corregimiento');
+    }
+
+    public function test_el_selector_de_barrios_solo_aparece_con_el_catalogo_cargado(): void
+    {
+        $this->get('/buzon')->assertOk()->assertDontSee('Elige tu barrio o vereda');
+
+        TerritorioBarrio::query()->create([
+            'comuna_2024_id' => TerritorioComuna::query()->where('codigo', 'C04')->value('id'),
+            'nombre' => 'Barrio de prueba', 'tipo' => 'barrio', 'activo' => true,
+        ]);
+
+        $this->get('/buzon')->assertSee('Elige tu barrio o vereda')->assertSee('Barrio de prueba');
+    }
+
+    public function test_una_red_de_youtube_muestra_su_logo_aunque_el_icono_sea_otro(): void
+    {
+        RedSocial::query()->create(['nombre' => 'Youtube', 'url' => 'https://www.youtube.com/@rosaacevedoj', 'icono' => 'enlace', 'activa' => true, 'orden' => 0]);
+
+        $this->get('/')->assertOk()->assertSee('<rect x="1.5" y="4.5" width="21" height="15" rx="4.5"/>', false);
+    }
+
+    public function test_un_banner_con_solo_la_foto_de_movil_muestra_la_foto(): void
+    {
+        Storage::fake('public');
+        $banner = Banner::query()->create(['titular' => 'Solo móvil', 'alt' => 'Rosa', 'pagina' => 'inicio', 'estado' => 'activo', 'orden' => 1]);
+        $banner->addMedia(UploadedFile::fake()->image('movil.jpg', 400, 500))->toMediaCollection('movil');
+
+        $this->get('/')->assertOk()->assertSee('ra-entrada-foto', false)->assertSee('alt="Rosa"', false);
+    }
+
+    public function test_el_sitio_no_anuncia_inteligencia_artificial(): void
+    {
+        $this->get('/uso-de-ia')->assertNotFound();
+        $this->get('/buzon')->assertOk()->assertDontSee('inteligencia artificial');
+        $this->get('/')->assertOk()->assertDontSee('Uso de inteligencia artificial');
+        $this->get('/politica-de-datos')->assertOk()->assertDontSee('Inteligencia artificial');
+    }
+
+    public function test_en_precampana_no_se_pide_el_voto(): void
+    {
+        foreach (['/', '/sumate', '/propuestas'] as $ruta) {
+            $this->get($ruta)->assertDontSee('vota por', false)->assertDontSee('Vota por', false);
+        }
+        $this->get('/transparencia')->assertNotFound();
+    }
+
+    public function test_los_datos_pendientes_se_marcan_visibles(): void
+    {
+        $this->get('/conoce-a-rosa')->assertSee('[POR CONFIRMAR]');
+    }
+
+    public function test_redireccion_301_administrable(): void
+    {
+        Redireccion::query()->create(['desde' => '/quienes-somos', 'hacia' => '/conoce-a-rosa', 'codigo' => 301]);
+
+        $this->get('/quienes-somos/')->assertStatus(301)->assertRedirect('/conoce-a-rosa');
+        $this->assertSame(1, Redireccion::query()->value('visitas'));
+    }
+
+    public function test_el_boton_de_whatsapp_lleva_el_codigo_de_atribucion(): void
+    {
+        app(Ajustes::class)->set('whatsapp_numero', '573001112233');
+
+        $enlace = app(Ajustes::class)->enlaceWhatsapp('R-ABC123');
+
+        $this->assertStringStartsWith('https://wa.me/573001112233?text=', $enlace);
+        $this->assertStringContainsString(rawurlencode('Código: R-ABC123'), $enlace);
+    }
+
+    public function test_los_ajustes_quedan_en_la_bitacora(): void
+    {
+        app(Ajustes::class)->set('hashtag', '#OtroHashtag');
+
+        $this->assertDatabaseHas('activity_log', ['log_name' => 'configuracion', 'description' => 'Cambio de configuración: hashtag']);
+        $this->assertSame('#OtroHashtag', Ajuste::query()->find('hashtag')->valor);
+    }
+}
