@@ -160,16 +160,22 @@ exit                                  # salir del servidor y volver a tu Mac
 
 ---
 
-## Parte 3 · Inventar tus contraseñas del panel y del sitio cerrado
+## Parte 3 · Inventar 4 datos y anotarlos (todavía no se escriben en ningún sistema)
 
-Crea y guarda en tu gestor:
+**Qué es:** el despliegue va a crear tu usuario del panel y una «puerta con clave» temporal frente al sitio. Para eso necesita 4 datos que tú inventas ahora. **En este paso no entras a Hostinger ni a GitHub:** solo los inventas y los guardas. En la Parte 4 los pegas en GitHub.
 
-| Para qué | Reglas | Ejemplo de formato |
-|---|---|---|
-| **Tu acceso al panel** (`/admin`): correo + contraseña | Contraseña de 12+ caracteres con mayúsculas, minúsculas y números | `tu-correo@...` · `RaicesItagui2026Panel` |
-| **Sitio cerrado** (usuario y contraseña que pedirá el navegador mientras la campaña aprueba los textos) | Simple de compartir con el equipo | `campana` · `Siembra2026` |
+**Qué hacer:** en tu gestor de contraseñas crea una nota «Rosa Acevedo · despliegue» con:
 
-**Por qué cerrar el sitio al inicio:** la política de datos todavía es un borrador con `[POR CONFIRMAR]` y faltan textos de la campaña. Con el sitio cerrado, el equipo puede revisarlo en el dominio real sin que el público ni Google lo vean. Cuando todo esté aprobado, se abre (Parte 9).
+| # | Dato | Qué escribir | Para qué sirve |
+|---|---|---|---|
+| 1 | Correo del panel | Tu correo | Con él entrarás a `rosaacevedo.com/admin` |
+| 2 | Contraseña del panel | Nueva, 12+ caracteres con mayúsculas, minúsculas y números (forma de ejemplo: `RaicesItagui2026Panel`) | La contraseña de ese usuario |
+| 3 | Usuario del sitio cerrado | Una palabra simple, por ejemplo `campana` | El navegador lo pedirá a quien abra el sitio mientras está cerrado |
+| 4 | Contraseña del sitio cerrado | Fácil de compartir con el equipo, por ejemplo `Siembra2026` | Va con el usuario anterior |
+
+**Por qué cerrar el sitio al inicio:** la política de datos todavía es un borrador con `[POR CONFIRMAR]` y faltan textos de la campaña. Con la puerta con clave, el equipo revisa el sitio real en rosaacevedo.com sin que el público ni Google lo vean. Cuando todo esté aprobado, se quita (Parte 9).
+
+**Cómo saber que terminaste:** tienes los 4 datos guardados. Sigue con la Parte 4.
 
 ---
 
@@ -189,10 +195,10 @@ Crea y guarda en tu gestor:
 | `DB_NOMBRE` | `u123456789_rosa` | Paso 2.2 |
 | `DB_USUARIO` | `u123456789_rosa` | Paso 2.2 |
 | `DB_CLAVE` | La contraseña de la base | Paso 2.2 |
-| `PANEL_CORREO` | Tu correo para entrar al panel | Parte 3 |
-| `PANEL_CLAVE` | Tu contraseña del panel | Parte 3 |
-| `SITIO_USUARIO` | `campana` (o el que elegiste) | Parte 3 |
-| `SITIO_CLAVE` | La contraseña del sitio cerrado | Parte 3 |
+| `PANEL_CORREO` | Dato 1: tu correo para entrar al panel | Parte 3 |
+| `PANEL_CLAVE` | Dato 2: tu contraseña del panel | Parte 3 |
+| `SITIO_USUARIO` | Dato 3: usuario del sitio cerrado | Parte 3 |
+| `SITIO_CLAVE` | Dato 4: contraseña del sitio cerrado | Parte 3 |
 
    Para copiar la llave **privada**, en la Terminal de tu Mac:
    ```bash
