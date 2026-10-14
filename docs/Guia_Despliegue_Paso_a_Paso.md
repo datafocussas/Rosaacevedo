@@ -128,9 +128,9 @@ En cada despliegue, GitHub Actions:
 **Por qué:** para comprobar que la llave funciona y para que conozcas el servidor. Cambia los datos de ejemplo por los tuyos:
 
 ```bash
-ssh -i ~/.ssh/rosa_despliegue -p 65002 u123456789@123.45.67.89
+ssh -o IdentitiesOnly=yes -i ~/.ssh/rosa_despliegue -p 65002 u123456789@123.45.67.89
 ```
-- `-i` dice qué llave usar, `-p` el puerto, y luego `usuario@ip`.
+- `-i` dice qué llave usar, `-o IdentitiesOnly=yes` que use solo esa, `-p` el puerto, y luego `usuario@ip`.
 - La primera vez pregunta «Are you sure you want to continue connecting?»: escribe `yes` y Enter.
 
 Ya estás **dentro del servidor**. El texto antes del cursor cambia. Prueba estos comandos (uno a la vez):
@@ -144,7 +144,19 @@ exit                                  # salir del servidor y volver a tu Mac
 ```
 
 **Cómo saber que salió bien:** entraste sin que te pidiera contraseña y `php -v` dice `PHP 8.3`.
-**Si te pide contraseña o dice «Permission denied»:** la llave pública no quedó bien en hPanel (repite el paso 2.4) o el usuario/IP/puerto no coinciden.
+
+**Si te pide una contraseña:** lee qué pide exactamente.
+- `Enter passphrase for key '…rosa_despliegue':` → es la frase de la llave. Si la creaste con el comando de arriba (`-N ""`), no tiene: presiona Enter.
+- `u123456789@…'s password:` → **el servidor rechazó la llave**. No escribas ahí la llave privada ni la clave de hPanel: no sirven. Haz esto:
+  1. `cat ~/.ssh/rosa_despliegue.pub` y compara esa línea con la que está en hPanel → Acceso SSH → Claves SSH (inicio y final iguales). Si no está o no coincide, bórrala y agrégala de nuevo (paso 2.4). Puede tardar un par de minutos en activarse.
+  2. Entra obligando a usar solo esa llave (tu Mac puede estar ofreciendo otras primero):
+     ```bash
+     ssh -o IdentitiesOnly=yes -i ~/.ssh/rosa_despliegue -p 65002 u123456789@123.45.67.89
+     ```
+  3. Verifica que usuario, IP y puerto sean exactamente los de hPanel.
+  4. Si sigue igual, agrega `-v` al comando para ver el detalle y comparte las últimas líneas antes de la pregunta de contraseña (no contienen secretos).
+
+  hPanel permite ponerle una contraseña al SSH, pero GitHub entra con la llave, así que la llave tiene que funcionar.
 
 ---
 
@@ -301,6 +313,7 @@ Para volver a cerrarlo, crea de nuevo esos dos secretos y repite el paso 2.
 |---|---|---|
 | Actions: «Faltan secretos de Hostinger» | Un secreto no existe o tiene otro nombre | Revisa la tabla de la Parte 4 (mayúsculas exactas) y que estén en el entorno `produccion` |
 | Actions: «Permission denied (publickey)» | GitHub no puede entrar al servidor | La llave pública no está en hPanel, o `HOSTINGER_SSH_KEY` no se pegó completa |
+| Al entrar por SSH desde tu Mac te pide «password» | El servidor rechazó la llave | Paso 2.5, apartado «Si te pide una contraseña» |
 | Actions: «faltan los secretos DB_NOMBRE…» | Primera vez sin datos de la base | Crea `DB_NOMBRE`, `DB_USUARIO`, `DB_CLAVE` |
 | Actions: «Access denied for user» | Usuario o contraseña de la base incorrectos | Revisa el paso 2.2. Como el `.env` ya se creó, hay que corregirlo en el servidor: pídeselo a Claude |
 | Actions: «no encontré PHP 8.3» | El servidor no tiene PHP 8.3 activo | Paso 2.1 |
