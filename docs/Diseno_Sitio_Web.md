@@ -109,7 +109,7 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 | Componente | Notas v2 |
 |---|---|
 | `encabezado` | Noche casi sólida (va en el flujo, sobre el marfil del cuerpo), filo oro, menú desde 980 px, menú móvil a pantalla completa. Botón con el ajuste `boton_encabezado` |
-| `banner` | Entrada: textos a la izquierda, foto a sangre a la derecha con tres fundidos, rosa delante, nombre de Rosa en oro. Varios banners = carrusel (cambian foto, textos y botones). El nombre va 28 px sobre el borde inferior de la foto, dentro de la entrada (nunca sobre la franja de escucha). Prop `corta` para comunas |
+| `banner` | Entrada: textos a la izquierda, foto a sangre a la derecha con tres fundidos, rosa delante, nombre de Rosa en oro. Varios banners = carrusel (cambian foto, textos y botones). Basta una de las dos fotos (escritorio o móvil): la que falte usa la otra. `php artisan banners:revisar` dice por qué un banner no se ve. El nombre va 28 px sobre el borde inferior de la foto, dentro de la entrada (nunca sobre la franja de escucha). Prop `corta` para comunas |
 | `formulario-registro` | Variante `capsula` (vidrio sobre noche; en escritorio, nombre, celular y botón en una fila) y `claro` (tarjeta blanca en Súmate). Lógica y pasos sin cambios |
 | `cabecera` | Cabecera oscura de páginas internas: rótulo, título, entradilla, foto opcional con punto focal. Slot `antes` |
 | `lema` | «Aquí / me planto.» con rosa opcional (`ra-lema-fila`) |

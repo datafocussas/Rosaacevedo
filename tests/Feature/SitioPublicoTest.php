@@ -3,12 +3,15 @@
 namespace Tests\Feature;
 
 use App\Models\Ajuste;
+use App\Models\Banner;
 use App\Models\Redireccion;
 use App\Models\RedSocial;
 use App\Models\TerritorioBarrio;
 use App\Models\TerritorioComuna;
 use App\Services\Ajustes;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class SitioPublicoTest extends TestCase
@@ -45,6 +48,15 @@ class SitioPublicoTest extends TestCase
         RedSocial::query()->create(['nombre' => 'Youtube', 'url' => 'https://www.youtube.com/@rosaacevedoj', 'icono' => 'enlace', 'activa' => true, 'orden' => 0]);
 
         $this->get('/')->assertOk()->assertSee('<rect x="1.5" y="4.5" width="21" height="15" rx="4.5"/>', false);
+    }
+
+    public function test_un_banner_con_solo_la_foto_de_movil_muestra_la_foto(): void
+    {
+        Storage::fake('public');
+        $banner = Banner::query()->create(['titular' => 'Solo móvil', 'alt' => 'Rosa', 'pagina' => 'inicio', 'estado' => 'activo', 'orden' => 1]);
+        $banner->addMedia(UploadedFile::fake()->image('movil.jpg', 400, 500))->toMediaCollection('movil');
+
+        $this->get('/')->assertOk()->assertSee('ra-entrada-foto', false)->assertSee('alt="Rosa"', false);
     }
 
     public function test_el_sitio_no_anuncia_inteligencia_artificial(): void

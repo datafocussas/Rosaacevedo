@@ -6,7 +6,8 @@
 @php
     $total = $banners->count();
     $conFormulario = isset($formulario) && $formulario->isNotEmpty();
-    $conFoto = $banners->contains(fn ($b) => $b->getFirstMedia('escritorio'));
+    // Basta una de las dos fotos: si solo hay la de móvil se usa también en escritorio, y al revés.
+    $conFoto = $banners->contains(fn ($b) => $b->getFirstMedia('escritorio') || $b->getFirstMedia('movil'));
 @endphp
 <section {{ $attributes->merge(['class' => 'ra-entrada ra-fondo-noche ra-oscuro'.($corta ? ' ra-entrada-corta' : '')]) }}
     aria-roledescription="carrusel" aria-label="Destacados" @if ($total > 1) x-data="{ actual: 0 }" @endif>
@@ -32,7 +33,7 @@
             <div class="ra-entrada-media">
                 @foreach ($banners as $i => $banner)
                     @php
-                        $escritorio = $banner->getFirstMedia('escritorio');
+                        $escritorio = $banner->getFirstMedia('escritorio') ?? $banner->getFirstMedia('movil');
                         $movil = $banner->getFirstMedia('movil') ?? $escritorio;
                     @endphp
                     @if ($escritorio)
