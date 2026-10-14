@@ -183,8 +183,9 @@ exit                                  # salir del servidor y volver a tu Mac
 
 **Qué es:** el robot necesita los datos de Hostinger para entrar. Se guardan como **secretos**: GitHub los usa pero nunca los muestra, ni siquiera a ti después de guardarlos.
 
-1. Abre el repositorio en GitHub → **Settings** (Configuración) → menú izquierdo **Environments** → **New environment** → nombre: **`produccion`** → **Configure environment**.
-2. En **Environment secrets** → **Add environment secret**, crea uno por uno (nombre exacto, en mayúsculas):
+1. Abre el repositorio en GitHub → pestaña **Settings** (arriba a la derecha) → en el menú de la izquierda, **Secrets and variables** → **Actions**.
+   - Ojo: dentro de «Secrets and variables» hay dos opciones, **Actions** y **Agents**. Usa **Actions**: esos secretos son los que lee el robot del despliegue. Los de «Agents» son para otra herramienta y el despliegue no los ve.
+2. En la pestaña **Secrets**, botón verde **New repository secret**. Para cada fila de la tabla: en **Name** escribe el nombre exacto (en mayúsculas), en **Secret** pega el valor y clic en **Add secret**. Repite hasta tener los 11:
 
 | Nombre del secreto | Qué pegar | De dónde sale |
 |---|---|---|
@@ -206,10 +207,10 @@ exit                                  # salir del servidor y volver a tu Mac
    ```
    y pégala completa en `HOSTINGER_SSH_KEY`, incluidas las líneas `-----BEGIN OPENSSH PRIVATE KEY-----` y `-----END OPENSSH PRIVATE KEY-----`.
 
-3. En la misma página, **Environment variables** → **Add environment variable**:
-   - Nombre `URL_SITIO`, valor `https://rosaacevedo.com`.
+3. En la misma página, pestaña **Variables** → **New repository variable**:
+   - Name: `URL_SITIO` · Value: `https://rosaacevedo.com` → **Add variable**.
 
-**Cómo saber que salió bien:** ves 11 secretos y 1 variable en el entorno `produccion`.
+**Cómo saber que salió bien:** en Settings → Secrets and variables → **Actions** ves 11 secretos en la pestaña Secrets y 1 variable en la pestaña Variables. GitHub no te deja volver a ver el valor de un secreto (solo cambiarlo): es normal.
 
 ---
 
@@ -275,8 +276,8 @@ exit                                  # salir del servidor y volver a tu Mac
 
 ## Parte 9 · Abrir el sitio al público (cuando la campaña apruebe)
 
-1. GitHub → Settings → Environments → `produccion` → **borra** los secretos `SITIO_USUARIO` y `SITIO_CLAVE`.
-2. GitHub → **Actions** → **Despliegue a Hostinger** → **Run workflow** → `produccion` → **Run workflow**.
+1. GitHub → Settings → Secrets and variables → **Actions** → **borra** los secretos `SITIO_USUARIO` y `SITIO_CLAVE` (ícono de la papelera).
+2. GitHub → pestaña **Actions** → en la izquierda **Despliegue a Hostinger** → botón **Run workflow** → **Run workflow**.
 3. Al terminar, el sitio queda abierto y visible para Google.
 
 Para volver a cerrarlo, crea de nuevo esos dos secretos y repite el paso 2.
@@ -317,7 +318,7 @@ Para volver a cerrarlo, crea de nuevo esos dos secretos y repite el paso 2.
 
 | Lo que ves | Qué significa | Qué hacer |
 |---|---|---|
-| Actions: «Faltan secretos de Hostinger» | Un secreto no existe o tiene otro nombre | Revisa la tabla de la Parte 4 (mayúsculas exactas) y que estén en el entorno `produccion` |
+| Actions: «Faltan secretos de Hostinger» | Un secreto no existe o tiene otro nombre | Revisa la tabla de la Parte 4 (mayúsculas exactas) y que estén en **Secrets and variables → Actions**, no en «Agents» |
 | Actions: «Permission denied (publickey)» | GitHub no puede entrar al servidor | La llave pública no está en hPanel, o `HOSTINGER_SSH_KEY` no se pegó completa |
 | Al entrar por SSH desde tu Mac te pide «password» | El servidor rechazó la llave | Paso 2.5, apartado «Si te pide una contraseña» |
 | Actions: «faltan los secretos DB_NOMBRE…» | Primera vez sin datos de la base | Crea `DB_NOMBRE`, `DB_USUARIO`, `DB_CLAVE` |

@@ -68,7 +68,7 @@ Resumen técnico: cada push a `main` (o «Run workflow» en Actions) corre las p
 2. `deploy/activar.sh`: migraciones, `db:seed` solo la primera vez (marca `shared/.datos-base-cargados`), primer administrador desde `PANEL_CORREO`/`PANEL_CLAVE` si no hay usuarios, cachés, cambio atómico de `current`, limpieza de caché de respuestas. Si algo falla, el sitio sale del modo mantenimiento y sigue la versión anterior. Conserva 5 versiones; `deploy/revertir.sh` vuelve a la anterior (no revierte migraciones).
 3. `deploy/php.sh` ubica un PHP ≥ 8.3 (`HOSTINGER_PHP_BIN`, `/opt/alt/php83/usr/bin/php`, `php`).
 
-Secretos del entorno `produccion` en GitHub: `HOSTINGER_SSH_HOST`, `HOSTINGER_SSH_PORT` (por defecto 65002), `HOSTINGER_SSH_USER`, `HOSTINGER_SSH_KEY`, `DB_NOMBRE`, `DB_USUARIO`, `DB_CLAVE`, `PANEL_CORREO`, `PANEL_CLAVE`, y opcionales `SITIO_USUARIO`, `SITIO_CLAVE`, `HOSTINGER_RUTA` (por defecto `~/rosaacevedo`), `HOSTINGER_PUBLIC_HTML` (por defecto `~/domains/{dominio}/public_html`), `HOSTINGER_PHP_BIN`. Variable: `URL_SITIO`.
+Secretos del repositorio en GitHub (Settings → Secrets and variables → Actions; no se usan Environments): `HOSTINGER_SSH_HOST`, `HOSTINGER_SSH_PORT` (por defecto 65002), `HOSTINGER_SSH_USER`, `HOSTINGER_SSH_KEY`, `DB_NOMBRE`, `DB_USUARIO`, `DB_CLAVE`, `PANEL_CORREO`, `PANEL_CLAVE`, y opcionales `SITIO_USUARIO`, `SITIO_CLAVE`, `HOSTINGER_RUTA` (por defecto `~/rosaacevedo`), `HOSTINGER_PUBLIC_HTML` (por defecto `~/domains/{dominio}/public_html`), `HOSTINGER_PHP_BIN`. Variable: `URL_SITIO`.
 
 Una vez en hPanel: PHP 8.3, base de datos, SSH con la llave pública y el cron cada minuto (el comando exacto queda en el resumen del despliegue en Actions). Turnstile, Umami, Brevo y copias externas se agregan después en `shared/.env`.
 

@@ -5,16 +5,13 @@ name: Despliegue a Hostinger
 on:
   push:
     branches: [main]
+  # Botón «Run workflow» en la pestaña Actions (por ejemplo, para abrir o cerrar el sitio con clave).
   workflow_dispatch:
-    inputs:
-      entorno:
-        description: 'Entorno'
-        type: choice
-        options: [produccion, pruebas]
-        default: produccion
 
+# Los secretos van en Settings → Secrets and variables → Actions (secretos del repositorio). No se usan
+# «Environments» porque en repositorios privados sin plan pago de GitHub no están disponibles.
 concurrency:
-  group: despliegue-${{ github.event.inputs.entorno || 'produccion' }}
+  group: despliegue-produccion
   cancel-in-progress: false
 
 jobs:
@@ -24,7 +21,6 @@ jobs:
   desplegar:
     needs: pruebas
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.entorno || 'produccion' }}
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
