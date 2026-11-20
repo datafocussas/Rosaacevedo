@@ -3,20 +3,21 @@
 namespace App\Console\Commands;
 
 use App\Models\Banner;
+use App\Models\Columna;
 use App\Models\Noticia;
 use App\Support\CacheSitio;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
 /**
- * Publica noticias programadas y limpia la caché cuando un banner entra o sale de su ventana
+ * Publica noticias y columnas de opinión programadas y limpia la caché cuando un banner entra o sale de su ventana
  * de publicación (criterio de aceptación 5). Corre cada minuto.
  */
 class PublicarProgramados extends Command
 {
     protected $signature = 'sitio:publicar-programados';
 
-    protected $description = 'Publica noticias y banners programados.';
+    protected $description = 'Publica noticias, columnas y banners programados.';
 
     public function handle(): int
     {
@@ -28,13 +29,18 @@ class PublicarProgramados extends Command
             $noticia->update(['estado' => 'publicada']);
         }
 
+        $columnas = Columna::query()->where('estado', 'programada')->whereNotNull('publicada_en')->where('publicada_en', '<=', $ahora)->get();
+        foreach ($columnas as $columna) {
+            $columna->update(['estado' => 'publicada']);
+        }
+
         $cambioBanners = Banner::query()->where('estado', 'activo')->where(function ($q) use ($ultima, $ahora) {
             $q->whereBetween('publicar_desde', [$ultima, $ahora])->orWhereBetween('publicar_hasta', [$ultima, $ahora]);
         })->exists();
 
-        if ($noticias->isNotEmpty() || $cambioBanners) {
+        if ($noticias->isNotEmpty() || $columnas->isNotEmpty() || $cambioBanners) {
             CacheSitio::limpiar();
-            $this->info("Publicadas {$noticias->count()} noticias; caché limpiada.");
+            $this->info("Publicadas {$noticias->count()} noticias y {$columnas->count()} columnas; caché limpiada.");
         }
 
         Cache::put('publicar-programados:ultima', $ahora, 86400);

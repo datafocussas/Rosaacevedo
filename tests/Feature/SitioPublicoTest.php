@@ -59,6 +59,31 @@ class SitioPublicoTest extends TestCase
         $this->get('/')->assertOk()->assertSee('ra-entrada-foto', false)->assertSee('alt="Rosa"', false);
     }
 
+    public function test_un_banner_con_varias_fotos_rota_con_sus_segundos(): void
+    {
+        Storage::fake('public');
+        $banner = Banner::query()->create(['titular' => 'Varias fotos', 'alt' => 'Rosa en Itagüí', 'pagina' => 'inicio', 'estado' => 'activo', 'orden' => 1, 'segundos_rotacion' => 9]);
+        foreach (['uno', 'dos', 'tres'] as $nombre) {
+            $banner->addMedia(UploadedFile::fake()->image($nombre.'.jpg', 1600, 900))->toMediaCollection('escritorio');
+        }
+        $banner->addMedia(UploadedFile::fake()->image('movil.jpg', 400, 500))->toMediaCollection('movil');
+
+        $this->assertCount(3, $banner->fresh()->fotos());
+
+        $respuesta = $this->get('/')->assertOk();
+        $this->assertSame(3, substr_count($respuesta->getContent(), 'class="ra-entrada-foto"'));
+        $respuesta->assertSee('carrusel([9,9,9], [0,0,0])', false)
+            ->assertSee('Pausar el cambio automático')
+            ->assertSee('Ver foto 3');
+    }
+
+    public function test_los_segundos_de_rotacion_quedan_entre_3_y_30(): void
+    {
+        $this->assertSame(3, (new Banner(['segundos_rotacion' => 1]))->segundos());
+        $this->assertSame(30, (new Banner(['segundos_rotacion' => 90]))->segundos());
+        $this->assertSame(6, (new Banner)->segundos());
+    }
+
     public function test_el_sitio_no_anuncia_inteligencia_artificial(): void
     {
         $this->get('/uso-de-ia')->assertNotFound();

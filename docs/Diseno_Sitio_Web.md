@@ -109,7 +109,7 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 | Componente | Notas v2 |
 |---|---|
 | `encabezado` | Noche casi sólida (va en el flujo, sobre el marfil del cuerpo), filo oro, menú desde 980 px, menú móvil a pantalla completa. Botón con el ajuste `boton_encabezado` |
-| `banner` | Entrada: textos a la izquierda, foto a sangre a la derecha con tres fundidos, rosa delante, nombre de Rosa en oro. Varios banners = carrusel (cambian foto, textos y botones). Basta una de las dos fotos (escritorio o móvil): la que falte usa la otra. `php artisan banners:revisar` dice por qué un banner no se ve. El nombre va 28 px sobre el borde inferior de la foto, dentro de la entrada (nunca sobre la franja de escucha). Prop `corta` para comunas |
+| `banner` | Entrada: textos a la izquierda, foto a sangre a la derecha con tres fundidos, rosa delante, nombre de Rosa en oro. Cada banner admite varias fotos (hasta 8 de escritorio y 8 de móvil; la de móvil N acompaña a la de escritorio N) y todas forman una secuencia que avanza sola cada «segundos_rotacion» del banner (3 a 30, por defecto 6) con fundido de 600 ms (`resources/js/carrusel.js`). Varios banners = la secuencia sigue con el siguiente banner (cambian foto, textos y botones). Controles: botón de pausa (dos barras / triángulo, oro claro, `aria-pressed`) y un punto por banner (o por foto si hay un solo banner). Se detiene con el puntero o el foco encima y con la pestaña oculta; con `prefers-reduced-motion` empieza en pausa. Basta una de las dos fotos (escritorio o móvil): la que falte usa la otra. `php artisan banners:revisar` dice por qué un banner no se ve. El nombre va 28 px sobre el borde inferior de la foto, dentro de la entrada (nunca sobre la franja de escucha). Prop `corta` para comunas |
 | `formulario-registro` | Variante `capsula` (vidrio sobre noche; en escritorio, nombre, celular y botón en una fila) y `claro` (tarjeta blanca en Súmate). Lógica y pasos sin cambios |
 | `cabecera` | Cabecera oscura de páginas internas: rótulo, título, entradilla, foto opcional con punto focal. Slot `antes` |
 | `lema` | «Aquí / me planto.» con rosa opcional (`ra-lema-fila`) |
@@ -117,6 +117,8 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 | `ejes` | `bento` (primer eje grande noche, tarjeta final coral) o `lista` |
 | `selector-comuna` | Red de raíces (prop `raices`); cada comuna enlaza solo si su página está publicada, si no muestra «Pronto». En todo el sitio las comunas se nombran solo por su número («Comuna 4», `TerritorioComuna::nombrePublico()`); el corregimiento, «Corregimiento El Manzanillo» |
 | `buzon` | Temas como chips (radios), variante oscura en esmeralda. El selector de barrio (opcional) solo aparece si hay catálogo cargado; igual en el paso 2 del registro |
+| `tarjeta-columna` / `avatar-columnista` | Columna de opinión: tarjeta de texto blanca (marfil sobre fondo blanco) con comillas oro, título 22 px, resumen y firma con foto redonda del columnista (o sus iniciales en oro claro sobre abismo), fecha y minutos de lectura |
+| `asistente` | Botón flotante noche con filo oro abajo a la derecha (en celular, círculo de 56 px) y panel de chat no modal: 400 × 620 px en escritorio, pantalla completa en celular. Burbujas: asistente en vidrio con filo oro, persona en esmeralda. Aviso fijo bajo el campo (respuestas automáticas, no compartir datos, días de retención, enlace a la política). Solo aparece si está encendido en el panel y tiene API key |
 | `tarjeta-noticia` / `noticias` | Variantes `destacada`, `fila`, `rejilla`; sin imagen, la rosa-flor como marcador |
 | `pie` | Noche, «Itagüí» en contorno; en la franja legal, responsable del tratamiento, cookies y el crédito «Desarrollo: DataFocus S.A.S.» (enlace a www.datafocussas.com, pestaña nueva) |
 | `agenda`, `franja-redes`, `redes`, `compartir`, `marca`, `boton`, `campo`, `icono` | Reestilizados; misma interfaz |
@@ -124,6 +126,7 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 ## 9. Páginas
 
 - **Inicio:** se arma con los bloques de la página `inicio` del panel (§10). Orden semilla: registro (entrada) → aviso de escucha → ejes → raíces → comunas → buzón → noticias → agenda → redes.
+- **Opinión** (`/opinion`, `/opinion/{slug}`): cabecera noche «Voces que siembran» + rejilla de tarjetas de columna; la columna lleva cabecera con firma, prosa centrada, ficha del columnista, la nota «Las columnas de opinión expresan el pensamiento de quienes las firman» y «Más opinión».
 - **Internas** (propuestas, eje, comunas, noticias, noticia, agenda, evento, buzón, Súmate, mis datos, política, transparencia, 404): `x-ra.cabecera` noche + contenido claro.
 - **Páginas del panel** (`/{slug}`): cabecera con la imagen «Imagen de cabecera y para redes» si existe → bloques → compartir → llamado esmeralda.
 - **Comuna:** con banners de comuna, entrada corta; si no, cabecera.
@@ -140,6 +143,7 @@ Los tipos de bloque y sus datos son los mismos de siempre (`app/Filament/Bloques
 | buzon | esmeralda |
 | redes, video | noche |
 | noticias, imagen, comunas | marfil, blanco |
+| opinion (últimas columnas) | blanco, marfil |
 | agenda | arena, marfil |
 | texto | marfil, blanco, arena |
 | imagen_texto | marfil, arena, abismo (el antiguo «Verde Raíces» se lee como abismo) |
@@ -174,7 +178,7 @@ Reglas, en orden: (1) dos oscuros seguidos: el segundo usa su primer fondo claro
 
 - Tema: primario esmeralda `#0f5c45`, peligro `#b8321f`, Montserrat; ingreso sobre fondo noche con filo coral; favicon de la rosa.
 - Bloques: selector «Fondo» cuando hay más de uno permitido; «Cifras (opcional)» en Raíces (máximo 3, solo cifras confirmadas con fuente, nunca de la Encuesta Itagüí 2026); «Texto» en el selector de comunas.
-- Banners: punto focal. Páginas: «Imagen de cabecera y para redes» (colección `og`).
+- Banners: varias fotos por colección (reordenables), «Cambiar de foto cada (segundos)» y punto focal (se aplica a todas las fotos del banner). La lista muestra cuántas fotos tiene cada banner. Páginas: «Imagen de cabecera y para redes» (colección `og`).
 - Aviso al guardar una página con más del 30 % de bloques oscuros.
 
 ## 15. Cómo modificar el diseño (procedimientos)
@@ -199,7 +203,10 @@ Reglas, en orden: (1) dos oscuros seguidos: el segundo usa su primer fondo claro
 | 10 oct 2026 | Rosa y raíces: piezas raster de la campaña en lugar de la rosa SVG v3 (§7) | Vigente |
 | 10 oct 2026 | Comunas nombradas solo por su número en el sitio | Vigente |
 | 10 oct 2026 | «Tu comuna» usa las raíces de la pieza de la campaña en tinta esmeralda (`raices-tinta-*.webp`) en lugar de las líneas SVG | Vigente |
-| 10 oct 2026 | Sin aviso de IA en el buzón ni página `/uso-de-ia` (la IA no está activa) | Vigente |
+| 10 oct 2026 | Sin aviso de IA en el buzón ni página `/uso-de-ia` (la IA no está activa) | Vigente para el buzón; el asistente (20 nov) se presenta como «asistente automático» |
+| 20 nov 2026 | Banners con varias fotos que rotan solas, segundos por banner, botón de pausa | Vigente |
+| 20 nov 2026 | Sección de opinión con columnistas y tarjeta de texto con comillas oro | Vigente |
+| 20 nov 2026 | Asistente virtual: botón flotante noche y panel de chat; visible solo si el panel lo enciende | Vigente; falta actualizar la política de datos (README) |
 | Pendiente | Logotipo y lettering «Aquí me planto» en SVG | Comunicaciones |
 | Pendiente | Fotografías definitivas (16:9 y 4:5) para banners y cabeceras | Comunicaciones |
 | Pendiente | Hoja de vida oficial para Raíces y «Conoce a Rosa» | Campaña |

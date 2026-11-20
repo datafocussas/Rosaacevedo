@@ -124,6 +124,7 @@ class Bloques
             Block::make('ejes')->label('Lista de ejes')->icon('heroicon-o-list-bullet')->schema([
                 self::activo(), TextInput::make('etiqueta')->default('Propuestas'), TextInput::make('titulo')->label('Título')->default('Aquí me planto por…'), Textarea::make('texto')->rows(2), TextInput::make('boton_texto')->default('Conoce las propuestas'),
             ]),
+            Block::make('opinion')->label('Últimas columnas de opinión')->icon('heroicon-o-chat-bubble-bottom-center-text')->schema([self::activo(), ...self::fondo('opinion'), TextInput::make('titulo')->label('Título')->default('Opinión')]),
             Block::make('comunas')->label('Selector de comunas')->icon('heroicon-o-map')->schema([
                 self::activo(), ...self::fondo('comunas'), TextInput::make('etiqueta')->default('Tu comuna'), TextInput::make('titulo')->label('Título')->default('Aquí me planto en cada barrio'),
                 Textarea::make('texto')->rows(2)->maxLength(240),

@@ -38,6 +38,7 @@ final class Fondos
         'buzon' => ['esmeralda'],
         'redes' => ['noche'],
         'noticias' => ['marfil', 'blanco'],
+        'opinion' => ['blanco', 'marfil'],
         'agenda' => ['arena', 'marfil'],
         'texto' => ['marfil', 'blanco', 'arena'],
         'imagen' => ['marfil', 'blanco'],

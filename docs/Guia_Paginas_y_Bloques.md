@@ -26,6 +26,7 @@ Para el equipo de Comunicaciones y Tecnología. Explica cómo se arma una págin
 | **Cifras** | Hasta 4 pares valor y texto | Tarjetas con número grande | Solo cifras confirmadas con fuente. Nunca de la Encuesta Itagüí 2026 |
 | **Llamado a la acción** | Rótulo, Título, Texto, Texto y enlace del botón, Fondo (esmeralda, noche o coral) | Franja con texto y un botón | El enlace puede ser interno (`/sumate`) o externo |
 | **Lista de ejes** | Rótulo, Título, Texto, Texto del botón | Rejilla de los 7 ejes de propuestas | Toma los ejes publicados en «Ejes y propuestas». Si no hay ninguno publicado, no aparece |
+| **Últimas columnas de opinión** | Título, Fondo | Las 3 columnas de opinión publicadas más recientes, con enlace a /opinion | Si no hay columnas publicadas, no aparece |
 | **Selector de comunas** | Rótulo, Título, Texto, Fondo | Las 7 comunas y el corregimiento | Cada comuna enlaza a su página solo si está publicada; si no, dice «Pronto» |
 
 ## Bloque Formulario: cómo funciona y dónde se guarda
@@ -68,3 +69,22 @@ Solo aparecen al editar la página «Inicio».
 | **Inicio · Últimas noticias** | Las 4 noticias publicadas más recientes (si no hay, no aparece) |
 | **Inicio · Próximos encuentros** | Los 3 próximos eventos públicos de la agenda (si no hay, no aparece) |
 | **Inicio · Franja de redes** | Hashtag y enlaces a las redes activas (módulo Redes) |
+
+## Banners con varias fotos (Contenido → Banners)
+
+- Cada banner acepta **varias fotos** de escritorio (16:9) y de móvil (4:5), hasta 8 de cada una. Se arrastran para cambiar el orden. La foto de móvil número 2 acompaña a la de escritorio número 2; si solo subes en una de las dos, se usa la misma en celular y computador.
+- **«Cambiar de foto cada (segundos)»**: entre 3 y 30. Las fotos avanzan solas; cuando se muestran todas, pasa al siguiente banner activo (con sus textos y botones) y vuelve a empezar.
+- La persona puede **pausar** el cambio con el botón de dos barras junto a los puntos, y el carrusel se detiene mientras tiene el mouse o el teclado encima. Quien tiene activado «reducir movimiento» en su teléfono lo ve en pausa.
+- El texto alternativo y el punto focal aplican a todas las fotos del banner: elige fotos con un encuadre parecido.
+- Sirve igual en inicio y en las páginas de comuna.
+
+## Columnas de opinión (Contenido → Columnistas y Columnas de opinión)
+
+1. **Columnistas:** nombre, una línea de perfil («Lideresa comunal de San Pío X»), biografía corta y foto cuadrada. Sin foto se muestran sus iniciales. Un columnista con columnas no se borra: se desactiva.
+2. **Columnas:** título, ruta (`/opinion/...`), resumen, texto con el editor, imagen opcional (si no hay, la columna muestra la foto del columnista), columnista, estado y fecha. Mismo flujo que las noticias: borrador, en revisión, programada (se publica sola a la hora indicada), publicada o archivada, y botón **Vista previa**.
+3. Se ven en **/opinion** (enlace «Opinión» en el pie; se puede subir al menú principal desde Sitio → Menú) y en cualquier página con el bloque **Últimas columnas de opinión**.
+4. Cada columna lleva la nota «Las columnas de opinión expresan el pensamiento de quienes las firman».
+
+## Asistente virtual
+
+Está explicado en `docs/Guia_Asistente_Virtual.md`: cómo encenderlo, cómo cargar la base de conocimiento y qué se guarda de cada conversación.

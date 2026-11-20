@@ -13,7 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 
 /**
- * Banners por página (RF-10): escritorio 16:9 y móvil 4:5, titular HTML, dos botones, lema, variante A/B,
+ * Banners por página (RF-10): varias fotos de escritorio 16:9 y móvil 4:5 que rotan cada N segundos, titular HTML, dos botones, lema, variante A/B,
  * ventana de publicación y orden por arrastre. Reemplazar una imagen conserva el banner y su historial.
  */
 class BannerResource extends Resource
@@ -49,18 +49,24 @@ class BannerResource extends Resource
                 Forms\Components\TextInput::make('btn2_texto')->label('Botón secundario: texto')->maxLength(30),
                 Forms\Components\TextInput::make('btn2_url')->label('Botón secundario: enlace')->maxLength(255),
             ]),
-            Forms\Components\Section::make('Imágenes')->columns(2)->schema([
-                SpatieMediaLibraryFileUpload::make('escritorio')->collection('escritorio')->label('Escritorio (16:9)')->image()->imageEditor()->imageEditorAspectRatios(['16:9'])->maxSize(4096),
-                SpatieMediaLibraryFileUpload::make('movil')->collection('movil')->label('Móvil (4:5)')->image()->imageEditor()->imageEditorAspectRatios(['4:5'])->maxSize(4096),
-                Forms\Components\TextInput::make('alt')->label('Texto alternativo')->required()->maxLength(200)->columnSpanFull()
-                    ->helperText('Obligatorio. Describe la foto: «Rosa conversa con comerciantes en Santa María».'),
-                Forms\Components\TextInput::make('foco_x')->label('Punto focal horizontal (%)')->numeric()->minValue(0)->maxValue(100)->default(62)->dehydrated(false)
-                    ->afterStateHydrated(fn ($component, ?Banner $record) => $record && $component->state($record->getFirstMedia('escritorio')?->getCustomProperty('foco.x') ?? 62))
-                    ->helperText('0 = borde izquierdo, 100 = borde derecho. Pon aquí la cara de Rosa para que no se recorte.'),
-                Forms\Components\TextInput::make('foco_y')->label('Punto focal vertical (%)')->numeric()->minValue(0)->maxValue(100)->default(18)->dehydrated(false)
-                    ->afterStateHydrated(fn ($component, ?Banner $record) => $record && $component->state($record->getFirstMedia('escritorio')?->getCustomProperty('foco.y') ?? 18))
-                    ->helperText('0 = arriba, 100 = abajo.'),
-            ]),
+            Forms\Components\Section::make('Imágenes')->columns(2)
+                ->description('Puedes subir varias fotos: rotan solas en el orden en que las dejes (arrastra para reordenar). La foto de móvil número 2 acompaña a la de escritorio número 2, y así sucesivamente; si solo subes en una de las dos, se usa la misma en celular y computador.')
+                ->schema([
+                    SpatieMediaLibraryFileUpload::make('escritorio')->collection('escritorio')->label('Escritorio (16:9)')->image()->imageEditor()->imageEditorAspectRatios(['16:9'])->maxSize(4096)
+                        ->multiple()->reorderable()->maxFiles(Banner::MAX_FOTOS)->panelLayout('grid'),
+                    SpatieMediaLibraryFileUpload::make('movil')->collection('movil')->label('Móvil (4:5)')->image()->imageEditor()->imageEditorAspectRatios(['4:5'])->maxSize(4096)
+                        ->multiple()->reorderable()->maxFiles(Banner::MAX_FOTOS)->panelLayout('grid'),
+                    Forms\Components\TextInput::make('segundos_rotacion')->label('Cambiar de foto cada (segundos)')->numeric()->integer()->minValue(3)->maxValue(30)->default(6)->required()
+                        ->suffix('segundos')->helperText('Entre 3 y 30. Si hay varios banners activos, también se pasa al siguiente banner después de mostrar todas sus fotos.'),
+                    Forms\Components\TextInput::make('alt')->label('Texto alternativo')->required()->maxLength(200)
+                        ->helperText('Obligatorio. Describe las fotos: «Rosa conversa con comerciantes en Santa María».'),
+                    Forms\Components\TextInput::make('foco_x')->label('Punto focal horizontal (%)')->numeric()->minValue(0)->maxValue(100)->default(62)->dehydrated(false)
+                        ->afterStateHydrated(fn ($component, ?Banner $record) => $record && $component->state($record->getFirstMedia('escritorio')?->getCustomProperty('foco.x') ?? 62))
+                        ->helperText('0 = borde izquierdo, 100 = borde derecho. Pon aquí la cara de Rosa para que no se recorte. Aplica a todas las fotos del banner.'),
+                    Forms\Components\TextInput::make('foco_y')->label('Punto focal vertical (%)')->numeric()->minValue(0)->maxValue(100)->default(18)->dehydrated(false)
+                        ->afterStateHydrated(fn ($component, ?Banner $record) => $record && $component->state($record->getFirstMedia('escritorio')?->getCustomProperty('foco.y') ?? 18))
+                        ->helperText('0 = arriba, 100 = abajo.'),
+                ]),
             Forms\Components\Section::make('Publicación')->columns(3)->schema([
                 Forms\Components\Select::make('pagina')->label('Página')->options(['inicio' => 'Inicio', 'comuna' => 'Página de comuna'])->default('inicio')->required()->live()->native(false),
                 Forms\Components\Select::make('comuna_id')->label('Comuna')->relationship('comuna', 'nombre', fn ($query) => $query->where('division', '2024'))
@@ -96,6 +102,8 @@ class BannerResource extends Resource
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('escritorio')->collection('escritorio')->label('')->height(54)->width(96),
                 Tables\Columns\TextColumn::make('titular')->searchable()->wrap(),
+                Tables\Columns\TextColumn::make('fotos')->label('Fotos')->state(fn (Banner $r) => count($r->fotos()))
+                    ->description(fn (Banner $r) => count($r->fotos()) > 1 ? 'cada '.$r->segundos().' s' : null),
                 Tables\Columns\TextColumn::make('pagina')->label('Página')->formatStateUsing(fn ($state, $record) => $state === 'comuna' ? ($record->comuna?->nombre ?? 'Comuna') : 'Inicio'),
                 Tables\Columns\TextColumn::make('variante')->badge()->placeholder('—'),
                 Tables\Columns\TextColumn::make('estado_publicacion')->label('Estado')->badge()

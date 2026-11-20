@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\AsignarVariante;
 use App\Models\Banner;
+use App\Models\Columna;
 use App\Models\Eje;
 use App\Models\EnlaceBio;
 use App\Models\Evento;
@@ -95,6 +96,7 @@ class SitioController extends Controller
             ['loc' => route('propuestas'), 'prioridad' => '0.9'],
             ['loc' => route('buzon'), 'prioridad' => '0.8'],
             ['loc' => route('noticias'), 'prioridad' => '0.8'],
+            ['loc' => route('opinion'), 'prioridad' => '0.7'],
             ['loc' => route('agenda'), 'prioridad' => '0.6'],
             ['loc' => route('comunas'), 'prioridad' => '0.6'],
             ['loc' => route('enlaces'), 'prioridad' => '0.3'],
@@ -110,6 +112,9 @@ class SitioController extends Controller
             ->each(fn ($c) => $urls->push(['loc' => route('comunas.show', $c), 'prioridad' => '0.6']));
         Noticia::query()->publicadas()->get(['slug', 'updated_at'])
             ->each(fn ($n) => $urls->push(['loc' => route('noticias.show', $n), 'modificada' => $n->updated_at, 'prioridad' => '0.6']));
+
+        Columna::query()->publicadas()->get(['slug', 'updated_at'])
+            ->each(fn ($c) => $urls->push(['loc' => route('opinion.show', $c), 'modificada' => $c->updated_at, 'prioridad' => '0.6']));
 
         return response()->view('sitio.sitemap', ['urls' => $urls], 200, ['Content-Type' => 'application/xml; charset=utf-8']);
     }

@@ -29,6 +29,7 @@ class Pagina extends Model implements HasMedia
         'admin', 'api', 'livewire', 'filament', 'storage', 'build', 'css', 'js', 'img', 'fonts', 'up',
         'propuestas', 'comunas', 'noticias', 'agenda', 'buzon', 'sumate', 'enlaces', 'mis-datos',
         'politica-de-datos', 'transparencia', 'q', 'vista-previa', 'sitemap', 'robots', 'prensa', 'participa',
+        'opinion', 'asistente',
     ];
 
     protected static function booted(): void
