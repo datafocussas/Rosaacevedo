@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\Api\AsistenteController;
 use App\Http\Controllers\Api\ConversionController;
 use App\Http\Controllers\Api\TerritorioController;
 use App\Http\Controllers\BuzonController;
@@ -17,5 +18,6 @@ Route::middleware('throttle:envios')->group(function () {
     Route::post('/titular/solicitudes', [TitularController::class, 'store']);
 });
 
+Route::post('/asistente', AsistenteController::class)->middleware('throttle:asistente');
 Route::post('/conversion', ConversionController::class)->middleware('throttle:60,1');
 Route::get('/territorio/barrios', [TerritorioController::class, 'barrios']);

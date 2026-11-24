@@ -7,6 +7,7 @@ use App\Http\Controllers\DosFactoresController;
 use App\Http\Controllers\EnlaceCortoController;
 use App\Http\Controllers\FotoPropuestaController;
 use App\Http\Controllers\NoticiasController;
+use App\Http\Controllers\OpinionController;
 use App\Http\Controllers\PropuestasController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\SitioController;
@@ -32,6 +33,9 @@ Route::middleware(['variante', 'origen', 'csp', 'cache.respuesta'])->group(funct
 
     Route::get('/noticias', [NoticiasController::class, 'index'])->name('noticias');
     Route::get('/noticias/{noticia}', [NoticiasController::class, 'show'])->name('noticias.show');
+
+    Route::get('/opinion', [OpinionController::class, 'index'])->name('opinion');
+    Route::get('/opinion/{columna}', [OpinionController::class, 'show'])->name('opinion.show');
 
     Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda');
     Route::get('/agenda/{evento}', [AgendaController::class, 'show'])->name('agenda.show');
@@ -67,6 +71,7 @@ Route::middleware(['variante', 'origen', 'csp'])->group(function () {
 
 // Vista previa con enlace temporal firmado (flujo editorial).
 Route::get('/vista-previa/noticias/{noticia:id}', [NoticiasController::class, 'vistaPrevia'])->name('vista-previa.noticia')->middleware('signed');
+Route::get('/vista-previa/opinion/{columna:id}', [OpinionController::class, 'vistaPrevia'])->name('vista-previa.columna')->middleware('signed');
 Route::get('/vista-previa/paginas/{pagina:id}', [SitioController::class, 'vistaPrevia'])->name('vista-previa.pagina')->middleware('signed');
 
 // Foto de una propuesta del buzón (disco privado), solo desde el panel.

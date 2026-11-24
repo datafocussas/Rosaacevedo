@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Contracts\CrmCliente;
+use App\Contracts\ModeloAsistente;
 use App\Models\MenuItem;
 use App\Models\RedSocial;
 use App\Services\Ajustes;
+use App\Services\Asistente\ClaudeModelo;
 use App\Services\Crm\CrmConexion;
 use App\Services\Crm\HttpCrmCliente;
 use App\Services\Crm\NuloCrmCliente;
@@ -28,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
 
         // El sitio solo conoce la interfaz: cuando llegue el contrato del CRM se cambia el adaptador.
         // La conexión se configura en el panel (Sitio → Conexión con el CRM) o, en su defecto, en el .env.
+        $this->app->bind(ModeloAsistente::class, ClaudeModelo::class);
         $this->app->bind(CrmCliente::class, fn () => CrmConexion::habilitada() ? new HttpCrmCliente : new NuloCrmCliente);
     }
 
@@ -47,6 +50,12 @@ class AppServiceProvider extends ServiceProvider
                 ? response()->json(['message' => $mensaje], 429, $headers)
                 : back()->withInput()->withErrors(['turnstile' => $mensaje]);
         }));
+
+        // Asistente: 8 preguntas por minuto y 60 por hora desde una misma conexión.
+        RateLimiter::for('asistente', fn (Request $request) => [
+            Limit::perMinute(8)->by('asistente-min:'.$request->ip()),
+            Limit::perHour(60)->by('asistente-hora:'.$request->ip()),
+        ]);
 
         // El Administrador puede todo en el panel.
         Gate::before(fn ($usuario) => method_exists($usuario, 'esAdministrador') && $usuario->esAdministrador() ? true : null);

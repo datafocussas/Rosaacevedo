@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Bloques;
 use App\Filament\Concerns\ConPermiso;
 use App\Filament\Resources\EventoResource\Pages;
 use App\Models\Evento;
@@ -52,7 +53,8 @@ class EventoResource extends Resource
                 Forms\Components\TextInput::make('cupo')->numeric()->minValue(1),
                 Forms\Components\Toggle::make('publico')->label('Visible en el sitio')->default(true),
             ]),
-            Forms\Components\RichEditor::make('descripcion')->label('Descripción')->toolbarButtons(['bold', 'italic', 'link', 'bulletList']),
+            Forms\Components\RichEditor::make('descripcion')->label('Descripción')->fileAttachmentsDisk('public')->fileAttachmentsDirectory('eventos')
+                ->toolbarButtons(['attachFiles', 'bold', 'italic', 'link', 'bulletList'])->helperText(Bloques::AYUDA_EDITOR),
             SpatieMediaLibraryFileUpload::make('imagen')->collection('imagen')->image()->imageEditor()->maxSize(4096),
         ])->columns(1);
     }

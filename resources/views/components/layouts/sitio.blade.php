@@ -50,6 +50,10 @@
         {{ $slot }}
     </main>
     <x-ra.pie :redes="$redes" :menu-sitio="$menuPieSitio" :menu-transparencia="$menuPieTransparencia" />
+    @php $asistente = app(\App\Services\Asistente\AsistenteConfig::class); @endphp
+    @if ($asistente->disponible())
+        <x-ra.asistente :config="$asistente->todo()" />
+    @endif
     @include('partials.cookies')
 </body>
 </html>

@@ -14,7 +14,7 @@ final class Texto
         return str_replace('[POR CONFIRMAR]', '<mark class="ra-pendiente">[POR CONFIRMAR]</mark>', $html);
     }
 
-    /** HTML del editor enriquecido, saneado (sin scripts, estilos ni atributos de eventos). */
+    /** HTML del editor enriquecido, saneado (sin scripts, estilos ni atributos de eventos), con videos y publicaciones incrustados. */
     public static function enriquecido(?string $html): HtmlString
     {
         $config = (new HtmlSanitizerConfig)
@@ -27,6 +27,7 @@ final class Texto
 
         $limpio = (new HtmlSanitizer($config))->sanitize((string) $html);
 
-        return new HtmlString(self::marcarPendientes($limpio));
+        // Los enlaces pegados de videos y redes se ven incrustados (después de sanear: el marco lo arma el sitio).
+        return new HtmlString(self::marcarPendientes(Incrustacion::enHtml($limpio)));
     }
 }

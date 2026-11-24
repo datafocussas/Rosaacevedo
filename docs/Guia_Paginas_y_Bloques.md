@@ -26,7 +26,28 @@ Para el equipo de Comunicaciones y Tecnología. Explica cómo se arma una págin
 | **Cifras** | Hasta 4 pares valor y texto | Tarjetas con número grande | Solo cifras confirmadas con fuente. Nunca de la Encuesta Itagüí 2026 |
 | **Llamado a la acción** | Rótulo, Título, Texto, Texto y enlace del botón, Fondo (esmeralda, noche o coral) | Franja con texto y un botón | El enlace puede ser interno (`/sumate`) o externo |
 | **Lista de ejes** | Rótulo, Título, Texto, Texto del botón | Rejilla de los 7 ejes de propuestas | Toma los ejes publicados en «Ejes y propuestas». Si no hay ninguno publicado, no aparece |
+| **Últimas columnas de opinión** | Título, Fondo | Las 3 columnas de opinión publicadas más recientes, con enlace a /opinion | Si no hay columnas publicadas, no aparece |
+| **Redes sociales: perfiles y publicaciones** | Rótulo, Título, Texto, Perfiles (Facebook, Instagram, TikTok), Publicaciones destacadas (enlaces), Fondo | Los perfiles de las redes con sus publicaciones recientes y las publicaciones o videos que elijas, en una rejilla | Los perfiles usan las direcciones de Sitio → Redes sociales. Facebook necesita la dirección de la página, no el enlace de compartir. X no tiene widget de perfil: sus publicaciones se agregan una por una |
 | **Selector de comunas** | Rótulo, Título, Texto, Fondo | Las 7 comunas y el corregimiento | Cada comuna enlaza a su página solo si está publicada; si no, dice «Pronto» |
+
+## Imágenes, videos y publicaciones de redes dentro del texto
+
+Vale para el cuerpo de las noticias, las columnas de opinión, el bloque **Texto** de las páginas y la descripción de los eventos.
+
+- **Imágenes:** con el botón del clip, o arrastrando la foto al texto. Debajo se puede escribir un pie de foto. Mejor fotos de menos de 1 MB.
+- **Videos y publicaciones:** pega el enlace **solo en una línea**. En el sitio se verá así:
+  - **YouTube y Vimeo:** la portada del video con el botón de reproducir; se reproduce ahí mismo.
+  - **Instagram, TikTok, X y Facebook:** la publicación dentro de la página. La red se carga cuando la persona hace clic en «Mostrar la publicación aquí» o cuando aceptó las cookies de redes sociales; así lo exige la ley, porque esas redes ponen sus cookies.
+- El enlace se copia en la red con **Compartir → Copiar enlace**. Funcionan las publicaciones, los reels y los videos; los enlaces cortos de TikTok (`vm.tiktok.com`) quedan como enlace normal.
+- Si escribes unas palabras y les pones el enlace («mira **la entrevista**»), queda como enlace normal.
+
+## Página «En redes»
+
+Ya está creada **en borrador** en Contenido → Páginas, con el bloque de redes y los perfiles de Instagram, TikTok y Facebook. Para usarla:
+
+1. Agrega las publicaciones destacadas.
+2. Cámbiala a **Publicada**.
+3. Si quieres, ponla en el menú.
 
 ## Bloque Formulario: cómo funciona y dónde se guarda
 
@@ -68,3 +89,22 @@ Solo aparecen al editar la página «Inicio».
 | **Inicio · Últimas noticias** | Las 4 noticias publicadas más recientes (si no hay, no aparece) |
 | **Inicio · Próximos encuentros** | Los 3 próximos eventos públicos de la agenda (si no hay, no aparece) |
 | **Inicio · Franja de redes** | Hashtag y enlaces a las redes activas (módulo Redes) |
+
+## Banners con varias fotos (Contenido → Banners)
+
+- Cada banner acepta **varias fotos** de escritorio (16:9) y de móvil (4:5), hasta 8 de cada una. Se arrastran para cambiar el orden. La foto de móvil número 2 acompaña a la de escritorio número 2; si solo subes en una de las dos, se usa la misma en celular y computador.
+- **«Cambiar de foto cada (segundos)»**: entre 3 y 30. Las fotos avanzan solas; cuando se muestran todas, pasa al siguiente banner activo (con sus textos y botones) y vuelve a empezar.
+- La persona puede **pausar** el cambio con el botón de dos barras junto a los puntos, y el carrusel se detiene mientras tiene el mouse o el teclado encima. Quien tiene activado «reducir movimiento» en su teléfono lo ve en pausa.
+- El texto alternativo y el punto focal aplican a todas las fotos del banner: elige fotos con un encuadre parecido.
+- Sirve igual en inicio y en las páginas de comuna.
+
+## Columnas de opinión (Contenido → Columnistas y Columnas de opinión)
+
+1. **Columnistas:** nombre, una línea de perfil («Lideresa comunal de San Pío X»), biografía corta y foto cuadrada. Sin foto se muestran sus iniciales. Un columnista con columnas no se borra: se desactiva.
+2. **Columnas:** título, ruta (`/opinion/...`), resumen, texto con el editor, imagen opcional (si no hay, la columna muestra la foto del columnista), columnista, estado y fecha. Mismo flujo que las noticias: borrador, en revisión, programada (se publica sola a la hora indicada), publicada o archivada, y botón **Vista previa**.
+3. Se ven en **/opinion** (enlace «Opinión» en el pie; se puede subir al menú principal desde Sitio → Menú) y en cualquier página con el bloque **Últimas columnas de opinión**.
+4. Cada columna lleva la nota «Las columnas de opinión expresan el pensamiento de quienes las firman».
+
+## Asistente virtual
+
+Está explicado en `docs/Guia_Asistente_Virtual.md`: cómo encenderlo, cómo cargar la base de conocimiento y qué se guarda de cada conversación.

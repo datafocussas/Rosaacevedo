@@ -19,3 +19,6 @@ Schedule::command('backup:run')->weeklyOn(0, '03:30');
 
 Schedule::command('queue:prune-failed --hours=720')->daily();
 Schedule::command('activitylog:clean --days=730')->monthly();
+
+// Conversaciones del asistente: se borran al cumplir los días de retención configurados en el panel.
+Schedule::command('asistente:depurar')->dailyAt('04:10');

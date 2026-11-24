@@ -2,6 +2,7 @@
 
 namespace App\Support\Csp;
 
+use App\Support\Incrustacion;
 use Spatie\Csp\Directive;
 use Spatie\Csp\Keyword;
 use Spatie\Csp\Policy;
@@ -11,6 +12,7 @@ use Spatie\Csp\Value;
 /**
  * CSP del sitio público (RNF-05). Sin nonces para que funcione con la caché de respuestas completa.
  * Alpine.js necesita 'unsafe-eval'; no se permiten scripts en línea. El panel /admin no lleva esta política.
+ * Marcos: videos y publicaciones de redes (Incrustacion::MARCOS); imágenes: miniaturas de YouTube.
  */
 class PoliticaSitio implements Preset
 {
@@ -27,8 +29,8 @@ class PoliticaSitio implements Preset
             ->add(Directive::SCRIPT, [Keyword::SELF, Keyword::UNSAFE_EVAL, 'https://challenges.cloudflare.com'])
             ->add(Directive::STYLE, [Keyword::SELF, Keyword::UNSAFE_INLINE])
             ->add(Directive::FONT, Keyword::SELF)
-            ->add(Directive::IMG, [Keyword::SELF, 'data:', 'blob:'])
-            ->add(Directive::FRAME, ['https://challenges.cloudflare.com', 'https://www.youtube-nocookie.com', 'https://player.vimeo.com'])
+            ->add(Directive::IMG, [Keyword::SELF, 'data:', 'blob:', 'https://i.ytimg.com'])
+            ->add(Directive::FRAME, ['https://challenges.cloudflare.com', ...Incrustacion::MARCOS])
             ->add(Directive::CONNECT, Keyword::SELF);
 
         if ($umami) {

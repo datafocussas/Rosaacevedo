@@ -7,6 +7,12 @@ return [
     // Doble factor obligatorio en el panel (RNF-05). Solo se apaga en local y en las pruebas automáticas.
     'dos_factores' => (bool) env('DOS_FACTORES', true),
 
+    // Asistente virtual. La API key se configura en el panel (Asistente → Configuración); esta es solo la alternativa.
+    'asistente' => [
+        'api_key' => env('ANTHROPIC_API_KEY'),
+        'timeout' => (int) env('ASISTENTE_TIMEOUT', 60),
+    ],
+
     'crm' => [
         // «http» envía a {CRM_URL}/ingesta/{entidad} (sección 05, pendiente de confirmar con la
         // especificación OpenAPI del CRM). «nulo» deja el outbox pendiente sin enviar nada.

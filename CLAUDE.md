@@ -16,6 +16,7 @@ Sitio web oficial de la precandidatura de Rosa María Acevedo Jaramillo a la Alc
 | `public/img/marca/` | Rosa «Aquí me planto» y raíces que usa el sitio (WebP optimizados a partir de las piezas de la campaña en `public/img/`). Ver §7 de `docs/Diseno_Sitio_Web.md`. |
 | `docs/Guia_Despliegue_Paso_a_Paso.md` | Despliegue en Hostinger explicado para el equipo, paso a paso (Hostinger, llaves SSH, secretos de GitHub, merge, cron, dominio, primer ingreso, abrir el sitio). |
 | `docs/Guia_Paginas_y_Bloques.md` | Cómo se arma una página en el panel, qué hace cada bloque y a dónde va la información de los formularios. |
+| `docs/Guia_Asistente_Virtual.md` | El asistente virtual: encenderlo, cargar la base de conocimiento, tono, privacidad, costos y límites. |
 
 Si un documento anterior del proyecto (base técnica de agosto, plan de instrumentación) contradice la especificación, **manda la especificación**. En particular, el plan de instrumentación proponía Astro + PostgreSQL para el sitio público: quedó reemplazado por Laravel + MySQL en Hostinger.
 
@@ -23,6 +24,7 @@ Si un documento anterior del proyecto (base técnica de agosto, plan de instrume
 
 - PHP 8.3, Laravel 11, Filament 3 (panel en `/admin`), Blade + Alpine.js en el sitio público, Vite.
 - Base de datos: el MySQL del hosting de Hostinger. Cola, caché y sesiones con driver `database` (no hay Redis en hosting compartido).
+- Asistente virtual con Claude (SDK `anthropic-ai/sdk`, detrás de `App\Contracts\ModeloAsistente`); importación de PDF con `smalot/pdfparser`.
 - Paquetes: spatie/laravel-permission, spatie/laravel-activitylog, spatie/laravel-medialibrary (conversiones WebP), spatie/laravel-responsecache, spatie/laravel-backup, spatie/laravel-csp.
 - Cloudflare delante (DNS, TLS estricto, Turnstile como antispam).
 - Analítica: Umami autoalojado, sin cookies. Sin Google Analytics.
@@ -31,7 +33,7 @@ Si un documento anterior del proyecto (base técnica de agosto, plan de instrume
 
 ## Convenciones
 
-- Un componente Blade por componente del sistema: `<x-ra.boton>`, `<x-ra.encabezado>`, `<x-ra.banner>`, `<x-ra.formulario-registro>`, `<x-ra.consentimiento>`, `<x-ra.ejes>`, `<x-ra.buzon>`, `<x-ra.selector-comuna>`, `<x-ra.tarjeta-noticia>`, `<x-ra.agenda>`, `<x-ra.franja-redes>`, `<x-ra.pie>`, `<x-ra.rosa-raices>`.
+- Un componente Blade por componente del sistema: `<x-ra.boton>`, `<x-ra.encabezado>`, `<x-ra.banner>`, `<x-ra.formulario-registro>`, `<x-ra.consentimiento>`, `<x-ra.ejes>`, `<x-ra.buzon>`, `<x-ra.selector-comuna>`, `<x-ra.tarjeta-noticia>`, `<x-ra.agenda>`, `<x-ra.franja-redes>`, `<x-ra.pie>`, `<x-ra.rosa-raices>`, `<x-ra.tarjeta-columna>`, `<x-ra.asistente>`.
 - Tema de Filament con esmeralda (`#0f5c45`) como primario y Montserrat. Montserrat autoalojada en WOFF2 en producción.
 - Nombres de tablas, columnas, modelos y rutas en español, como en `schema-mysql.sql`.
 - Tono del sitio: tuteo («Súmate», «Cuéntanos»). Sin emojis. Sin «¡!» en titulares.
@@ -46,8 +48,9 @@ Si un documento anterior del proyecto (base técnica de agosto, plan de instrume
 5. **No pedir cédula** en el sitio. El puesto de votación solo en el paso 3 (voluntariado) y solo si la persona lo comparte.
 6. **Modo precampaña**: no aparece «vota por» hasta que el panel cambie a modo campaña.
 7. **División territorial**: siete comunas + corregimiento El Manzanillo (Acuerdo 017 de 2024) en todo el sitio público. Cada barrio guarda también su comuna de la división anterior (`comuna_2007_id`), porque las JAL de 2027 se eligen con esa.
-8. El sitio **no envía mensajes masivos**: WhatsApp de salida y boletín los maneja el CRM. El sitio solo capta y sincroniza.
-9. El formulario debe seguir captando aunque el CRM esté caído (tabla `crm_outbox` + reintentos).
+8. El **asistente virtual** solo responde con la base de conocimiento del panel: sus reglas fijas (`Asistente::reglas()`) no se relajan desde el panel. No pide datos personales ni el voto en precampaña.
+9. El sitio **no envía mensajes masivos**: WhatsApp de salida y boletín los maneja el CRM. El sitio solo capta y sincroniza.
+10. El formulario debe seguir captando aunque el CRM esté caído (tabla `crm_outbox` + reintentos).
 
 ## Redes oficiales (ya en los datos semilla)
 

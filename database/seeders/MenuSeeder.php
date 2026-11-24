@@ -15,7 +15,7 @@ class MenuSeeder extends Seeder
 
         $menus = [
             'principal' => [['Inicio', '/'], ['Conoce a Rosa', '/conoce-a-rosa'], ['Propuestas', '/propuestas'], ['Tu comuna', '/comunas'], ['Noticias', '/noticias'], ['Agenda', '/agenda']],
-            'pie_sitio' => [['Conoce a Rosa', '/conoce-a-rosa'], ['Propuestas', '/propuestas'], ['Buzón ciudadano', '/buzon'], ['Manifiesto', '/manifiesto']],
+            'pie_sitio' => [['Conoce a Rosa', '/conoce-a-rosa'], ['Propuestas', '/propuestas'], ['Buzón ciudadano', '/buzon'], ['Manifiesto', '/manifiesto'], ['Opinión', '/opinion']],
             'pie_transparencia' => [['Política de tratamiento de datos', '/politica-de-datos'], ['Consulta o retira tus datos', '/mis-datos']],
         ];
 
