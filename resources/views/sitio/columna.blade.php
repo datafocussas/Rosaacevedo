@@ -27,6 +27,14 @@
             <div class="ra-contenedor">
                 <div class="ra-lectura-centrada ra-pila-5">
                     <div class="ra-prosa">{{ \App\Support\Texto::enriquecido($columna->cuerpo) }}</div>
+                    @php $galeria = $columna->getMedia('galeria'); @endphp
+                    @if ($galeria->isNotEmpty())
+                        <div class="ra-galeria ra-galeria-noticia">
+                            @foreach ($galeria as $foto)
+                                <img src="{{ \App\Support\Medios::url($foto, 'w800') }}" alt="{{ $foto->getCustomProperty('alt', '') }}" loading="lazy" decoding="async">
+                            @endforeach
+                        </div>
+                    @endif
                     <aside class="ra-columna-bio" aria-label="Sobre quien escribe">
                         <x-ra.avatar-columnista :columnista="$columnista" :tamano="72" />
                         <div class="ra-pila">

@@ -598,7 +598,27 @@ a.ra-comuna:hover, a.ra-comuna:focus-visible, .ra-comuna[aria-current="true"] { 
 .ra-prosa ul li::before { content: ""; position: absolute; left: -18px; top: .7em; width: 7px; height: 7px; border-radius: var(--radius-pill); background: var(--esmeralda); }
 .ra-oscuro .ra-prosa ul li::before { background: var(--jade); }
 .ra-prosa blockquote { margin: var(--space-6) 0; padding: var(--space-4) 0 0; border-top: 1px solid var(--oro); font-size: 22px; line-height: 1.35; font-weight: 700; }
-.ra-prosa img { border-radius: var(--radius-tarjeta); }
+.ra-prosa img { display: block; max-width: 100%; height: auto; border-radius: var(--radius-tarjeta); }
+.ra-prosa figure { margin: var(--space-6) 0; }
+.ra-prosa figure img { margin: 0 auto; }
+.ra-prosa figcaption { margin-top: var(--space-2); font-size: 14px; line-height: 20px; color: var(--tinta-suave); }
+.ra-oscuro .ra-prosa figcaption { color: var(--niebla); }
+.ra-prosa .attachment__name, .ra-prosa .attachment__size { display: none; } /* metadatos del editor */
+
+/* Videos y publicaciones de redes incrustados (App\Support\Incrustacion) */
+.ra-incrustacion { margin: var(--space-6) 0; }
+.ra-incrustacion figcaption { margin-top: var(--space-2); }
+.ra-video-portada img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 0; opacity: .85; }
+.ra-video-portada .ra-video-boton { position: relative; }
+.ra-video-vertical { aspect-ratio: 9/16; max-width: 360px; margin: 0 auto; }
+.ra-incrustacion-red { max-width: var(--incrustacion-ancho, 500px); margin-left: auto; margin-right: auto; }
+.ra-incrustacion-red iframe { display: block; width: 100%; border: 0; border-radius: var(--radius-tarjeta); background: var(--blanco); }
+.ra-incrustacion-aviso { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); padding: var(--space-6) var(--space-5); text-align: center; border: 1px solid var(--borde-claro); border-radius: var(--radius-tarjeta); background: var(--blanco); }
+.ra-oscuro .ra-incrustacion-aviso { background: var(--vidrio); border-color: var(--filo-oro); }
+.ra-incrustacion-icono { width: 56px; height: 56px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-pill); background: var(--noche); color: var(--oro-claro); }
+.ra-incrustacion-icono svg { width: 26px; height: 26px; }
+.ra-incrustacion-titulo { margin: 0; font-weight: 800; font-size: 18px; line-height: 24px; }
+.ra-enlace-boton { border: 0; padding: 0; background: none; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; }
 .ra-prosa table { width: 100%; border-collapse: collapse; }
 .ra-prosa th, .ra-prosa td { text-align: left; padding: var(--space-3) var(--space-2); border-bottom: 1px solid var(--separador); }
 .ra-cita { margin: 0; display: flex; flex-direction: column; gap: var(--space-4); }
@@ -721,3 +741,10 @@ a.ra-comuna:hover, a.ra-comuna:focus-visible, .ra-comuna[aria-current="true"] { 
 .ra-asistente-enviar:disabled { opacity: .45; cursor: not-allowed; }
 .ra-asistente-error { margin: var(--space-2) var(--space-5) 0; font-size: 14px; line-height: 20px; color: #ffb4a6; }
 .ra-asistente-aviso { margin: 0; padding: var(--space-2) var(--space-5) var(--space-4); font-size: 12px; line-height: 17px; color: var(--niebla); }
+
+/* Bloque «Redes sociales: perfiles y publicaciones»: rejilla de marcos de las redes */
+.ra-redes-widgets { display: grid; gap: var(--space-5); grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 760px) { .ra-redes-widgets { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { .ra-redes-widgets { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.ra-redes-widgets .ra-incrustacion { margin: 0; width: 100%; }
+.ra-redes-widgets .ra-incrustacion-video { align-self: center; }

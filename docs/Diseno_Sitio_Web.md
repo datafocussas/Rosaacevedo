@@ -119,6 +119,7 @@ Ver la tabla completa en `tokens.css` y §3 de la especificación v2. Papeles:
 | `buzon` | Temas como chips (radios), variante oscura en esmeralda. El selector de barrio (opcional) solo aparece si hay catálogo cargado; igual en el paso 2 del registro |
 | `tarjeta-columna` / `avatar-columnista` | Columna de opinión: tarjeta de texto blanca (marfil sobre fondo blanco) con comillas oro, título 22 px, resumen y firma con foto redonda del columnista (o sus iniciales en oro claro sobre abismo), fecha y minutos de lectura |
 | `asistente` | Botón flotante noche con filo oro abajo a la derecha (en celular, círculo de 56 px) y panel de chat no modal: 400 × 620 px en escritorio, pantalla completa en celular. Burbujas: asistente en vidrio con filo oro, persona en esmeralda. Aviso fijo bajo el campo (respuestas automáticas, no compartir datos, días de retención, enlace a la política). Solo aparece si está encendido en el panel y tiene API key |
+| `partials/incrustacion` | Video o publicación de una red dentro del texto o del bloque de redes (`App\Support\Incrustacion`). Video: portada abismo con la miniatura de YouTube y el botón coral; el reproductor (youtube-nocookie o Vimeo) se crea al hacer clic. Red (Instagram, TikTok, X, Facebook): tarjeta blanca con el ícono en círculo noche, «Publicación de…» o «Perfil de…», botón «Mostrar … aquí» y el enlace a la red; el marco oficial se carga al hacer clic o, solo, si la persona aceptó las cookies de redes sociales (evento `ra:cookies`). Ancho máximo según la red (340 a 550 px), centrado |
 | `tarjeta-noticia` / `noticias` | Variantes `destacada`, `fila`, `rejilla`; sin imagen, la rosa-flor como marcador |
 | `pie` | Noche, «Itagüí» en contorno; en la franja legal, responsable del tratamiento, cookies y el crédito «Desarrollo: DataFocus S.A.S.» (enlace a www.datafocussas.com, pestaña nueva) |
 | `agenda`, `franja-redes`, `redes`, `compartir`, `marca`, `boton`, `campo`, `icono` | Reestilizados; misma interfaz |
@@ -144,6 +145,7 @@ Los tipos de bloque y sus datos son los mismos de siempre (`app/Filament/Bloques
 | redes, video | noche |
 | noticias, imagen, comunas | marfil, blanco |
 | opinion (últimas columnas) | blanco, marfil |
+| redes_widgets (perfiles y publicaciones) | arena, marfil, blanco |
 | agenda | arena, marfil |
 | texto | marfil, blanco, arena |
 | imagen_texto | marfil, arena, abismo (el antiguo «Verde Raíces» se lee como abismo) |
@@ -158,6 +160,8 @@ Reglas, en orden: (1) dos oscuros seguidos: el segundo usa su primer fondo claro
 
 - URLs de imágenes **relativas** (`/storage/…`): el disco `public` usa `url => '/storage'`, así la foto se pide al mismo dominio con el que se abrió el sitio (www o sin www, localhost o 127.0.0.1) y la CSP `img-src 'self'` no la bloquea. Donde hace falta una URL completa (`og:image`, datos estructurados) se envuelve en `url()`.
 - Bloque «Imagen»: foto completa, centrada, sin recortar, con alto máximo de 760 px.
+- Imágenes dentro del texto (botón del clip en noticias, columnas, bloque Texto y eventos): ancho máximo de la columna de lectura, radio de tarjeta y pie de foto en 14 px. Se guardan en el disco `public` (`noticias/`, `opinion/`, `paginas/`, `eventos/`).
+- Enlaces de videos y redes: un enlace pegado (su texto es la misma dirección) se muestra incrustado; si está solo en su párrafo lo reemplaza, si está en medio del texto va después del párrafo. Unas palabras enlazadas siguen siendo un enlace. La CSP permite marcos de YouTube (sin cookies), Vimeo, Instagram, TikTok, X (platform.twitter.com) y Facebook, e imágenes de `i.ytimg.com` (miniaturas). Sin scripts de terceros: todo son iframes oficiales.
 - Conversiones WebP de medialibrary sin cambios (`w400`, `w800`, `w1200`, `w1600`).
 - Punto focal: propiedad personalizada `foco` (`{x, y}` en %) de la imagen; por defecto 62 % / 18 %. Se edita en el banner («Punto focal horizontal/vertical») y se aplica en `object-position` con `Medios::foco()`. Sin columnas nuevas.
 - Favicon y manifiesto en `public/` desde `docs/favicon/` (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `icon-192/512`, `site.webmanifest`); `theme-color` `#04151f`.
@@ -206,6 +210,7 @@ Reglas, en orden: (1) dos oscuros seguidos: el segundo usa su primer fondo claro
 | 10 oct 2026 | Sin aviso de IA en el buzón ni página `/uso-de-ia` (la IA no está activa) | Vigente para el buzón; el asistente (20 nov) se presenta como «asistente automático» |
 | 20 nov 2026 | Banners con varias fotos que rotan solas, segundos por banner, botón de pausa | Vigente |
 | 20 nov 2026 | Sección de opinión con columnistas y tarjeta de texto con comillas oro | Vigente |
+| 24 nov 2026 | Videos y publicaciones de redes incrustados en las entradas; bloque «Redes sociales: perfiles y publicaciones» y página `/en-redes` en borrador | Vigente |
 | 20 nov 2026 | Asistente virtual: botón flotante noche y panel de chat; visible solo si el panel lo enciende | Vigente; falta actualizar la política de datos (README) |
 | Pendiente | Logotipo y lettering «Aquí me planto» en SVG | Comunicaciones |
 | Pendiente | Fotografías definitivas (16:9 y 4:5) para banners y cabeceras | Comunicaciones |

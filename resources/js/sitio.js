@@ -4,6 +4,7 @@ import registro from './registro';
 import cookies from './cookies';
 import carrusel from './carrusel';
 import asistente from './asistente';
+import incrustacion from './incrustacion';
 import { capturarOrigen, conversion } from './origen';
 
 window.Alpine = Alpine;
@@ -11,6 +12,7 @@ Alpine.data('registro', registro);
 Alpine.data('cookies', cookies);
 Alpine.data('carrusel', carrusel);
 Alpine.data('asistente', asistente);
+Alpine.data('incrustacion', incrustacion);
 
 capturarOrigen();
 

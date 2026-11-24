@@ -27,7 +27,27 @@ Para el equipo de Comunicaciones y Tecnología. Explica cómo se arma una págin
 | **Llamado a la acción** | Rótulo, Título, Texto, Texto y enlace del botón, Fondo (esmeralda, noche o coral) | Franja con texto y un botón | El enlace puede ser interno (`/sumate`) o externo |
 | **Lista de ejes** | Rótulo, Título, Texto, Texto del botón | Rejilla de los 7 ejes de propuestas | Toma los ejes publicados en «Ejes y propuestas». Si no hay ninguno publicado, no aparece |
 | **Últimas columnas de opinión** | Título, Fondo | Las 3 columnas de opinión publicadas más recientes, con enlace a /opinion | Si no hay columnas publicadas, no aparece |
+| **Redes sociales: perfiles y publicaciones** | Rótulo, Título, Texto, Perfiles (Facebook, Instagram, TikTok), Publicaciones destacadas (enlaces), Fondo | Los perfiles de las redes con sus publicaciones recientes y las publicaciones o videos que elijas, en una rejilla | Los perfiles usan las direcciones de Sitio → Redes sociales. Facebook necesita la dirección de la página, no el enlace de compartir. X no tiene widget de perfil: sus publicaciones se agregan una por una |
 | **Selector de comunas** | Rótulo, Título, Texto, Fondo | Las 7 comunas y el corregimiento | Cada comuna enlaza a su página solo si está publicada; si no, dice «Pronto» |
+
+## Imágenes, videos y publicaciones de redes dentro del texto
+
+Vale para el cuerpo de las noticias, las columnas de opinión, el bloque **Texto** de las páginas y la descripción de los eventos.
+
+- **Imágenes:** con el botón del clip, o arrastrando la foto al texto. Debajo se puede escribir un pie de foto. Mejor fotos de menos de 1 MB.
+- **Videos y publicaciones:** pega el enlace **solo en una línea**. En el sitio se verá así:
+  - **YouTube y Vimeo:** la portada del video con el botón de reproducir; se reproduce ahí mismo.
+  - **Instagram, TikTok, X y Facebook:** la publicación dentro de la página. La red se carga cuando la persona hace clic en «Mostrar la publicación aquí» o cuando aceptó las cookies de redes sociales; así lo exige la ley, porque esas redes ponen sus cookies.
+- El enlace se copia en la red con **Compartir → Copiar enlace**. Funcionan las publicaciones, los reels y los videos; los enlaces cortos de TikTok (`vm.tiktok.com`) quedan como enlace normal.
+- Si escribes unas palabras y les pones el enlace («mira **la entrevista**»), queda como enlace normal.
+
+## Página «En redes»
+
+Ya está creada **en borrador** en Contenido → Páginas, con el bloque de redes y los perfiles de Instagram, TikTok y Facebook. Para usarla:
+
+1. Agrega las publicaciones destacadas.
+2. Cámbiala a **Publicada**.
+3. Si quieres, ponla en el menú.
 
 ## Bloque Formulario: cómo funciona y dónde se guarda
 

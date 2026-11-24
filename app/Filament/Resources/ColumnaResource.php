@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Bloques;
 use App\Filament\Concerns\ConPermiso;
 use App\Filament\Resources\ColumnaResource\Pages;
 use App\Models\Columna;
@@ -48,12 +49,14 @@ class ColumnaResource extends Resource
                     Forms\Components\RichEditor::make('cuerpo')->required()
                         ->fileAttachmentsDisk('public')->fileAttachmentsDirectory('opinion')
                         ->toolbarButtons(['attachFiles', 'blockquote', 'bold', 'bulletList', 'h2', 'h3', 'italic', 'link', 'orderedList', 'redo', 'undo'])
-                        ->helperText('Solo datos y cifras que la campaña haya confirmado. Nunca cifras de la Encuesta Itagüí 2026. Donde falte un dato, [POR CONFIRMAR].'),
+                        ->helperText(Bloques::AYUDA_EDITOR.' Solo datos y cifras que la campaña haya confirmado. Nunca cifras de la Encuesta Itagüí 2026. Donde falte un dato, [POR CONFIRMAR].'),
                 ]),
-                Forms\Components\Section::make('Imagen')->schema([
+                Forms\Components\Section::make('Imágenes')->schema([
                     SpatieMediaLibraryFileUpload::make('destacada')->collection('destacada')->label('Imagen de la columna (opcional)')->image()->imageEditor()->maxSize(4096)
                         ->customProperties(fn (Forms\Get $get) => ['alt' => $get('titulo')])
                         ->helperText('Si no subes una, la columna muestra la foto del columnista.'),
+                    SpatieMediaLibraryFileUpload::make('galeria')->collection('galeria')->label('Galería (opcional)')->image()->multiple()->reorderable()->maxSize(4096)
+                        ->customProperties(fn (Forms\Get $get) => ['alt' => $get('titulo')]),
                 ]),
                 Forms\Components\Section::make('SEO y redes')->collapsed()->schema([
                     Forms\Components\TextInput::make('seo_titulo')->label('Título SEO')->maxLength(70),

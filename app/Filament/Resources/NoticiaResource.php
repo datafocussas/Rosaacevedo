@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Bloques;
 use App\Filament\Concerns\ConPermiso;
 use App\Filament\Resources\NoticiaResource\Pages;
 use App\Models\Noticia;
@@ -46,7 +47,8 @@ class NoticiaResource extends Resource
                     Forms\Components\Textarea::make('resumen')->maxLength(300)->rows(2),
                     Forms\Components\RichEditor::make('cuerpo')->required()
                         ->fileAttachmentsDisk('public')->fileAttachmentsDirectory('noticias')
-                        ->toolbarButtons(['attachFiles', 'blockquote', 'bold', 'bulletList', 'h2', 'h3', 'italic', 'link', 'orderedList', 'redo', 'undo']),
+                        ->toolbarButtons(['attachFiles', 'blockquote', 'bold', 'bulletList', 'h2', 'h3', 'italic', 'link', 'orderedList', 'redo', 'undo'])
+                        ->helperText(Bloques::AYUDA_EDITOR),
                     Forms\Components\TextInput::make('video_url')->label('Video (YouTube o Vimeo)')->url()->maxLength(255),
                 ]),
                 Forms\Components\Section::make('Imágenes')->schema([

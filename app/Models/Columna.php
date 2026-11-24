@@ -40,6 +40,7 @@ class Columna extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('destacada')->singleFile();
+        $this->addMediaCollection('galeria');
     }
 
     /** Minutos de lectura a 200 palabras por minuto. */

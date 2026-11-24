@@ -39,6 +39,7 @@ final class Fondos
         'redes' => ['noche'],
         'noticias' => ['marfil', 'blanco'],
         'opinion' => ['blanco', 'marfil'],
+        'redes_widgets' => ['arena', 'marfil', 'blanco'],
         'agenda' => ['arena', 'marfil'],
         'texto' => ['marfil', 'blanco', 'arena'],
         'imagen' => ['marfil', 'blanco'],

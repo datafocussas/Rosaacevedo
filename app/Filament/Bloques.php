@@ -3,8 +3,10 @@
 namespace App\Filament;
 
 use App\Support\Fondos;
+use App\Support\Incrustacion;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
@@ -20,6 +22,9 @@ use Filament\Forms\Components\Toggle;
  */
 class Bloques
 {
+    /** Ayuda común de los editores de texto: imágenes y enlaces que se ven incrustados. */
+    public const AYUDA_EDITOR = 'Para poner una imagen, usa el clip (o arrástrala al texto). Para mostrar un video de YouTube o Vimeo, o una publicación de Instagram, TikTok, X o Facebook, pega su enlace solo en una línea: en el sitio se verá el video o la publicación.';
+
     public static function builder(string $campo = 'bloques', bool $conInicio = false): Builder
     {
         $bloques = [...($conInicio ? self::inicio() : []), ...self::generales()];
@@ -73,7 +78,9 @@ class Bloques
                 self::activo(), ...self::fondo('texto'),
                 TextInput::make('titulo')->label('Título (opcional)')->maxLength(120),
                 RichEditor::make('contenido')->label('Contenido')->required()
-                    ->toolbarButtons(['bold', 'italic', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo']),
+                    ->fileAttachmentsDisk('public')->fileAttachmentsDirectory('paginas')
+                    ->toolbarButtons(['attachFiles', 'bold', 'italic', 'link', 'h2', 'h3', 'bulletList', 'orderedList', 'blockquote', 'redo', 'undo'])
+                    ->helperText(self::AYUDA_EDITOR),
             ]),
             Block::make('imagen')->label('Imagen')->icon('heroicon-o-photo')->schema([
                 self::activo(), ...self::fondo('imagen'), self::imagen()->required(), self::alt(),
@@ -125,6 +132,24 @@ class Bloques
                 self::activo(), TextInput::make('etiqueta')->default('Propuestas'), TextInput::make('titulo')->label('Título')->default('Aquí me planto por…'), Textarea::make('texto')->rows(2), TextInput::make('boton_texto')->default('Conoce las propuestas'),
             ]),
             Block::make('opinion')->label('Últimas columnas de opinión')->icon('heroicon-o-chat-bubble-bottom-center-text')->schema([self::activo(), ...self::fondo('opinion'), TextInput::make('titulo')->label('Título')->default('Opinión')]),
+            Block::make('redes_widgets')->label('Redes sociales: perfiles y publicaciones')->icon('heroicon-o-globe-alt')->schema([
+                self::activo(), ...self::fondo('redes_widgets'),
+                TextInput::make('etiqueta')->default('En redes')->maxLength(60),
+                TextInput::make('titulo')->label('Título')->default('Lo que pasa en nuestras redes')->maxLength(120),
+                Textarea::make('texto')->rows(2)->maxLength(240),
+                CheckboxList::make('perfiles')->label('Perfiles que se muestran')
+                    ->options(['facebook' => 'Facebook (últimas publicaciones de la página)', 'instagram' => 'Instagram (perfil y publicaciones recientes)', 'tiktok' => 'TikTok (perfil y videos recientes)'])
+                    ->helperText('Usan la dirección de cada red en Sitio → Redes sociales. Facebook necesita la dirección de la página (facebook.com/nombre-de-la-pagina), no un enlace de compartir.'),
+                Repeater::make('publicaciones')->label('Publicaciones destacadas')->simple(
+                    TextInput::make('url')->label('Enlace')->url()->required()->maxLength(500)
+                        ->rule(fn () => function (string $atributo, $valor, \Closure $fallar) {
+                            if (! Incrustacion::de($valor)) {
+                                $fallar('Ese enlace no se puede mostrar. Usa el enlace de una publicación de Instagram, TikTok, X o Facebook, o de un video de YouTube o Vimeo.');
+                            }
+                        }),
+                )->defaultItems(0)->maxItems(12)->reorderable()->addActionLabel('Agregar publicación')
+                    ->helperText('Pega el enlace de cada publicación o video que quieras mostrar (botón «Compartir» → «Copiar enlace» en la red).'),
+            ]),
             Block::make('comunas')->label('Selector de comunas')->icon('heroicon-o-map')->schema([
                 self::activo(), ...self::fondo('comunas'), TextInput::make('etiqueta')->default('Tu comuna'), TextInput::make('titulo')->label('Título')->default('Aquí me planto en cada barrio'),
                 Textarea::make('texto')->rows(2)->maxLength(240),
